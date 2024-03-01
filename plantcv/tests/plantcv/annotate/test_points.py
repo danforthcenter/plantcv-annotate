@@ -1,9 +1,9 @@
 import cv2
 import matplotlib
-from plantcv.plantcv import Points
+from plantcv.annotate.classes import Points
 
 
-def test_points_interactive(annotate_test_data):
+def test_points(annotate_test_data):
     """Test for PlantCV."""
     # Read in a test grayscale image
     img = cv2.imread(annotate_test_data.small_rgb_img)
