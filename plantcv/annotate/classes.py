@@ -5,33 +5,8 @@ import cv2
 import numpy as np
 from math import floor
 import matplotlib.pyplot as plt
-from scipy.spatial import distance
+from plantcv.plantcv.annotate.points import _find_closest_pt 
 
-
-def _find_closest_pt(pt, pts):
-    """
-    Find the closest (Euclidean) point to a given point from a list of points.
-
-    Inputs:
-    pt           = coordinates of a point 
-    pts          = a list of tuples (coordinates) 
-
-    Outputs:
-    idx         = index of the closest point 
-    coord       = coordinates of the closest point
-
-    :param pt: tuple
-    :param pts:  list
-    :return idx: int
-    :return coord: tuple
-    """
-    if pt in pts:
-        idx = pts.index(pt)
-        return idx, pt
-
-    dists = distance.cdist([pt], pts, 'euclidean')
-    idx = np.argmin(dists)
-    return idx, pts[idx]
 
 class Points:
     """Point annotation/collection class to use in Jupyter notebooks. It allows the user to
