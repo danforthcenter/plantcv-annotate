@@ -3,10 +3,10 @@ import matplotlib
 from plantcv.annotate.classes import Points
 
 
-def test_points(annotate_test_data):
+def test_points(test_data):
     """Test for PlantCV."""
     # Read in a test grayscale image
-    img = cv2.imread(annotate_test_data.small_rgb_img)
+    img = cv2.imread(test_data.small_rgb_img)
 
     # initialize interactive tool
     drawer_rgb = Points(img, figsize=(12, 6))
