@@ -1,3 +1,5 @@
+"""Tests for annotate.Points."""
+import os 
 import cv2
 import matplotlib
 from plantcv.annotate.classes import Points
@@ -43,4 +45,32 @@ def test_points(test_data):
     e5.xdata, e5.ydata = (301, 200)
     drawer_rgb.onclick(e5)
 
-    assert drawer_rgb.coords[0] == point1
+    assert drawer_rgb.coords["default"][0] == point1
+
+def test_points_save_coords(test_data, tmpdir):
+    """Test for PlantCV."""
+    cache_dir = tmpdir.mkdir("cache")
+    filename = os.path.join(cache_dir, 'plantcv_print_coords.txt')
+    # Read in a test grayscale image
+    img = cv2.imread(test_data.small_rgb_img)
+
+    # initialize interactive tool
+    drawer_rgb = Points(img, figsize=(12, 6))
+
+    # simulate mouse clicks
+    # event 1, left click to add point
+    e1 = matplotlib.backend_bases.MouseEvent(name="button_press_event", canvas=drawer_rgb.fig.canvas,
+                                             x=0, y=0, button=1)
+    point1 = (200, 200)
+    e1.xdata, e1.ydata = point1
+    drawer_rgb.onclick(e1)
+
+    # event 2, left click to add point
+    e2 = matplotlib.backend_bases.MouseEvent(name="button_press_event", canvas=drawer_rgb.fig.canvas,
+                                             x=0, y=0, button=1)
+    e2.xdata, e2.ydata = (300, 200)
+    drawer_rgb.onclick(e2)
+
+    # Save collected coords out 
+    drawer_rgb.print_coords(filename=filename)
+    assert os.path.exists(filename)
