@@ -105,6 +105,7 @@ class Points:
         Input variables:
         filename = Name of the file to save collected coordinate
         :param filename: str
+        :return:
         """
         # Open the file for writing
         with open(filename, "w") as fp:
@@ -118,6 +119,7 @@ class Points:
         label = class label for imported coordinates, by default label="default".
         :param coords: list
         :param label: string
+        :return:
         """
         if label not in self.coords:
             self.coords[label] = []
@@ -127,3 +129,21 @@ class Points:
 
         else:
             warn(f"{label} already included and counted, nothing is imported!")
+
+    def import_file(self, filename):
+        """Method to import coordinates from file to Points object
+        
+        Inputs:
+        filename = filename of stored coordinates and classes
+        :param filename: str
+        :return: 
+        """
+        coord_file = open(filename, "r")
+        coords = json.load(coord_file)
+
+        keys = list(coords.keys())
+
+        for key in keys:
+            keycoor = coords[key]
+            keycoor = list(map(lambda sub: (sub[1], sub[0]), keycoor))
+            self.import_list(keycoor, label=key)
