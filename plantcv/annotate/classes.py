@@ -2,10 +2,9 @@
 
 # Imports
 import cv2
-import numpy as np
 from math import floor
 import matplotlib.pyplot as plt
-from plantcv.plantcv.annotate.points import _find_closest_pt 
+from plantcv.plantcv.annotate.points import _find_closest_pt
 
 
 class Points:
