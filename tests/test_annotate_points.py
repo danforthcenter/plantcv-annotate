@@ -47,11 +47,11 @@ def test_points(test_data):
 
     assert drawer_rgb.coords["default"][0] == point1
 
-def test_points_save_coords(test_data, tmpdir):
+def test_points_print_coords(test_data, tmpdir):
     """Test for PlantCV."""
     cache_dir = tmpdir.mkdir("cache")
     filename = os.path.join(cache_dir, 'plantcv_print_coords.txt')
-    # Read in a test grayscale image
+    # Read in a test image
     img = cv2.imread(test_data.small_rgb_img)
 
     # initialize interactive tool
@@ -74,3 +74,17 @@ def test_points_save_coords(test_data, tmpdir):
     # Save collected coords out 
     drawer_rgb.print_coords(filename=filename)
     assert os.path.exists(filename)
+
+def test_points_import_list(test_data):
+    """Test for PlantCV."""
+    # Read in a test image
+    img = cv2.imread(test_data.small_rgb_img)
+    # initialize interactive tool
+    drawer_rgb = Points(img, figsize=(12, 6), label="default")
+    totalpoints1 = [(158, 531), (361, 112), (500, 418), (269.25303806488864, 385.69839981447126),
+                  (231.21964288863632, 445.995245825603), (293.37177646934134, 448.778177179963), (240.49608073650273, 277.1640769944342), 
+                  (279.4571196975417, 240.05832560296852), (77.23077461405376, 165.84682282003712), (420, 364),
+                  (509.5127783246289, 353.2308673469388), (527.1380102355752, 275.3087894248609), (445.50535717435065, 138.94515306122452)]
+    drawer_rgb.import_list(coords=totalpoints1, label="imported")
+
+    assert len(drawer_rgb.coords["imported"]) == 13
