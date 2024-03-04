@@ -88,3 +88,12 @@ def test_points_import_list(test_data):
     drawer_rgb.import_list(coords=totalpoints1, label="imported")
 
     assert len(drawer_rgb.coords["imported"]) == 13
+
+def test_points_import_file(test_data):
+    """Test for PlantCV."""
+    img = cv2.imread(test_data.small_rgb_img)
+    counter = Points(img, figsize=(8, 6))
+    file  = test_data.pollen_coords
+    counter.import_file(file)
+
+    assert counter.count['total'] == 70
