@@ -17,12 +17,12 @@ class Points:
         """Initialization
         :param img: image data
         :param figsize: desired figure size, (12,6) by default
-        :attribute points: list of points as (x,y) coordinates tuples
+        :attribute coords: list of points as (x,y) coordinates tuples
         """
         self.fig, self.ax = plt.subplots(1, 1, figsize=figsize)
         self.ax.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 
-        self.points = []
+        self.coords = []
         self.events = []
 
         self.fig.canvas.mpl_connect('button_press_event', self.onclick)
@@ -33,11 +33,11 @@ class Points:
         if event.button == 1:
 
             self.ax.plot(event.xdata, event.ydata, 'x', c='red')
-            self.points.append((floor(event.xdata), floor(event.ydata)))
+            self.coords.append((floor(event.xdata), floor(event.ydata)))
 
         else:
-            idx_remove, _ = _find_closest_pt((event.xdata, event.ydata), self.points)
+            idx_remove, _ = _find_closest_pt((event.xdata, event.ydata), self.coords)
             # remove the closest point to the user right clicked one
-            self.points.pop(idx_remove)
+            self.coords.pop(idx_remove)
             self.ax.lines[idx_remove].remove()
         self.fig.canvas.draw()
