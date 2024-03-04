@@ -53,6 +53,7 @@ def _view(self, label="default", color="c", view_all=False):
         for (x, y) in self.coords[self.label]:
             self.ax.plot(x, y, marker='x', c=color)
 
+
 class Points:
     """Point annotation/collection class to use in Jupyter notebooks. It allows the user to
     interactively click to collect coordinates from an image. Left click collects the point and
@@ -63,20 +64,19 @@ class Points:
         """Initialization
         :param img: image data
         :param figsize: desired figure size, (12,6) by default
+        :param label: current label for group of annotations, similar to pcv.params.sample_label 
         :attribute coords: list of points as (x,y) coordinates tuples
         """
-        #self.fig, self.ax = plt.subplots(1, 1, figsize=figsize)
-        #self.ax.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-        
+    
         self.img = img
-        self.coords = {} # dictionary of all coordinates per group label 
-        self.events = [] # includes right and left click events 
+        self.coords = {}  # dictionary of all coordinates per group label
+        self.events = []  # includes right and left click events
         self.count = {}  # a dictionary that saves the counts of different groups (labels)
         self.label = label  # current label
-        self.sample_labels = [] # list of all sample labels, one to one with points collected 
+        self.sample_labels = []  # list of all sample labels, one to one with points collected
         self.view_all = None  # a flag indicating whether or not view all labels
         self.color = None  # current color
-        self.colors = {} # all used colors 
+        self.colors = {}  # all used colors
         self.figsize = figsize
 
         _view(self, label=label, color="r", view_all=True)
@@ -110,3 +110,20 @@ class Points:
         with open(filename, "w") as fp:
             # Save the data in JSON format with indentation
             json.dump(obj=self.coords, fp=fp, indent=4)
+
+    def import_list(self, coords, label="default"):
+        """Import center coordinates of already detected objects
+        Inputs:
+        coords = list of center coordinates of already detected objects.
+        label = class label for imported coordinates, by default label="default".
+        :param coords: list
+        :param label: string
+        """
+        if label not in self.coords:
+            self.coords[label] = []
+            for (y, x) in coords:
+                self.coords[label].append((x, y))
+            self.count[label] = len(self.coords[label])
+
+        else:
+            warn(f"{label} already included and counted, nothing is imported!")
