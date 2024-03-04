@@ -15,7 +15,8 @@ class TestData:
         self.snapshot_dir = os.path.join(self.datadir, "snapshot_dir")
         # RGB image
         self.small_rgb_img = os.path.join(self.datadir, "setaria_small_plant_rgb.png")
-
+        # Text file with tuple coordinates (by group label)
+        self.pollen_coords = os.path.join(self.datadir, "points_file_import.coords")
 
 @pytest.fixture(scope="session")
 def test_data():
