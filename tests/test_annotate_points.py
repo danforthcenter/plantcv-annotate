@@ -89,6 +89,17 @@ def test_points_import_list(test_data):
 
     assert len(drawer_rgb.coords["imported"]) == 13
 
+def test_points_import_list_warn(test_data):
+    """Test for plantcv-annotate."""
+    # Read in a test image
+    img = cv2.imread(test_data.small_rgb_img)
+    # initialize interactive tool
+    drawer_rgb = Points(img, figsize=(12, 6), label="default")
+    totalpoints1 = [(158, 531), (361, 112), (500, 418), (445.50535717435065, 138.94515306122452)]
+    drawer_rgb.import_list(coords=totalpoints1)
+
+    assert len(drawer_rgb.coords["default"]) == 0
+
 def test_points_import_file(test_data):
     """Test for plantcv-annotate."""
     img = cv2.imread(test_data.small_rgb_img)
@@ -113,7 +124,11 @@ def test_points_view(test_data):
     point1 = (200, 200)
     e1.xdata, e1.ydata = point1
     drawer_rgb.onclick(e1)
-    drawer_rgb.view(view_all=True)
+    drawer_rgb.view(label="new", view_all=True)
+    e2 = matplotlib.backend_bases.MouseEvent(name="button_press_event", canvas=drawer_rgb.fig.canvas,
+                                             x=0, y=0, button=1)
+    e2.xdata, e2.ydata = (300, 200)
+    drawer_rgb.onclick(e2)
     drawer_rgb.view(view_all=False)
 
     assert str(drawer_rgb.fig) == "Figure(1200x600)"
