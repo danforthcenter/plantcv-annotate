@@ -64,10 +64,9 @@ class Points:
         """Initialization
         :param img: image data
         :param figsize: desired figure size, (12,6) by default
-        :param label: current label for group of annotations, similar to pcv.params.sample_label 
+        :param label: current label for group of annotations, similar to pcv.params.sample_label
         :attribute coords: list of points as (x,y) coordinates tuples
         """
-    
         self.img = img
         self.coords = {}  # dictionary of all coordinates per group label
         self.events = []  # includes right and left click events
@@ -132,11 +131,11 @@ class Points:
 
     def import_file(self, filename):
         """Method to import coordinates from file to Points object
-        
+
         Inputs:
         filename = filename of stored coordinates and classes
         :param filename: str
-        :return: 
+        :return:
         """
         coord_file = open(filename, "r")
         coords = json.load(coord_file)
@@ -150,7 +149,7 @@ class Points:
 
     def view(self, label="default", color="c", view_all=False):
         """Method to view current annotations
-            
+  
         Inputs:
         label = (optional) class label, by default label="total"
         color = desired color, by default color="c"
@@ -159,5 +158,5 @@ class Points:
         :param color: string
         :param view_all: boolean
         :return:
-            """
+        """
         _view(self, label=label, color=color, view_all=view_all)
