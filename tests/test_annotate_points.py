@@ -97,3 +97,13 @@ def test_points_import_file(test_data):
     counter.import_file(file)
 
     assert counter.count['total'] == 70
+
+def test_points_import_file_duplicate(test_data):
+    """Test for PlantCV."""
+    img = cv2.imread(test_data.small_rgb_img)
+    # set label to "total" so that group labels dduplicated to trigger warning
+    counter = Points(img, figsize=(8, 6), label="total")
+    file  = test_data.pollen_coords
+    counter.import_file(file)
+
+    assert counter.count['total'] == 0
