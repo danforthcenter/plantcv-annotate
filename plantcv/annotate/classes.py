@@ -126,7 +126,7 @@ class Points:
             for (y, x) in coords:
                 self.coords[label].append((x, y))
             self.count[label] = len(self.coords[label])
-
+            _view(self, label=label, color=self.color, view_all=False)
         else:
             warn(f"{label} already included and counted, nothing is imported!")
 
