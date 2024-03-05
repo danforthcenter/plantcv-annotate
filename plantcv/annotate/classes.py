@@ -147,3 +147,17 @@ class Points:
             keycoor = coords[key]
             keycoor = list(map(lambda sub: (sub[1], sub[0]), keycoor))
             self.import_list(keycoor, label=key)
+
+    def view(self, label="default", color="c", view_all=False):
+        """Method to view current annotations
+            
+        Inputs:
+        label = (optional) class label, by default label="total"
+        color = desired color, by default color="c"
+        view_all = indicator of whether view all classes, by default view_all=False
+        :param label: string
+        :param color: string
+        :param view_all: boolean
+        :return:
+            """
+        _view(self, label=label, color=color, view_all=view_all)
