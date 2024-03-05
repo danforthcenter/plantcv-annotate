@@ -6,7 +6,7 @@ from plantcv.annotate.classes import Points
 
 
 def test_points(test_data):
-    """Test for PlantCV."""
+    """Test for plantcv-annotate."""
     # Read in a test grayscale image
     img = cv2.imread(test_data.small_rgb_img)
 
@@ -48,7 +48,7 @@ def test_points(test_data):
     assert drawer_rgb.coords["default"][0] == point1
 
 def test_points_print_coords(test_data, tmpdir):
-    """Test for PlantCV."""
+    """Test for plantcv-annotate."""
     cache_dir = tmpdir.mkdir("cache")
     filename = os.path.join(cache_dir, 'plantcv_print_coords.txt')
     # Read in a test image
@@ -76,7 +76,7 @@ def test_points_print_coords(test_data, tmpdir):
     assert os.path.exists(filename)
 
 def test_points_import_list(test_data):
-    """Test for PlantCV."""
+    """Test for plantcv-annotate."""
     # Read in a test image
     img = cv2.imread(test_data.small_rgb_img)
     # initialize interactive tool
@@ -90,7 +90,7 @@ def test_points_import_list(test_data):
     assert len(drawer_rgb.coords["imported"]) == 13
 
 def test_points_import_file(test_data):
-    """Test for PlantCV."""
+    """Test for plantcv-annotate."""
     img = cv2.imread(test_data.small_rgb_img)
     counter = Points(img, figsize=(8, 6))
     file  = test_data.pollen_coords
@@ -98,12 +98,40 @@ def test_points_import_file(test_data):
 
     assert counter.count['total'] == 70
 
-def test_points_import_file_duplicate(test_data):
-    """Test for PlantCV."""
+def test_points_view(test_data):
+    """Test for plantcv-annotate."""
+    # Read in a test grayscale image
     img = cv2.imread(test_data.small_rgb_img)
-    # set label to "total" so that group labels dduplicated to trigger warning
-    counter = Points(img, figsize=(8, 6), label="total")
-    file  = test_data.pollen_coords
-    counter.import_file(file)
 
-    assert counter.count['total'] == 0
+    # initialize interactive tool
+    drawer_rgb = Points(img, figsize=(12, 6))
+
+    # simulate mouse clicks
+    # event 1, left click to add point
+    e1 = matplotlib.backend_bases.MouseEvent(name="button_press_event", canvas=drawer_rgb.fig.canvas,
+                                             x=0, y=0, button=1)
+    point1 = (200, 200)
+    e1.xdata, e1.ydata = point1
+    drawer_rgb.onclick(e1)
+    drawer_rgb.view(view_all=True)
+    drawer_rgb.view(view_all=False)
+
+    assert str(drawer_rgb.fig) == "Figure(1200x600)"
+
+def test_points_view_warn(test_data):
+    """Test for plantcv-annotate."""
+    # Read in a test grayscale image
+    img = cv2.imread(test_data.small_rgb_img)
+
+    # initialize interactive tool, implied default label and "r" color 
+    drawer_rgb = Points(img, figsize=(12, 6))
+
+    # simulate mouse clicks, event 1=left click to add point
+    e1 = matplotlib.backend_bases.MouseEvent(name="button_press_event", canvas=drawer_rgb.fig.canvas,
+                                             x=0, y=0, button=1)
+    point1 = (200, 200)
+    e1.xdata, e1.ydata = point1
+    drawer_rgb.onclick(e1)
+    drawer_rgb.view(label="new", color='r')
+
+    assert str(drawer_rgb.fig) == "Figure(1200x600)"
