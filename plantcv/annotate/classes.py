@@ -149,7 +149,7 @@ class Points:
 
     def view(self, label="default", color="c", view_all=False):
         """Method to view current annotations
-  
+
         Inputs:
         label = (optional) class label, by default label="total"
         color = desired color, by default color="c"
