@@ -99,15 +99,15 @@ class Points:
             self.sample_labels.pop(idx_remove)
         self.fig.canvas.draw()
 
-    def print_coords(self, outfile):
+    def print_coords(self, filename):
         """Save collected coordinates to a file.
         Input variables:
-        outfile = Name of the file to save collected coordinate
+        filename = Name of the file to save collected coordinate
         :param filename: str
         :return:
         """
         # Open the file for writing
-        with open(outfile, "w") as fp:
+        with open(filename, "w") as fp:
             # Save the data in JSON format with indentation
             json.dump(obj=self.coords, fp=fp, indent=4)
 
