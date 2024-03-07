@@ -15,5 +15,5 @@ main repository. Changes to PlantCV should be done in a branch, and pull against
 `main` branch  which corresponds to the `latest` version of the documentation on Read the Docs.
 
 PlantCV-Annotate is an add-on package to compliment functionality of
-[PlantCV](http://plantcv.danforthcenter.org) so please refer to the 
+[PlantCV](https://plantcv.org) so please refer to the 
 [updating guide here](https://plantcv.readthedocs.io/en/latest/documentation/).
