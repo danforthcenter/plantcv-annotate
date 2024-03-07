@@ -1,6 +1,7 @@
-# Get centroids. region props method (WILL Merge into PCV.annotate, opening PR this week) 
+# Get centroids from mask objects
 
 from skimage.measure import label, regionprops
+
 
 def get_centroids(bin_img):
     """Get the coordinates (row,column) of the centroid of each connected region in a binary image.
@@ -18,12 +19,10 @@ def get_centroids(bin_img):
     labeled_img = label(bin_img)
     # measure regions
     obj_measures = regionprops(labeled_img)
-    
     coords = []
     for obj in obj_measures:
         # Convert coord values to int
         coord = tuple(map(int, obj.centroid))
         coords.append(coord)
 
-    
     return coords
