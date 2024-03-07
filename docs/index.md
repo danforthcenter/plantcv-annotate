@@ -30,4 +30,4 @@ PyPI and Bioconda. Documentation for all releases from v1.1 on are also availabl
 popup/pulldown menu (bottom right corner). Select the `latest` version to get the most up-to-date documentation
 associated with the current code in GitHub.
 
-[Return to the PlantCV homepage](http://plantcv.danforthcenter.org)
+[Return to the PlantCV homepage](https://plantcv.org)
