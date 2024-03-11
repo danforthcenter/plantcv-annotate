@@ -17,9 +17,3 @@ package which aim to build modularly into workflows that can be batch processed.
 Data annotation is helpful when downstream analysis steps include machine learning or deep learning,
 but it's also helpful for tuning computer vision algorithm approaches by ground truthing a
 dataset with annotation and comparing results from the two methods. 
-
-### Other Packages 
-
-There is also [PlantCV-Geospatial](https://github.com/danforthcenter/plantcv-geospatial) for features
-that are specific to UAV and satellite data. If you are unsure where a feature should go default to PlantCV for 
-[new issues in GitHub](https://github.com/danforthcenter/plantcv/issues) since it is the most active repository. 
