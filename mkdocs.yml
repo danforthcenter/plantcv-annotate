@@ -11,12 +11,12 @@ nav:
 - Documentation:
   - 'Installation': installation.md
   - 'Contributing':
-    - 'Contributing guide': CONTRBUTING.md
+    - 'Contributing Guide': CONTRBUTING.md
     - 'Code of Conduct': CODE_OF_CONDUCT.md
     - 'Adding/Editing Documentation': documentation.md
   - 'PlantCV Namespace':
     - 'Annotation Tools':
-        - 'Points': Points.md
+        - 
 markdown_extensions:
   - toc:
       permalink: True
