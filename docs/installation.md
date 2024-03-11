@@ -2,9 +2,7 @@
 
 ### Table of contents
 1. [Supported platforms and dependencies](#dependencies)
-2. [Install via a package manager](#install)
-    - [PyPI](#pypi)
-3. [Installing PlantCV for contributors](#contributors)
+2. [Installing PlantCV for contributors](#contributors)
 
 ### Supported platforms and dependencies <a name="dependencies"></a>
 - Linux 64-bit, x86 processors
@@ -17,7 +15,7 @@ Additionally, we recommend installing [JupyterLab](https://jupyter.org/).
 ### Installing PlantCV for contributors <a name="contributors"></a>
 Before getting started, please read our [contributor guidelines](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md).
 
-You can follow the [PlantCV Installation for Contributor Guide](https://plantcv.readthedocs.io/en/latest/installation/#contributors) and then continue with the instructions below to add PlantCV-Annotate to 
+You can follow the [PlantCV Installation for Contributors Guide](https://plantcv.readthedocs.io/en/latest/installation/#contributors) and then continue with the instructions below to add PlantCV-Annotate to 
 your development environment.
 
 ```bash
