@@ -16,7 +16,7 @@ nav:
     - 'Adding/Editing Documentation': documentation.md
   - 'PlantCV Namespace':
     - 'Annotation Tools':
-        - 
+      - Points: Points.md
 markdown_extensions:
   - toc:
       permalink: True
