@@ -3,17 +3,25 @@
 Using [Jupyter Notebooks](jupyter.md) it is possible to interactively click to collect coordinates from an image, which can be used in various downstream applications. Left click on the image to collect a point. Right click removes the
 closest collected point.
 
-**plantcv.annotate.Points**(*img, *)
+**plantcv.annotate.Points**(*img, figsize=(12,6), label="dafault"*)
 
 **returns** interactive image class
 
 - **Parameters:**
     - img - Image data
     - figsize - Interactive plot figure size (default = (12,6))
-    - 
+    - label - The current label (default = "default")
 
 - **Attributes:**
-    - coords - 
+    - coords - dictionary of all coordinates per group label
+    - events - includes right and left click events
+    - count - dictionary that save the counts of different groups (labels)
+    - label - the current label
+    - sample_labels - list of all sample labels, one to one with coordinates collected 
+    - view_all - flag indicating whether or not to view all labels 
+    - color - current color 
+    - colors - all used colors 
+    - figsize - size of the interactive plotting figure 
 
 - **Context:**
     - Used to define a list of coordinates of interest.
