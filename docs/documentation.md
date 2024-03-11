@@ -9,9 +9,9 @@ new version of code is pushed to the PlantCV GitHub repository.
 
 ### Updating PlantCV documentation
 
-Follow the [contribution guide](CONTRIBUTING.md) to learn how clone a copy of the PlantCV-Annotate
-repository, edit files, and generate a `pull` request to merge your updates back into the 
-main repository. Changes to PlantCV should be done in a branch, and pull against the 
+Follow the [installation guide](installation.md#installing-plantcv-for-contributors) to learn how clone a copy of the PlantCV-Annotate
+repository. Then see the main PlantCV [contribution guide](https://plantcv.readthedocs.io/en/latest/CONTRIBUTING/) for an overview on how to edit files, and generate a `pull` request to merge your updates.
+Changes to PlantCV-Annotate should be done in a branch, and pull against the 
 `main` branch  which corresponds to the `latest` version of the documentation on Read the Docs.
 
 PlantCV-Annotate is an add-on package to compliment functionality of
