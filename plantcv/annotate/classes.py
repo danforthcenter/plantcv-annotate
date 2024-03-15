@@ -305,10 +305,10 @@ class Points:
         :return num: int
         """
 
-        debug = params.debug
-        params.debug = None
+        #debug = params.debug
+        #params.debug = None
 
-        labelnames = _clickcount_labels(self)
+        labelnames = list(self.count)
 
         dict_class_labels = {}
 
@@ -375,13 +375,13 @@ class Points:
         # _debug(visual=vis_class,
         #     filename=os.path.join(params.debug_outdir, str(params.device) + '_corrected_class.png'))
 
-        for i, x in enumerate(count_class_dict.keys()):
-            variable = x
-            value = count_class_dict[x]
-            # outputs.add_observation(sample=label, variable=variable,
-            #                         trait='count of category',
-            #                         method='count', scale='count', datatype=int,
-            #                         value=value, label=variable)
+        # for i, x in enumerate(count_class_dict.keys()):
+        #     variable = x
+        #     value = count_class_dict[x]
+        #     outputs.add_observation(sample=label, variable=variable,
+        #                             trait='count of category',
+        #                             method='count', scale='count', datatype=int,
+        #                             value=value, label=variable)
 
         return corrected_label, corrected_class, corrected_name, num
 
