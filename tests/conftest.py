@@ -21,6 +21,7 @@ class TestData:
         self.pollen_coords = os.path.join(self.datadir, "points_file_import.coords")
         self.pollen_all = os.path.join(self.datadir, "pollen_all_mask.png")
         self.pollen_discs = os.path.join(self.datadir, "pollen_detectdisc_mask.png")
+        self.pollen_watershed = os.path.join(self.datadir, "pollen_watershed.png")
 
 @pytest.fixture(scope="session")
 def test_data():
