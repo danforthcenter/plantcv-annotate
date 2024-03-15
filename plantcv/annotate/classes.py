@@ -324,10 +324,10 @@ class Points:
 
         # Only keep watersed results that overlap with a clickpoint and do not ==0
         for cl in list(dict_class_labels.keys()):
-            for (y, x) in self.points[cl]:
+            for (y, x) in self.coords[cl]:
                 x = int(x)
                 y = int(y)
-                seg_label = gray_img[x, y] # grab intensity value/object from watershed labeled mask 
+                seg_label = gray_img[x, y]  # grab intensity value/object from watershed labeled mask 
                 if seg_label != 0:
                     class_number.append(seg_label)
                     class_name.append(cl)
