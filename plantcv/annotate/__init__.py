@@ -3,5 +3,5 @@ from plantcv.annotate.get_centroids import get_centroids
 
 __all__ = [
     "Points",
-    get_centroids
+    "get_centroids"
     ]
