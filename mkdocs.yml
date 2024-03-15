@@ -1,0 +1,24 @@
+site_name: PlantCV-annotate
+site_url: https://plantcv-annotate.readthedocs.io/
+site_description: Plant phenotyping annotation using computer vision
+site_author: PlantCV Development Team
+repo_url: https://github.com/danforthcenter/plantcv-annotate
+copyright: Copyright 2024, Donald Danforth Plant Science Center
+theme: readthedocs
+
+nav:
+- Home: index.md
+- Documentation:
+  - 'Installation': installation.md
+  - 'Change Log': changelog.md
+  - 'Contributing':
+    - 'Contributing Guide': CONTRIBUTING.md
+    - 'Code of Conduct': CODE_OF_CONDUCT.md
+    - 'Adding/Editing Documentation': documentation.md
+  - 'PlantCV Namespace':
+    - 'Annotation Tools':
+      - Points: Points.md
+markdown_extensions:
+  - toc:
+      permalink: True
+  - admonition
