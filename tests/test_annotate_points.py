@@ -171,14 +171,13 @@ def test_plantcv_annotate_points_correct(test_data):
 
     corrected_mask = counter.correct(bin_img=discs, bin_img_recover=allmask, coords=coor)
 
-    assert np.count_nonzero(discs) < np.count_nonzero(corrected_mask) 
+    assert np.count_nonzero(discs) < np.count_nonzero(corrected_mask)
     assert np.count_nonzero(corrected_mask) < np.count_nonzero(allmask)
 
-def test_plantcv_annotate_points_correct_label(annotate_test_data):
+def test_plantcv_annotate_points_correct_label(test_data):
     """Test for PlantCV."""
     # Read in test data
-    img = cv2.imread(annotate_test_data.pollen, -1)
-    watershed = cv2.imread(annotate_test_data.pollen_watershed, -1)
+    watershed = cv2.imread(test_data.pollen_watershed, -1)
 
     totalpoints1 = [(158, 531), (361, 112), (500, 418), (269.25303806488864, 385.69839981447126),
                   (231.21964288863632, 445.995245825603), (293.37177646934134, 448.778177179963), (240.49608073650273, 277.1640769944342), 
@@ -191,7 +190,9 @@ def test_plantcv_annotate_points_correct_label(annotate_test_data):
 
     imagesname = "test"
 
-    corrected_label, _, _, num = counter.create_labels(gray_img=watershed, label=imagesname)
+    _, _, corrected_name, num = counter.correct_labels(gray_img=watershed, label=imagesname)
 
-    assert num == 14 
-    assert corrected_label == ["total"]
+    assert num == 14
+    assert corrected_name == ['1_total', '2_total', '3_total', '4_total', '5_total', '6_total',
+                                  '7_total', '8_total', '9_total', '10_total_germinated', '11_total',
+                                  '12_total', '13_total', '14_germinated']
