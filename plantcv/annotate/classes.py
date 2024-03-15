@@ -3,12 +3,12 @@
 # Imports
 import cv2
 import json
-import numpy as np 
+import numpy as np
 from math import floor
 import matplotlib.pyplot as plt
 from plantcv.plantcv.annotate.points import _find_closest_pt
 from plantcv.plantcv.warn import warn
-from plantcv.plantcv.visualize import colorize_label_img 
+from plantcv.plantcv.visualize import colorize_label_img
 
 
 def _view(self, label="default", color="c", view_all=False):
@@ -231,7 +231,7 @@ class Points:
     def correct(self, bin_img, bin_img_recover, coords):
         """
         Method to correct ClickCount object instance by removing or recovering points
-        
+
         Inputs:
         bin_img = binary image, image with selected objects
         bin_img_recover = binary image, image with all potential objects
@@ -280,31 +280,30 @@ class Points:
 
         #params.debug = debug
 
-        #_debug(visual=completed_mask1, filename=os.path.join(params.debug_outdir, f"{params.device}_clickcount-corrected.png"))
+        #_debug(visual=completed_mask1, filename=os.path.join(params.debug_outdir,
+        #   f"{params.device}_clickcount-corrected.png"))
 
         return completed_mask1
 
-    def correct_labels(self, gray_img, label='default'):
+    def correct_labels(self, gray_img):
         """
-        Saves out ClickCount labeled category count to Outputs 
-        
+        Saves out ClickCount labeled category count to Outputs
+
         Inputs:
         gray_img = gray image with objects labeled (e.g.watershed output)
-        label = label parameter, modifies the variable name of
-        observations recorded (defaults to label="default") 
+
         Outputs:
         corrected_label = labeled object image
         corrected_class = labeled class image
         corrected_name = ordered list of names
-        num = number of objects 
+        num = number of objects
+
         :param gray_img: ndarray
-        :label = str, list
         :return corrected_label = ndarray
         :return corrected_class = ndarray
         :return corrected_name = list
         :return num: int
         """
-
         #debug = params.debug
         #params.debug = None
 
@@ -312,7 +311,7 @@ class Points:
 
         dict_class_labels = {}
 
-        # creating dictionary with label: replicate ID number 
+        # creating dictionary with label: replicate ID number
         for i, x in enumerate(labelnames):
             dict_class_labels[x] = i+1
 
@@ -327,7 +326,7 @@ class Points:
             for (y, x) in self.coords[cl]:
                 x = int(x)
                 y = int(y)
-                seg_label = gray_img[x, y]  # grab intensity value/object from watershed labeled mask 
+                seg_label = gray_img[x, y]  # grab intensity value/object from watershed labeled mask
                 if seg_label != 0:
                     class_number.append(seg_label)
                     class_name.append(cl)
@@ -339,7 +338,7 @@ class Points:
 
         for i, x in enumerate(class_number):
             if x in corrected_number:
-                ind = (corrected_number.index(x))
+                ind = corrected_number.index(x)
                 y = corrected_name[ind]+"_"+str(class_name[i])
                 corrected_name[ind] = y
             else:
