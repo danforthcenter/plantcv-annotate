@@ -16,17 +16,14 @@ class TestData:
         self.datadir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                     "testdata")
         # RGB image
-        self.small_rgb_img = os.path.join(self.datadir,
-                                          "setaria_small_plant_rgb.png")
+        filename_rgb = "setaria_small_plant_rgb.png"
+        self.small_rgb_img = os.path.join(self.datadir, filename_rgb)
         # Kmeans Clustered Gray image
-        self.kmeans_seed_gray_img = os.path.join(self.datadir,
-                                        "silphium_seed_labeled_example.png")
+        filename_kmeans = "silphium_seed_labeled_example.png"
+        self.kmeans_seed_gray_img = os.path.join(self.datadir, filename_kmeans)
         # Small Hyperspectral image
-        self.kmeans_seed_gray_img = os.path.join(self.datadir,
-                                        "silphium_seed_labeled_example.png")
-        # ENVI hyperspectral data
-        self.envi_sample_data = os.path.join(self.datadir,
-                                             "corn-kernel-hyperspectral.raw")
+        filename_hyper = "corn-kernel-hyperspectral.raw"
+        self.envi_sample_data = os.path.join(self.datadir, filename_hyper)
 
 
 @pytest.fixture
