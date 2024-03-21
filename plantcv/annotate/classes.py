@@ -120,9 +120,16 @@ def _recover_circ(bin_img, c):
 
     circ_mask = 1*(circ < r)
     masked_circ = (bin_img*circ_mask).astype(np.uint8)
-    masked_circ[c[0], c[1]] = 1  # center of mass always part of the mask
+    try:
+        masked_circ[c[0], c[1]] = 1  # Center of mass should be part of the mask
+        success = True
+    except:
+        success = False
+        c[1] -= stepx.astype(np.int32)  # Restore original coords
+        c[0] -= stepy.astype(np.int32)
+        masked_circ[c[0], c[1]] = 1 
 
-    return masked_circ, c
+    return masked_circ, c, success
 
 
 def _remove_points(autolist, confirmedlist):
@@ -251,6 +258,7 @@ class Points:
         completed_mask = np.copy(bin_img)
 
         totalcoor = []
+        unrecovered_ids = []
 
         for names in labelnames:
             for i, (x, y) in enumerate(self.coords[names]):
@@ -272,9 +280,18 @@ class Points:
                 # if the coordinates point to 0 in the binary image, recover the grain and coordinates of center
                 if completed_mask[y, x] == 1 or completed_mask[y, x] == 0:
                     print(f"Recovering object at coordinates: x = {x}, y = {y}")
-                    masked_circ, [a, b] = _recover_circ(bin_img_recover, [y, x])
+                    masked_circ, [a, b], success = _recover_circ(bin_img_recover, [y, x])
+                    if success is False:
+                        unrecovered_ids.append(i)
                     completed_mask = completed_mask + masked_circ
                     self.coords[names][i] = (b, a)
+            
+            new_points = [] 
+            for i, (x,y) in enumerate(self.coords[names]):
+                if i not in unrecovered_ids:
+                    new_points.append((x,y))
+
+            self.coords[names] = new_points 
 
         completed_mask1 = 1*((completed_mask + 1*(completed_mask == 255)) != 0).astype(np.uint8)
 
