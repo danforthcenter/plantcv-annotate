@@ -25,7 +25,7 @@ def napari_open(img):
 
     if len(shape) == 2:
         colorful = label2rgb(img)
-        img = ((255*colorful).astype(np.uint8))
+        img = (255*colorful).astype(np.uint8)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     if len(shape) == 3:
         if shape[2] == 3:
