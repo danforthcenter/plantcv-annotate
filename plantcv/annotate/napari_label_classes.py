@@ -27,7 +27,6 @@ def napari_label_classes(img, classes):
     :return viewer: napari viewer object
 
     """
-
     viewer = napari_open(img)
 
     symbols = ['arrow', 'clobber', 'cross', 'diamond', 'disc', 'hbar', 'ring',
