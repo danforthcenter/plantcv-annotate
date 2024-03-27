@@ -32,4 +32,4 @@ viewer = pcvan.napari_open(img=img)
 ![Screenshot](img/documentation_images/napari_open/napari_open.png)
 
 
-**Source Code:** [Here](https://github.com/danforthcenter/plantcv-annotate/blob/main/plantcv/annoate/classes.py)
+**Source Code:** [Here](https://github.com/danforthcenter/plantcv-annotate/blob/main/plantcv/annotate/napari_open.py)

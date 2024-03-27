@@ -1,19 +1,25 @@
-## Open Image with Napari
+## Label Image with Napari
 
-Open image data (e.g. RGB, gray, hyperspectral) with an interactive Napari viewer. If a gray image is opened, the image will be pseudocolored for better visualization.
+This function opens an image in Napari and then defines a set of classes to label. A random shape label is assigned to each class. 
+Image can be annotate as long as viewer is open. 
 
-**plantcv.annotate.napari_open**(*img*)
+**plantcv.annotate.napari_label_classes*(*img, classes*)
 
 **returns** napari viewer object
 
 - **Parameters:**
     - img - image data (compatible with gray, RGB, and hyperspectral data. If data is hyperspecral it should be the array e.g. hyperspectral.array_data)
+    - classes - list of classes to label. If no points are selected for a class,
+        data without labels will default to this class when napari_join_labels
+        is run. If all classes have points labeled, any clusters not labeled
+        will default to the last class in the list if napari_join_labels is
+        run.
 
 - **Context:**
-    - Used to open image data with Napari.
+    - Adding class labels to images. Works best on an image that has objects segmented/classified with contours/clusters labeled with values (e.g. labeled mask, output of kmeans clustering).
 
 - **Example use:**
-    - Open image data to annotate it with other Napari functions (e.g. napari_label_classes)
+    - Labeling output of kmeans clustering into classes. Labeling points.
 
 
 ```python
@@ -23,13 +29,13 @@ import plantcv.annotate as pcvan
 # Create an instance of the Points class
 img, path, name = pcv.readimage("./grayimg.png")
 
-viewer = pcvan.napari_open(img=img)
+viewer = pcvan.napari_label_classes(img=img, classes=['background', 'wing','seed'])
 
 # Should open interactive napari viewer
 
 ```
 
-![Screenshot](img/documentation_images/napari_open/napari_open.png)
+![Screenshot](img/documentation_images/napari_label_classes/napari_label_classes.png)
 
 
-**Source Code:** [Here](https://github.com/danforthcenter/plantcv-annotate/blob/main/plantcv/annoate/classes.py)
+**Source Code:** [Here](https://github.com/danforthcenter/plantcv-annotate/blob/main/plantcv/annotate/napari_label_classes.py)

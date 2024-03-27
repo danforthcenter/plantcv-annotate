@@ -10,7 +10,7 @@ Get class names from Napari Viewer Object.
     - viewer - Napari viewer object
 
 - **Context:**
-    - Get names of Napari Keys. This is mainly an internal function but can be useful in other context.
+    - Get names of Napari classes. This is mainly an internal function but can be useful in other context.
 
 - **Example use:**
     - Get names of Napari classes/labels. 
@@ -26,8 +26,6 @@ img, path, name = pcv.readimage("./grayimg.png")
 viewer = pcvan.napari_label_classes(img=img, classes=['background', 'wing', 'seed'])
 classes = pcvan.napari_classes(viewer)
 
-# Should open interactive napari viewer
-
 ```
 
-**Source Code:** [Here](https://github.com/danforthcenter/plantcv-annotate/blob/main/plantcv/annoate/classes.py)
+**Source Code:** [Here](https://github.com/danforthcenter/plantcv-annotate/blob/main/plantcv/annotate/napari_classes.py)

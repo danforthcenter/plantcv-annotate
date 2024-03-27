@@ -1,4 +1,4 @@
-from plantcv.annotate.napari_keys import napari_classes
+from plantcv.annotate.napari_classes import napari_classes
 from plantcv.annotate.napari_open import napari_open
 from plantcv.annotate.napari_label_classes import napari_label_classes
 
