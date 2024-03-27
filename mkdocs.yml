@@ -17,7 +17,9 @@ nav:
     - 'Adding/Editing Documentation': documentation.md
   - 'PlantCV Namespace':
     - 'Annotation Tools':
+      - Napari Open: napari_open.md
       - Points: Points.md
+      
 markdown_extensions:
   - toc:
       permalink: True
