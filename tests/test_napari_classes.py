@@ -1,8 +1,8 @@
 import numpy as np
-from plantcv.annotate import napari_keys
+from plantcv.annotate import napari_classes
 
 
-def test_napari_keys(qtbot, viewer_widget):
+def test_napari_classes(qtbot, viewer_widget):
     """Test for PlantCV.Annotate"""
     # Read in test data
     viewer = viewer_widget
@@ -13,7 +13,7 @@ def test_napari_keys(qtbot, viewer_widget):
                       face_color="red", size=30)
     viewer.add_points(np.array(coor), symbol="o", name="test",
                       face_color="red", size=30)
-    keys = napari_keys(viewer)
+    keys = napari_classes(viewer)
 
     def check_keys():
         assert keys != []

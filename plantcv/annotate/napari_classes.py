@@ -3,7 +3,7 @@
 import re
 
 
-def napari_keys(viewer):
+def napari_classes(viewer):
     """
     get names of napari keys
 
@@ -11,7 +11,7 @@ def napari_keys(viewer):
     viewer  = napari viewer object
 
     Returns:
-    labels  = napari key value names
+    classes  = napari class value names
 
     :param viewer: napari.viewer.Viewer
     :return labels: numpy.ndarray, list
@@ -20,12 +20,12 @@ def napari_keys(viewer):
     keylist = ''.join(str(keylist))
     keylist = keylist.split(',')
 
-    labels = []
+    classes = []
     for x in keylist:
         if re.search('Image layer', x):
             pass
         else:
             y = x.split(" ")
-            labels.append(y[3].strip("\'"))
+            classes.append(y[3].strip("\'"))
 
-    return labels
+    return classes
