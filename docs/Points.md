@@ -1,6 +1,6 @@
 ## Interactive Point Annotation Tool
 
-Using [Jupyter Notebooks](jupyter.md) it is possible to interactively click to collect coordinates from an image, which can be used in various downstream applications. Left click on the image to collect a point. Right click removes the
+Using [Jupyter Notebooks](https://plantcv.readthedocs.io/en/stable/jupyter/) it is possible to interactively click to collect coordinates from an image, which can be used in various downstream applications. Left click on the image to collect a point. Right click removes the
 closest collected point.
 
 **plantcv.annotate.Points**(*img, figsize=(12,6), label="dafault"*)
