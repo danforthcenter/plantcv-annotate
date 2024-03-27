@@ -16,7 +16,7 @@ def napari_classes(viewer):
     :param viewer: napari.viewer.Viewer
     :return labels: numpy.ndarray, list
     """
-    keylist = [key for key in viewer.layers]
+    keylist = list(viewer.layers)
     keylist = ''.join(str(keylist))
     keylist = keylist.split(',')
 
