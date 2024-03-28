@@ -3,7 +3,7 @@
 This function opens an image in Napari and then defines a set of classes to label. A random shape label is assigned to each class. 
 Image can be annotate as long as viewer is open. 
 
-**plantcv.annotate.napari_label_classes*(*img, classes*)
+**plantcv.annotate.napari_label_classes*(*img, classes, show=True*)
 
 **returns** napari viewer object
 
@@ -14,6 +14,8 @@ Image can be annotate as long as viewer is open.
         is run. If all classes have points labeled, any clusters not labeled
         will default to the last class in the list if napari_join_labels is
         run.
+    - show - If True viewer is shown, if False viewer is not triggered, this is useful for code testing.
+
 
 - **Context:**
     - Adding class labels to images. Works best on an image that has objects segmented/classified with contours/clusters labeled with values (e.g. labeled mask, output of kmeans clustering).

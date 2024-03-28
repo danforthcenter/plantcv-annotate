@@ -7,7 +7,7 @@ def test_napari_label_classes_gray(qtbot, test_data):
     """Test for PlantCV.Annotate"""
     # Read in test data
     img, _, _ = readimage(test_data.kmeans_seed_gray_img)
-    viewer = napari_label_classes(img, ['seed'])
+    viewer = napari_label_classes(img, ['seed'], False)
     coor = [(25, 25)]
     viewer.add_points(np.array(coor), symbol="o", name='background',
                       face_color="red", size=1)

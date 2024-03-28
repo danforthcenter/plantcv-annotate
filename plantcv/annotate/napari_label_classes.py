@@ -5,7 +5,7 @@ import random
 from plantcv.annotate import napari_open
 
 
-def napari_label_classes(img, classes):
+def napari_label_classes(img, classes, show=True):
     """
     open img in napari and label classes
 
@@ -19,6 +19,8 @@ def napari_label_classes(img, classes):
         is run. If all classes have points labeled, any clusters not labeled
         will default to the last class in the list when napari_join_labels is
         run.
+    show = if show is True the viewer is launched. This opetion is useful for
+    running tests without triggering the viewer.
 
     Returns:
     viewer  = napari viewer object
@@ -27,7 +29,8 @@ def napari_label_classes(img, classes):
     :return viewer: napari viewer object
 
     """
-    viewer = napari_open(img)
+    showcall = show
+    viewer = napari_open(img, show=showcall)
 
     symbols = ['arrow', 'clobber', 'cross', 'diamond', 'disc', 'hbar', 'ring',
                'square', 'star', 'tailed_arrow', 'triangle_down',

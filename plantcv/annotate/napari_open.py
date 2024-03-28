@@ -6,13 +6,15 @@ import numpy as np
 from skimage.color import label2rgb
 
 
-def napari_open(img):
+def napari_open(img, show=True):
     """
     open img in napari and label classes
 
     Inputs:
     img  = img  (grayimg, rgbimg, or hyperspectral image array data e.g.
     hyperspectraldata.array_data)
+    show = if show is True the viewer is launched. This opetion is useful for
+    running tests without triggering the viewer.
 
     Returns:
     viewer  = napari viewer object
@@ -22,7 +24,7 @@ def napari_open(img):
 
     """
     shape = np.shape(img)
-
+    showcall = show
     if len(shape) == 2:
         colorful = label2rgb(img)
         img = (255*colorful).astype(np.uint8)
@@ -33,6 +35,6 @@ def napari_open(img):
         if shape[2] > 3:
             img = img.transpose(2, 0, 1)
 
-    viewer = napari.view_image(img)
+    viewer = napari.view_image(img, show=showcall)
 
     return viewer
