@@ -1,7 +1,5 @@
 import pytest
 import matplotlib
-import napari
-from typing import Callable
 import os
 
 
@@ -24,15 +22,6 @@ class TestData:
         # Small Hyperspectral image
         filename_hyper = "corn-kernel-hyperspectral.raw"
         self.envi_sample_data = os.path.join(self.datadir, filename_hyper)
-
-
-@pytest.fixture
-def viewer_widget(make_napari_viewer: Callable[..., napari.Viewer]):
-    """Test for PlantCV.Annotate"""
-    # Read in test data
-    viewer = make_napari_viewer()
-
-    return viewer
 
 
 @pytest.fixture(scope="session")

@@ -12,7 +12,7 @@ dependencies = [
     "plantcv",
     "matplotlib",
     "napari",
-    "PyQt5"
+    "PyQt6"
 ]
 requires-python = ">=3.6"
 authors = [
