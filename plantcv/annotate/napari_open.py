@@ -1,6 +1,5 @@
 # Use Napari to Label
 
-import napari
 import cv2
 import numpy as np
 from skimage.color import label2rgb
