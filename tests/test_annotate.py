@@ -1,6 +1,6 @@
 import numpy as np
-import napari
-from plantcv.annotate import napari_open
+#import napari
+#from plantcv.annotate import napari_open
 
 
 def test_napari_open(make_napari_viewer):
