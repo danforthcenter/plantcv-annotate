@@ -26,13 +26,6 @@ class TestData:
         self.envi_sample_data = os.path.join(self.datadir, filename_hyper)
 
 
-@pytest.fixture
-def viewer_widget(make_napari_viewer: Callable[..., napari.Viewer]):
-    viewer = make_napari_viewer(show=False)
-
-    return viewer
-
-
 @pytest.fixture(scope="session")
 def test_data():
     """Test data object for the main PlantCV package."""
