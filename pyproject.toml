@@ -30,7 +30,8 @@ classifiers = [
 [project.optional-dependencies]
 test = [
     "pytest",
-    "pytest-qt"
+    "pytest-qt",
+    "aniyo"
 ]
 [project.urls]
 Homepage = "https://plantcv.org"
