@@ -9,9 +9,9 @@ def test_napari(qtbot):
     coor = [(25, 25), (75, 75)]
     viewer.add_points(np.array(coor), symbol="o", name="total", face_color="red", size=1)
 
-    def check_open():
-        assert np.shape(viewer.layers['total'].data) != (0, 2)
+    # def check_open():
+    #     assert np.shape(viewer.layers['total'].data) != (0, 2)
 
-    qtbot.waitUntil(check_open, timeout=60_000)
+    # qtbot.waitUntil(check_open, timeout=60_000)
 
     assert len(viewer.layers["total"].data) == 2
