@@ -2,7 +2,7 @@ import numpy as np
 from plantcv.annotate import napari_classes
 
 
-def test_napari_classes(make_napari_viewer, qtbot):
+def test_napari_classes(make_napari_viewer):
     """Test for PlantCV.Annotate"""
     # Read in test data
     viewer = make_napari_viewer()
@@ -14,10 +14,5 @@ def test_napari_classes(make_napari_viewer, qtbot):
     viewer.add_points(np.array(coor), symbol="o", name="test",
                       face_color="red", size=30)
     keys = napari_classes(viewer)
-
-    def check_keys():
-        assert keys != []
-
-    qtbot.waitUntil(check_keys, timeout=60_000)
 
     assert keys == ['total', 'test']
