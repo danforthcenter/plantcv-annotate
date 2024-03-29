@@ -46,7 +46,7 @@ jobs:
     - name: Tests
       uses: aganders3/headless-gui@v2
       with:
-        run: pytest --cov-report=xml --cov=./
+        run: py.test --cov-report=xml --cov=./
     - name: Upload coverage to Deepsource
       uses: deepsourcelabs/test-coverage-action@master
       with:
