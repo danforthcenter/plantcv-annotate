@@ -3,19 +3,18 @@
 This function opens an image in Napari and then defines a set of classes to label. A random shape label is assigned to each class. 
 Image can be annotate as long as viewer is open. 
 
-**plantcv.annotate.napari_label_classes*(*img, classes, show=True*)
+**plantcv.annotate.napari_label_classes*(*img, viewer, classes*)
 
 **returns** napari viewer object
 
 - **Parameters:**
     - img - image data (compatible with gray, RGB, and hyperspectral data. If data is hyperspecral it should be the array e.g. hyperspectral.array_data)
+    - viewer - Napari viewer object
     - classes - list of classes to label. If no points are selected for a class,
         data without labels will default to this class when napari_join_labels
         is run. If all classes have points labeled, any clusters not labeled
         will default to the last class in the list if napari_join_labels is
         run.
-    - show - If True viewer is shown, if False viewer is not triggered, this is useful for code testing.
-
 
 - **Context:**
     - Adding class labels to images. Works best on an image that has objects segmented/classified with contours/clusters labeled with values (e.g. labeled mask, output of kmeans clustering).
@@ -27,11 +26,13 @@ Image can be annotate as long as viewer is open.
 ```python
 import plantcv.plantcv as pcv 
 import plantcv.annotate as pcvan
+import napari
 
 # Create an instance of the Points class
 img, path, name = pcv.readimage("./grayimg.png")
 
-viewer = pcvan.napari_label_classes(img=img, classes=['background', 'wing','seed'])
+viewer = napari.Viewer()
+viewer = pcvan.napari_label_classes(img=img, viewer= viewer, classes=['background', 'wing','seed'])
 
 # Should open interactive napari viewer
 

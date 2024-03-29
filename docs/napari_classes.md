@@ -23,7 +23,10 @@ import plantcv.annotate as pcvan
 # Create an instance of the Points class
 img, path, name = pcv.readimage("./grayimg.png")
 
-viewer = pcvan.napari_label_classes(img=img, classes=['background', 'wing', 'seed'])
+viewer= napari.Viewer()
+
+viewer = pcvan.napari_label_classes(img=img, viewer= viewer, classes=['background', 'wing', 'seed'])
+
 classes = pcvan.napari_classes(viewer)
 
 ```

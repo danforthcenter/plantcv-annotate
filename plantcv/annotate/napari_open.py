@@ -6,7 +6,7 @@ import numpy as np
 from skimage.color import label2rgb
 
 
-def napari_open(img, show=True):
+def napari_open(img, viewer):
     """
     open img in napari and label classes
 
@@ -24,7 +24,6 @@ def napari_open(img, show=True):
 
     """
     shape = np.shape(img)
-    showcall = show
     if len(shape) == 2:
         colorful = label2rgb(img)
         img = (255*colorful).astype(np.uint8)
@@ -35,6 +34,6 @@ def napari_open(img, show=True):
         if shape[2] > 3:
             img = img.transpose(2, 0, 1)
 
-    viewer = napari.view_image(img, show=showcall)
+    viewer.add_image(img)
 
     return viewer

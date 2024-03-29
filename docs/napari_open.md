@@ -2,12 +2,13 @@
 
 Open image data (e.g. RGB, gray, hyperspectral) with an interactive Napari viewer. If a gray image is opened, the image will be pseudocolored for better visualization.
 
-**plantcv.annotate.napari_open**(*img*)
+**plantcv.annotate.napari_open**(*img, viewer*)
 
 **returns** napari viewer object
 
 - **Parameters:**
     - img - image data (compatible with gray, RGB, and hyperspectral data. If data is hyperspecral it should be the array e.g. hyperspectral.array_data)
+    - viewer - Napari viewer object
 
 - **Context:**
     - Used to open image data with Napari.
@@ -23,7 +24,9 @@ import plantcv.annotate as pcvan
 # Create an instance of the Points class
 img, path, name = pcv.readimage("./grayimg.png")
 
-viewer = pcvan.napari_open(img=img)
+viewer = napari.Viewer()
+
+viewer = pcvan.napari_open(img=img, viewer=viewer)
 
 # Should open interactive napari viewer
 
