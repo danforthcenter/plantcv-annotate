@@ -30,7 +30,6 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        sudo apt-get install --no-install-recommends libyaml-dev libegl1-mesa libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-shape0 libxcb-cursor0 xserver-xephyr xvfb
         python -m pip install --upgrade pip
         pip install flake8 pytest pytest-cov pytest-qt pytest-xvfb ipython
     - name: Lint with flake8
@@ -39,11 +38,14 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test and generate coverage report
+    - uses: tlambert03/setup-qt-libs@v1
+    - name: Install plantcv-annotate
       # Run coverage analysis on pytest tests
-      run: |
-        pip install .
-        py.test --cov-report=xml --cov=./
+      run: pip install .
+    - name: Tests
+      uses: aganders3/headless-gui@v2
+      with:
+        run: py.test --cov-report=xml --cov=./
     - name: Upload coverage to Deepsource
       uses: deepsourcelabs/test-coverage-action@master
       with:
