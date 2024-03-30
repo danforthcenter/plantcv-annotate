@@ -15,4 +15,4 @@ def test_napari_classes(make_napari_viewer):
                       face_color="red", size=30)
     keys = napari_classes(viewer)
 
-    #assert keys == ['total', 'test']
+    assert keys == ['total', 'test']

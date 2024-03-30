@@ -1,8 +1,6 @@
 import pytest
 import matplotlib
 import os
-import napari
-from typing import Callable
 
 
 # Disable plotting
