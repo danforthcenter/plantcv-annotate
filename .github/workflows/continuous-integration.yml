@@ -42,7 +42,10 @@ jobs:
     - uses: tlambert03/setup-qt-libs@v1
     - name: Install plantcv-annotate
       # Run coverage analysis on pytest tests
-      run: pip install .
+      run: |
+        pip install .
+        pip uninstall -y opencv-python
+        pip install opencv-python-headless
     - name: Tests
       uses: aganders3/headless-gui@v2
       with:
