@@ -27,12 +27,6 @@ classifiers = [
     "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
     "Intended Audience :: Science/Research",
 ]
-[project.optional-dependencies]
-test = [
-    "pytest",
-    "pytest-qt",
-    "aniyo"
-]
 [project.urls]
 Homepage = "https://plantcv.org"
 Documentation = "https://plantcv.readthedocs.io"
