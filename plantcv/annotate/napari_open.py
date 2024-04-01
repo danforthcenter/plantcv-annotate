@@ -6,7 +6,7 @@ from skimage.color import label2rgb
 import napari
 
 
-def napari_open(img):
+def napari_open(img, show=True):
     """
     open img in napari and label classes
 
@@ -33,7 +33,7 @@ def napari_open(img):
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         if shape[2] > 3:
             img = img.transpose(2, 0, 1)
-    viewer = napari.Viewer()
+    showcall = show
+    viewer = napari.Viewer(show=showcall)
     viewer.add_image(img)
-
     return viewer
