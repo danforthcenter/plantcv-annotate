@@ -5,7 +5,7 @@ from plantcv.annotate import napari_classes
 def test_napari_classes(make_napari_viewer):
     """Test for PlantCV.Annotate"""
     # Read in test data
-    viewer = make_napari_viewer()
+    viewer = make_napari_viewer(show=False)
     img = np.zeros((100, 100))
     coor = [(25, 25), (50, 50)]
     viewer.add_image(img)

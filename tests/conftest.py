@@ -1,8 +1,6 @@
 import pytest
 import matplotlib
 import os
-import napari
-from typing import Callable
 
 
 # Disable plotting
@@ -24,13 +22,6 @@ class TestData:
         # Small Hyperspectral image
         filename_hyper = "corn-kernel-hyperspectral.raw"
         self.envi_sample_data = os.path.join(self.datadir, filename_hyper)
-
-
-@pytest.fixture
-def viewer_widget(make_napari_viewer: Callable[..., napari.Viewer]):
-    viewer = make_napari_viewer(show=False)
-
-    return viewer
 
 
 @pytest.fixture(scope="session")
