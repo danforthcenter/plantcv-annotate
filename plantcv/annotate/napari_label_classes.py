@@ -5,7 +5,7 @@ import random
 from plantcv.annotate import napari_open
 
 
-def napari_label_classes(img, viewer, classes):
+def napari_label_classes(img, classes):
     """
     open img in napari and label classes
 
@@ -14,7 +14,6 @@ def napari_label_classes(img, viewer, classes):
         e.g. hyperspectraldata.array_data). Adding labels works best on an
         image that has objects segmented/classified with contours/clusters
         labeled with values (e.g. labeled mask, output of kmeans clustering).
-    viewer = Napari viewer object
     classes = list of labels or classes. If no points are selected for a class,
         data without labels will default to this class when napari_join_labels
         is run. If all classes have points labeled, any clusters not labeled
@@ -28,7 +27,7 @@ def napari_label_classes(img, viewer, classes):
     :return viewer: napari viewer object
 
     """
-    viewer = napari_open(img, viewer)
+    viewer = napari_open(img)
 
     symbols = ['arrow', 'clobber', 'cross', 'diamond', 'disc', 'hbar', 'ring',
                'square', 'star', 'tailed_arrow', 'triangle_down',
