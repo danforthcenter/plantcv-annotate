@@ -18,6 +18,7 @@ nav:
   - 'PlantCV Namespace':
     - 'Annotation Tools':
       - Napari Classes: napari_classes.md
+      - Napari Join: napari_join_labels.md
       - Napari Label: napari_label_classes.md
       - Napari Open: napari_open.md
       - Points: Points.md
