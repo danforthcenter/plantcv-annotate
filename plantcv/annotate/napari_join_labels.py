@@ -2,7 +2,6 @@
 
 import numpy as np
 import os
-from plantcv.plantcv.plot_image import plot_image
 from plantcv.plantcv.warn import warn
 from plantcv.annotate import napari_classes
 from plantcv.plantcv import params
