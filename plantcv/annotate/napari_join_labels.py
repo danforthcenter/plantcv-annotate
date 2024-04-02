@@ -45,7 +45,7 @@ def napari_join_labels(img, viewer):
 
         if len(data) == 0:
             classfinal = np.zeros((np.shape(img)))
-            classfinal = np.where(allmask == 0, classfinal == classfinal,
+            classfinal = np.where(allmask == 0, classfinal == 0,
                                   classfinal == 255)
             totalmask = (classfinal.astype(int))*(i+1)
             dictmask = classfinal.astype(int)
