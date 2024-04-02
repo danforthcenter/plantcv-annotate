@@ -66,10 +66,11 @@ def napari_join_labels(img, viewer):
                 if value in valuesused:
                     index = np.where(valuesused == value)[0]
                     if classvalue[index] != classname:
-                        warning = "A cluster in "+str(classname)
-                        +" has been previously labeled as "
-                        +str(classvalue[index])+".Check point at position "
-                        +str(x)+","+str(y)
+                        warning = ("A cluster in "+str(classname) +
+                                   " has been previously labeled as " +
+                                   str(classvalue[index]) +
+                                   ".Check point at position "+str(x)+"," +
+                                   str(y))
                         warn(warning)
                 valuesused = np.append(valuesused, value)
                 classvalue = np.append(classvalue, classname)
