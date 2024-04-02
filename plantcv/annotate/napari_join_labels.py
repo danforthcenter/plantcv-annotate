@@ -6,6 +6,7 @@ from plantcv.plantcv.warn import warn
 from plantcv.annotate import napari_classes
 from plantcv.plantcv import params
 from plantcv.plantcv._debug import _debug
+from skimage.color import label2rgb
 
 
 def napari_join_labels(img, viewer):
@@ -87,9 +88,13 @@ def napari_join_labels(img, viewer):
 
     # set any zero values to last class value
     allmask[allmask == 0] = lastclassvalue
-
-    _debug(visual=allmask, filename=os.path.join(params.debug_outdir,
-                                                 str(params.device)
-                                                 + '_labeled_mask.png'))
+    if params.debug == 'print':
+        colorful = label2rgb(allmask)
+        outputimg = (255*colorful).astype(np.uint8)
+        _debug(visual=outputimg, filename=os.path.join(params.debug_outdir,
+                                                       str(params.device) +
+                                                       '_labeled_mask.png'))
+    else:
+        _debug(visual=allmask)
 
     return allmask, maskdict

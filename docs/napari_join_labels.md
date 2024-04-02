@@ -1,26 +1,24 @@
-## Label Image with Napari
+## Join Labels with Napari
 
-This function opens an image in Napari and then defines a set of classes to label. A random shape label is assigned to each class. 
-Image can be annotate as long as viewer is open. 
+This function joins classes with the same label. This function would be run after classes are labeled with napari_label_classes.
 
-**plantcv.annotate.napari_label_classes*(*img, classes, show=True*)
+**plantcv.annotate.napari_join_labels*(*img, viewer*)
 
-**returns** napari viewer object
+**returns** relabeled mask, dictionary of masks for each class
 
 - **Parameters:**
     - img - image data (compatible with gray, RGB, and hyperspectral data. If data is hyperspecral it should be the array e.g. hyperspectral.array_data)
-    - classes - list of classes to label. If no points are selected for a class,
+    - viewer - viewer with labeled classes. If no points are selected for a class,
         data without labels will default to this class when napari_join_labels
         is run. If all classes have points labeled, any clusters not labeled
         will default to the last class in the list if napari_join_labels is
         run.
-    - show - if show = True, viewer is launched. False setting is useful for test purposes.
 
 - **Context:**
-    - Adding class labels to images. Works best on an image that has objects segmented/classified with contours/clusters labeled with values (e.g. labeled mask, output of kmeans clustering).
+    - This function would be run after labeling classes in Napari is complete. 
 
 - **Example use:**
-    - Labeling output of kmeans clustering into classes. Labeling points.
+    - Joining classes labeled as the same, for example for joining classes from output of kmeans clustering
 
 
 ```python
@@ -31,13 +29,17 @@ import napari
 # Create an instance of the Points class
 img, path, name = pcv.readimage("./grayimg.png")
 
-viewer = pcvan.napari_label_classes(img=img, classes=['background', 'wing','seed'])
+viewer = pcvan.napari_label_classes(img=img, ['background', 'wing','seed'])
+
+labeledmask, mask_dict = pcvan.napari_join_lables(img=img, viewer)
 
 # Should open interactive napari viewer
 
 ```
 
 ![Screenshot](img/documentation_images/napari_label_classes/napari_label_classes.png)
+
+![Screenshot](img/documentation_images/napari_join_labels/1_labeled_mask.png)
 
 
 **Source Code:** [Here](https://github.com/danforthcenter/plantcv-annotate/blob/main/plantcv/annotate/napari_label_classes.py)
