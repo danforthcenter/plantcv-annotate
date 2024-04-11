@@ -21,6 +21,7 @@ nav:
       - Napari Join: napari_join_labels.md
       - Napari Label: napari_label_classes.md
       - Napari Open: napari_open.md
+      - Napari Save: napari_save_coor.md
       - Points: Points.md
       
 markdown_extensions:
