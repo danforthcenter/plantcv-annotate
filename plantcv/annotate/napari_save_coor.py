@@ -35,7 +35,7 @@ def napari_save_coor(viewer, filepath):
     if os.path.exists(filepath):
         filepath = str(filepath)+"_1.txt"
     with open(filepath, 'w') as fp:
-        json.dump(datadict, fp)
+        json.dumps(datadict, fp)
         fp.close()
 
     return datadict
