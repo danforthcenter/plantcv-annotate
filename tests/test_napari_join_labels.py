@@ -55,9 +55,11 @@ def test_napari_join_warn(test_data):
     assert np.shape(labeled) == (576, 537)
 
 
-def test_napari_join_print(test_data):
+def test_napari_join_print(test_data, tmpdir):
     """Test for PlantCV.Annotate"""
     params.debug = 'print'
+    cache_dir = tmpdir.mkdir("cache")
+    params.debug_outdir = cache_dir
     # Read in test data
     img, _, _ = readimage(test_data.kmeans_seed_gray_img)
     viewer = napari_open(img, show=False)
