@@ -26,7 +26,7 @@ def napari_save_coor(viewer, filepath):
 
     for label in classes:
         coordict = []
-        for i, (x, y) in enumerate(viewer.layers[label].data):
+        for _, (x, y) in enumerate(viewer.layers[label].data):
             x = int(x)
             y = int(y)
             coordict.append((x, y))
@@ -35,7 +35,7 @@ def napari_save_coor(viewer, filepath):
     if os.path.exists(filepath):
         filepath = str(filepath)+"_1.txt"
     with open(filepath, 'w') as fp:
-        fp.write(json.dumps(datadict))
+        json.dump(datadict, fp)
         fp.close()
 
     return datadict
