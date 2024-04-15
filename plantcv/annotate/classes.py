@@ -11,6 +11,7 @@ from plantcv.plantcv._debug import _debug
 from plantcv.plantcv.annotate.points import _find_closest_pt
 from plantcv.plantcv.warn import warn
 from plantcv.plantcv import params
+from plantcv.plantcv import outputs
 from plantcv.plantcv.visualize import colorize_label_img
 
 
@@ -390,17 +391,9 @@ class Points:
 
         params.debug = debug
         _debug(visual=vis_labeled,
-            filename=os.path.join(params.debug_outdir, str(params.device) + '_corrected__labels_img.png'))
+               filename=os.path.join(params.debug_outdir, str(params.device) + '_corrected__labels_img.png'))
         _debug(visual=vis_class,
-            filename=os.path.join(params.debug_outdir, str(params.device) + '_corrected_class.png'))
-
-        for i, x in enumerate(count_class_dict.keys()):
-            variable = x
-            value = count_class_dict[x]
-            outputs.add_observation(sample=label, variable=variable,
-                                    trait='count of category',
-                                    method='count', scale='count', datatype=int,
-                                    value=value, label=variable)
+               filename=os.path.join(params.debug_outdir, str(params.device) + '_corrected_class.png'))
 
         return corrected_label, corrected_class, corrected_name, num
 
