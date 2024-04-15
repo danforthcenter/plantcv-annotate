@@ -188,9 +188,7 @@ def test_plantcv_annotate_points_correct_label(test_data):
     counter.import_list(totalpoints1, label="total")
     counter.import_list(germinated1, label="germinated")
 
-    imagesname = "test"
-
-    _, _, corrected_name, num = counter.correct_labels(gray_img=watershed, label=imagesname)
+    _, _, corrected_name, num = counter.correct_labels(gray_img=watershed)
 
     assert num == 14
     assert corrected_name == ['1_total', '2_total', '3_total', '4_total', '5_total', '6_total',
