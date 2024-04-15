@@ -1,13 +1,16 @@
 # Class helpers
 
 # Imports
+import os
 import cv2
 import json
 import numpy as np
 from math import floor
 import matplotlib.pyplot as plt
+from plantcv.plantcv._debug import _debug
 from plantcv.plantcv.annotate.points import _find_closest_pt
 from plantcv.plantcv.warn import warn
+from plantcv.plantcv import params
 from plantcv.plantcv.visualize import colorize_label_img
 
 
@@ -123,11 +126,11 @@ def _recover_circ(bin_img, c):
     try:
         masked_circ[c[0], c[1]] = 1  # Center of mass should be part of the mask
         success = True
-    except:
+    except IndexError:
         success = False
         c[1] -= stepx.astype(np.int32)  # Restore original coords
         c[0] -= stepy.astype(np.int32)
-        masked_circ[c[0], c[1]] = 1 
+        masked_circ[c[0], c[1]] = 1
 
     return masked_circ, c, success
 
@@ -250,8 +253,8 @@ class Points:
         """
         from plantcv.plantcv.floodfill import floodfill
 
-        #debug = params.debug
-        #params.debug = None
+        debug = params.debug
+        params.debug = None
 
         labelnames = list(self.count)
 
@@ -285,20 +288,20 @@ class Points:
                         unrecovered_ids.append(i)
                     completed_mask = completed_mask + masked_circ
                     self.coords[names][i] = (b, a)
-            
-            new_points = [] 
-            for i, (x,y) in enumerate(self.coords[names]):
-                if i not in unrecovered_ids:
-                    new_points.append((x,y))
 
-            self.coords[names] = new_points 
+            new_points = []
+            for i, (x, y) in enumerate(self.coords[names]):
+                if i not in unrecovered_ids:
+                    new_points.append((x, y))
+
+            self.coords[names] = new_points
 
         completed_mask1 = 1*((completed_mask + 1*(completed_mask == 255)) != 0).astype(np.uint8)
 
-        #params.debug = debug
+        params.debug = debug
 
-        #_debug(visual=completed_mask1, filename=os.path.join(params.debug_outdir,
-        #   f"{params.device}_clickcount-corrected.png"))
+        _debug(visual=completed_mask1, filename=os.path.join(params.debug_outdir,
+          f"{params.device}_annotation-corrected.png"))
 
         return completed_mask1
 
@@ -321,8 +324,8 @@ class Points:
         :return corrected_name = list
         :return num: int
         """
-        #debug = params.debug
-        #params.debug = None
+        debug = params.debug
+        params.debug = None
 
         labelnames = list(self.count)
 
@@ -385,19 +388,19 @@ class Points:
         vis_labeled = colorize_label_img(corrected_label)
         vis_class = colorize_label_img(corrected_class)
 
-        # params.debug = debug
-        # _debug(visual=vis_labeled,
-        #     filename=os.path.join(params.debug_outdir, str(params.device) + '_corrected__labels_img.png'))
-        # _debug(visual=vis_class,
-        #     filename=os.path.join(params.debug_outdir, str(params.device) + '_corrected_class.png'))
+        params.debug = debug
+        _debug(visual=vis_labeled,
+            filename=os.path.join(params.debug_outdir, str(params.device) + '_corrected__labels_img.png'))
+        _debug(visual=vis_class,
+            filename=os.path.join(params.debug_outdir, str(params.device) + '_corrected_class.png'))
 
-        # for i, x in enumerate(count_class_dict.keys()):
-        #     variable = x
-        #     value = count_class_dict[x]
-        #     outputs.add_observation(sample=label, variable=variable,
-        #                             trait='count of category',
-        #                             method='count', scale='count', datatype=int,
-        #                             value=value, label=variable)
+        for i, x in enumerate(count_class_dict.keys()):
+            variable = x
+            value = count_class_dict[x]
+            outputs.add_observation(sample=label, variable=variable,
+                                    trait='count of category',
+                                    method='count', scale='count', datatype=int,
+                                    value=value, label=variable)
 
         return corrected_label, corrected_class, corrected_name, num
 
