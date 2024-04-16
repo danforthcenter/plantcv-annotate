@@ -1,3 +1,3 @@
 from importlib.metadata import version
 # Auto versioning
-__version__ = version("annotate")
+__version__ = version("plantcv-annotate")
