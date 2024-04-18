@@ -10,16 +10,16 @@ from plantcv.plantcv import warn
 
 
 def _view(self, label="default", color="c", view_all=False):
-    """
-    View the label for a specific class label
-    Inputs:
-    label = (optional) class label, by default label="total"
-    color = desired color, by default color="c"
-    view_all = indicator of whether view all classes, by default view_all=False
-    :param label: string
-    :param color: string
-    :param view_all: boolean
-    :return:
+    """View the label for a specific class label.
+
+    Parameters
+    ----------
+    label : str, optional
+        class label, by default "default"
+    color : str, optional
+        marker color, by default "c"
+    view_all : bool, optional
+        view all classes or a single class, by default False
     """
     if label not in self.coords and color in self.colors.values():
         warn("The color assigned to the new class label is already used, if proceeding, "
@@ -57,15 +57,20 @@ def _view(self, label="default", color="c", view_all=False):
 class Points:
     """Point annotation/collection class to use in Jupyter notebooks. It allows the user to
     interactively click to collect coordinates from an image. Left click collects the point and
-    right click removes the closest collected point
+    right click removes the closest collected point.
     """
 
     def __init__(self, img, figsize=(12, 6), label="default"):
-        """Initialization
-        :param img: image data
-        :param figsize: desired figure size, (12,6) by default
-        :param label: current label for group of annotations, similar to pcv.params.sample_label
-        :attribute coords: list of points as (x,y) coordinates tuples
+        """Points initialization method.
+
+        Parameters
+        ----------
+        img : numpy.ndarray
+            image to annotate
+        figsize : tuple, optional
+            figure plotting size, by default (12, 6)
+        label : str, optional
+            class label, by default "default"
         """
         self.img = img
         self.coords = {}  # dictionary of all coordinates per group label
@@ -81,7 +86,14 @@ class Points:
         _view(self, label=label, color="r", view_all=True)
 
     def onclick(self, event):
-        """Handle mouse click events."""
+        """Handle mouse click events
+
+        Parameters
+        ----------
+        event : matplotlib.backend_bases.MouseEvent
+            matplotlib MouseEvent object
+        """
+        print(type(event))
         self.events.append(event)
         if event.button == 1:
 
@@ -101,10 +113,11 @@ class Points:
 
     def print_coords(self, filename):
         """Save collected coordinates to a file.
-        Input variables:
-        filename = Name of the file to save collected coordinate
-        :param filename: str
-        :return:
+
+        Parameters
+        ----------
+        filename : str
+            output filename
         """
         # Open the file for writing
         with open(filename, "w") as fp:
@@ -112,13 +125,14 @@ class Points:
             json.dump(obj=self.coords, fp=fp, indent=4)
 
     def import_list(self, coords, label="default"):
-        """Import center coordinates of already detected objects
-        Inputs:
-        coords = list of center coordinates of already detected objects.
-        label = class label for imported coordinates, by default label="default".
-        :param coords: list
-        :param label: string
-        :return:
+        """Import coordinates.
+
+        Parameters
+        ----------
+        coords : list
+            list of coordinates (tuples)
+        label : str, optional
+            class label, by default "default"
         """
         if label not in self.coords:
             self.coords[label] = []
@@ -130,12 +144,12 @@ class Points:
             warn(f"{label} already included and counted, nothing is imported!")
 
     def import_file(self, filename):
-        """Method to import coordinates from file to Points object
+        """Import coordinates from a file.
 
-        Inputs:
-        filename = filename of stored coordinates and classes
-        :param filename: str
-        :return:
+        Parameters
+        ----------
+        filename : str
+            JSON file containing Points annotations
         """
         with open(filename, "r") as fp:
             coords = json.load(fp)
@@ -148,15 +162,15 @@ class Points:
             self.import_list(keycoor, label=key)
 
     def view(self, label="default", color="c", view_all=False):
-        """Method to view current annotations
+        """View current annotations.
 
-        Inputs:
-        label = (optional) class label, by default label="total"
-        color = desired color, by default color="c"
-        view_all = indicator of whether view all classes, by default view_all=False
-        :param label: string
-        :param color: string
-        :param view_all: boolean
-        :return:
+        Parameters
+        ----------
+        label : str, optional
+            class label, by default "default"
+        color : str, optional
+            marker color, by default "c"
+        view_all : bool, optional
+            view all classes or a single class, by default False
         """
         _view(self, label=label, color=color, view_all=view_all)
