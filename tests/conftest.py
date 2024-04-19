@@ -22,6 +22,9 @@ class TestData:
         # Small Hyperspectral image
         filename_hyper = "corn-kernel-hyperspectral.raw"
         self.envi_sample_data = os.path.join(self.datadir, filename_hyper)
+        # Coordinates File
+        filename_coor = "germinated.txt"
+        self.coor_data = os.path.join(self.datadir, filename_coor)
 
 
 @pytest.fixture(scope="session")
