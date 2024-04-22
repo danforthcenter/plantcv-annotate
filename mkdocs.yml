@@ -18,6 +18,7 @@ nav:
   - 'PlantCV Namespace':
     - 'Annotation Tools':
       - Points: Points.md
+      - Get Centroids: get_centroids.md
 markdown_extensions:
   - toc:
       permalink: True
