@@ -11,7 +11,6 @@ from plantcv.plantcv._debug import _debug
 from plantcv.plantcv.annotate.points import _find_closest_pt
 from plantcv.plantcv.warn import warn
 from plantcv.plantcv import params
-from plantcv.plantcv import outputs
 from plantcv.plantcv.visualize import colorize_label_img
 
 
@@ -316,8 +315,9 @@ class Points:
 
         params.debug = debug
 
-        _debug(visual=completed_mask1, filename=os.path.join(params.debug_outdir,
-          f"{params.device}_annotation-corrected.png"))
+        _debug(visual=completed_mask1, 
+               filename=os.path.join(params.debug_outdir,
+                                     f"{params.device}_annotation-corrected.png"))
 
         return completed_mask1
 
