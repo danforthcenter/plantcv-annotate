@@ -73,7 +73,7 @@ def test_points_print_coords(test_data, tmpdir):
     drawer_rgb.onclick(e2)
 
     # Save collected coords out 
-    drawer_rgb.print_coords(outfile=filename)
+    drawer_rgb.print_coords(filename)
     assert os.path.exists(filename)
 
 def test_points_import_list(test_data):
