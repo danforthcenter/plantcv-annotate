@@ -15,12 +15,13 @@ from plantcv.plantcv.visualize import colorize_label_img
 
 
 def _view(self, label="default", color="c", view_all=False):
-    """
-    View the label for a specific class label
+    """View the label for a specific class label
+
     Inputs:
     label = (optional) class label, by default label="total"
     color = desired color, by default color="c"
     view_all = indicator of whether view all classes, by default view_all=False
+    
     :param label: string
     :param color: string
     :param view_all: boolean
@@ -60,7 +61,10 @@ def _view(self, label="default", color="c", view_all=False):
 
 
 def _recover_circ(bin_img, c):
-    """function to recover circular objects"""
+    """function to recover circular objects
+    Inputs:
+    
+    """
     # Generates a binary image of a disc based on the coordinates c
     # and the surrounding white pixels in bin_img
     # make bin_img 1-0
@@ -136,7 +140,10 @@ def _recover_circ(bin_img, c):
 
 
 def _remove_points(autolist, confirmedlist):
-    """Function to remove points if interactively removed by user"""
+    """Function to remove points if interactively removed by user
+    Inputs:
+    
+    """
     # internal function to remove to remove points specified by a user
     removecoor = []
     for element in autolist:
@@ -154,14 +161,15 @@ class Points:
     def __init__(self, img, figsize=(12, 6), label="default", color="r", view_all=False):
         """Points initialization method.
 
-        Parameters
-        ----------
-        img : numpy.ndarray
-            image to annotate
-        figsize : tuple, optional
+        Inputs:
+        img     = image to annotate
+        figsize = figure plotting size, by default (12, 6), optional
             figure plotting size, by default (12, 6)
-        label : str, optional
-            class label, by default "default"
+        label   = class label, by default "default", optional
+
+        :param img: numpy.ndarray
+        :param figsize: tuple
+        :param label: str
         """
         self.img = img
         self.figsize = figsize
@@ -180,10 +188,10 @@ class Points:
     def onclick(self, event):
         """Handle mouse click events
 
-        Parameters
-        ----------
-        event : matplotlib.backend_bases.MouseEvent
-            matplotlib MouseEvent object
+        Inputs:
+        event = matplotlib.backend_bases.MouseEvent
+
+        :param event: matplotlib.backend_bases.MouseEvent
         """
         print(type(event))
         self.events.append(event)
@@ -206,10 +214,10 @@ class Points:
     def print_coords(self, filename):
         """Save collected coordinates to a file.
 
-        Parameters
-        ----------
-        filename : str
-            output filename
+        Inputs:
+        filename = output filename
+
+        :param filename: str
         """
         # Open the file for writing
         with open(filename, "w") as fp:
@@ -219,12 +227,12 @@ class Points:
     def import_list(self, coords, label="default"):
         """Import coordinates.
 
-        Parameters
-        ----------
-        coords : list
-            list of coordinates (tuples)
-        label : str, optional
-            class label, by default "default"
+        Inputs:
+        coords  = list of coordinates to get imported
+        label   = class label, by default "default"
+
+        :param coords: list
+        :param label: str
         """
         if label not in self.coords:
             self.coords[label] = []
@@ -238,10 +246,10 @@ class Points:
     def import_file(self, filename):
         """Import coordinates from a file.
 
-        Parameters
-        ----------
-        filename : str
-            JSON file containing Points annotations
+        Inputs:
+        filename = name of file from which annotations will be imported
+
+        :param filename: str
         """
         with open(filename, "r") as fp:
             coords = json.load(fp)
@@ -255,16 +263,20 @@ class Points:
 
     def correct(self, bin_img, bin_img_recover, coords):
         """
-        Method to correct ClickCount object instance by removing or recovering points
+        Method to correct Points object instance by removing or recovering points
 
         Inputs:
-        bin_img = binary image, image with selected objects
+        bin_img         = binary image, image with selected objects
         bin_img_recover = binary image, image with all potential objects
-        coords = coordinates of 'auto' detected points (coordinate output of detect_discs)
-        :param bin_img: ndarray
-        :param bin_img_recover = ndarray
+        coords          = coordinates of 'auto' detected points (coordinate output of pcv.filters.eccentricity)
+    
+        Returns:
+        completed_mask  = corrected binary mask with recovered objects
+
+        :param bin_img: numpy.ndarray
+        :param bin_img_recover = numpy.ndarray
         :param coords = list
-        :return completed_mask: ndarray
+        :return completed_mask: numpy.ndarray
         """
         from plantcv.plantcv.floodfill import floodfill
 
@@ -323,20 +335,20 @@ class Points:
 
     def correct_labels(self, gray_img):
         """
-        Saves out ClickCount labeled category count to Outputs
+        Updates the labels for coordinate Points belonging to more than one category
 
         Inputs:
-        gray_img = gray image with objects labeled (e.g.watershed output)
+        gray_img        = gray image with objects labeled (e.g.watershed output)
 
-        Outputs:
+        Returns:
         corrected_label = labeled object image
         corrected_class = labeled class image
-        corrected_name = ordered list of names
-        num = number of objects
+        corrected_name  = ordered list of names
+        num             = number of objects
 
-        :param gray_img: ndarray
-        :return corrected_label = ndarray
-        :return corrected_class = ndarray
+        :param gray_img: numpy.ndarray
+        :return corrected_label = numpy.ndarray
+        :return corrected_class = numpy.ndarray
         :return corrected_name = list
         :return num: int
         """
@@ -416,13 +428,13 @@ class Points:
         """Method to view current annotations
 
         Inputs:
-        label = (optional) class label, by default label="total"
-        color = desired color, by default color="c"
-        view_all = indicator of whether view all classes, by default view_all=False
-        :param label: string
-        :param color: string
-        :param view_all: boolean
-        :return:
+        label       = (optional) class label, by default label="total"
+        color       = desired color, by default color="c"
+        view_all    = indicator of whether view all classes, by default view_all=False
+    
+        :param label: str
+        :param color: str
+        :param view_all: bool
         """
         if label not in self.coords and color in self.colors.values():
             warn("The color assigned to the new class label is already used, if proceeding, "
