@@ -25,7 +25,6 @@ def _view(self, label="default", color="c", view_all=False):
     :param label: string
     :param color: string
     :param view_all: boolean
-    :return:
     """
     if label not in self.coords and color in self.colors.values():
         warn("The color assigned to the new class label is already used, if proceeding, "
@@ -61,9 +60,22 @@ def _view(self, label="default", color="c", view_all=False):
 
 
 def _recover_circ(bin_img, c):
-    """function to recover circular objects
+    """Function to recover circular objects
+
     Inputs:
-    
+    bin_img     = binary image with all objects from which we can recover
+    c           = coordinate of annotation for location of recovery 
+
+    Returns:
+    masked_circ = 
+    c           = 
+    success     = 
+
+    :param bin_img: numpy.ndarray
+    :param c = tuple
+    :return masked_circ: numpy.ndarray
+    :return c: tuple
+    :return success: bool
     """
     # Generates a binary image of a disc based on the coordinates c
     # and the surrounding white pixels in bin_img
@@ -141,8 +153,17 @@ def _recover_circ(bin_img, c):
 
 def _remove_points(autolist, confirmedlist):
     """Function to remove points if interactively removed by user
+
     Inputs:
-    
+    autolist      =
+    confirmedlist =
+
+    Returns:
+    removecoor    = 
+
+    :param autolist:
+    :param confirmedlist:
+    :return  removecoor: 
     """
     # internal function to remove to remove points specified by a user
     removecoor = []
@@ -162,14 +183,17 @@ class Points:
         """Points initialization method.
 
         Inputs:
-        img     = image to annotate
-        figsize = figure plotting size, by default (12, 6), optional
-            figure plotting size, by default (12, 6)
-        label   = class label, by default "default", optional
+        img      = image to annotate
+        figsize  = figure plotting size, by default (12, 6), optional
+        label    = class label, by default "default", optional
+        color    = color for plotting, optional
+        view_all = a flag indicating whether or not view all labels
 
         :param img: numpy.ndarray
         :param figsize: tuple
         :param label: str
+        :param color: str
+        :param view_all: bool
         """
         self.img = img
         self.figsize = figsize
