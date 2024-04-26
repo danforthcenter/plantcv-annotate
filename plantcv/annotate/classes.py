@@ -21,7 +21,7 @@ def _view(self, label="default", color="c", view_all=False):
     label = (optional) class label, by default label="total"
     color = desired color, by default color="c"
     view_all = indicator of whether view all classes, by default view_all=False
-    
+
     :param label: string
     :param color: string
     :param view_all: boolean
@@ -179,7 +179,6 @@ class Points:
         self.coords = {}  # dictionary of all coordinates per group label
         self.events = []  # includes right and left click events
         self.count = {}  # a dictionary that saves the labels and counts of different groups
-        self.label = label  # current label
         self.sample_labels = []  # list of all sample labels, one to one with points collected
         self.colors = {}  # all used colors
 
