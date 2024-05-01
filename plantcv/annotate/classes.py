@@ -18,9 +18,9 @@ def _view(self, label="default", color="c", view_all=False):
     """View the label for a specific class label
 
     Inputs:
-    label = (optional) class label, by default label="total"
-    color = desired color, by default color="c"
-    view_all = indicator of whether view all classes, by default view_all=False
+    label    = (optional) class label, by default label="total"
+    color    = (optional) desired color, by default color="c"
+    view_all = (optional) indicator of whether view all classes, by default view_all=False
 
     :param label: string
     :param color: string
@@ -186,10 +186,10 @@ class Points:
 
         Inputs:
         img      = image to annotate
-        figsize  = figure plotting size, by default (12, 6), optional
-        label    = class label, by default "default", optional
-        color    = color for plotting, optional
-        view_all = a flag indicating whether or not view all labels
+        figsize  = (optional) figure plotting size, by default (12, 6)
+        label    = (optional) class label, by default "default"
+        color    = (optional) color for plotting
+        view_all = (optional) a flag indicating whether or not view all labels
 
         :param img: numpy.ndarray
         :param figsize: tuple
@@ -253,8 +253,9 @@ class Points:
         """Import coordinates.
 
         Inputs:
-        coords  = list of coordinates to get imported
-        label   = class label, by default "default"
+        coords  = list of coordinates to get imported (e.g.coordinate output
+                of pcv.filters.eccentricity)
+        label   = (optional) class label, by default "default"
 
         :param coords: list
         :param label: str
@@ -454,8 +455,8 @@ class Points:
 
         Inputs:
         label       = (optional) class label, by default label="total"
-        color       = desired color, by default color="c"
-        view_all    = indicator of whether view all classes, by default view_all=False
+        color       = (optional) desired color, by default color="c"
+        view_all    = (optional) indicator of whether view all classes, by default view_all=False
     
         :param label: str
         :param color: str
