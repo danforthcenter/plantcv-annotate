@@ -155,15 +155,17 @@ def _remove_points(autolist, confirmedlist):
     """Function to remove points if interactively removed by user
 
     Inputs:
-    autolist      =
-    confirmedlist =
+    autolist      = total list of coordinates, automatically generated
+                    from the contents of coords attribute
+    confirmedlist = coordinates of 'auto' detected points (e.g. coordinate
+                    output of pcv.filters.eccentricity)
 
     Returns:
-    removecoor    = 
+    removecoor    = list of coordinates (of objects to remove from the binary mask)
 
-    :param autolist:
-    :param confirmedlist:
-    :return  removecoor: 
+    :param autolist: list
+    :param confirmedlist: list
+    :return  removecoor: list
     """
     # internal function to remove to remove points specified by a user
     removecoor = []
@@ -350,7 +352,7 @@ class Points:
 
         params.debug = debug
 
-        _debug(visual=completed_mask1, 
+        _debug(visual=completed_mask1,
                filename=os.path.join(params.debug_outdir,
                                      f"{params.device}_annotation-corrected.png"))
 
