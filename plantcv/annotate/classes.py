@@ -67,9 +67,9 @@ def _recover_circ(bin_img, c):
     c           = coordinate of annotation for location of recovery 
 
     Returns:
-    masked_circ = 
-    c           = 
-    success     = 
+    masked_circ = binary image with the recovered object
+    c           = coordinate of annotation updated to be the center of object's mass
+    success     = whether the coordinate was successfully recovered from the binary image
 
     :param bin_img: numpy.ndarray
     :param c = tuple
