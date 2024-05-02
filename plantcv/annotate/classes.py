@@ -64,7 +64,7 @@ def _recover_circ(bin_img, c):
 
     Inputs:
     bin_img     = binary image with all objects from which we can recover
-    c           = coordinate of annotation for location of recovery 
+    c           = coordinate of annotation for location of recovery
 
     Returns:
     masked_circ = binary image with the recovered object
@@ -295,7 +295,7 @@ class Points:
         bin_img         = binary image, image with selected objects
         bin_img_recover = binary image, image with all potential objects
         coords          = coordinates of 'auto' detected points (coordinate output of pcv.filters.eccentricity)
-    
+
         Returns:
         completed_mask  = corrected binary mask with recovered objects
 
@@ -457,7 +457,7 @@ class Points:
         label       = (optional) class label, by default label="total"
         color       = (optional) desired color, by default color="c"
         view_all    = (optional) indicator of whether view all classes, by default view_all=False
-    
+
         :param label: str
         :param color: str
         :param view_all: bool
