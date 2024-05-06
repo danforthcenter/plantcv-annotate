@@ -97,10 +97,10 @@ class Points:
             label = params.sample_label
         for i, x in enumerate(self.count.keys()):
             variable = x
-            value = self.points[x]
-            outputs.add_observation(sample=label, variable=str(variable) + "_coords",
+            value = self.coords[x]
+            outputs.add_observation(sample=label, variable="coordinates",
                                     trait='collected coordinates',
-                                    method='annotation', scale='count', datatype=list,
+                                    method='annotation', scale='none', datatype=list,
                                     value=value, label='none')
 
     def import_list(self, coords, label="default"):
