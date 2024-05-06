@@ -1,5 +1,5 @@
 """Tests for annotate.Points."""
-import os 
+import os
 import cv2
 import matplotlib
 from plantcv.annotate.classes import Points
@@ -47,6 +47,7 @@ def test_points(test_data):
 
     assert drawer_rgb.coords["default"][0] == point1
 
+
 def test_points_print_coords(test_data, tmpdir):
     """Test for plantcv-annotate."""
     cache_dir = tmpdir.mkdir("cache")
@@ -71,9 +72,10 @@ def test_points_print_coords(test_data, tmpdir):
     e2.xdata, e2.ydata = (300, 200)
     drawer_rgb.onclick(e2)
 
-    # Save collected coords out 
+    # Save collected coords out
     drawer_rgb.print_coords(filename)
     assert os.path.exists(filename)
+
 
 def test_points_import_list(test_data):
     """Test for plantcv-annotate."""
@@ -82,12 +84,14 @@ def test_points_import_list(test_data):
     # initialize interactive tool
     drawer_rgb = Points(img, figsize=(12, 6), label="default")
     totalpoints1 = [(158, 531), (361, 112), (500, 418), (269.25303806488864, 385.69839981447126),
-                  (231.21964288863632, 445.995245825603), (293.37177646934134, 448.778177179963), (240.49608073650273, 277.1640769944342), 
-                  (279.4571196975417, 240.05832560296852), (77.23077461405376, 165.84682282003712), (420, 364),
-                  (509.5127783246289, 353.2308673469388), (527.1380102355752, 275.3087894248609), (445.50535717435065, 138.94515306122452)]
+                    (231.21964288863632, 445.995245825603), (293.37177646934134, 448.778177179963),
+                    (240.49608073650273, 277.1640769944342), (279.4571196975417, 240.05832560296852),
+                    (77.23077461405376, 165.84682282003712), (420, 364), (509.5127783246289, 353.2308673469388),
+                    (527.1380102355752, 275.3087894248609), (445.50535717435065, 138.94515306122452)]
     drawer_rgb.import_list(coords=totalpoints1, label="imported")
 
     assert len(drawer_rgb.coords["imported"]) == 13
+
 
 def test_points_import_list_warn(test_data):
     """Test for plantcv-annotate."""
@@ -100,14 +104,16 @@ def test_points_import_list_warn(test_data):
 
     assert len(drawer_rgb.coords["default"]) == 0
 
+
 def test_points_import_file(test_data):
     """Test for plantcv-annotate."""
     img = cv2.imread(test_data.small_rgb_img)
     counter = Points(img, figsize=(8, 6))
-    file  = test_data.pollen_coords
+    file = test_data.pollen_coords
     counter.import_file(file)
 
     assert counter.count['total'] == 70
+
 
 def test_points_view(test_data):
     """Test for plantcv-annotate."""
@@ -133,12 +139,13 @@ def test_points_view(test_data):
 
     assert str(drawer_rgb.fig) == "Figure(1200x600)"
 
+
 def test_points_view_warn(test_data):
     """Test for plantcv-annotate."""
     # Read in a test grayscale image
     img = cv2.imread(test_data.small_rgb_img)
 
-    # initialize interactive tool, implied default label and "r" color 
+    # initialize interactive tool, implied default label and "r" color
     drawer_rgb = Points(img, figsize=(12, 6))
 
     # simulate mouse clicks, event 1=left click to add point
