@@ -83,10 +83,9 @@ class Points:
         """Save collected coordinates to Outputs.observations""" 
         if label is None:
             label = params.sample_label
-        for i, x in enumerate(self.count.keys()):
-            variable = x
+        for x in self.count.keys():
             value = self.count[x]
-            outputs.add_observation(sample=label, variable=str(variable) + "_count",
+            outputs.add_observation(sample=label, variable="object_count",
                                     trait='count of category',
                                     method='count', scale='count', datatype=int,
                                     value=value, label='none')
@@ -95,8 +94,7 @@ class Points:
         """Save collected coordinates to Outputs.observations""" 
         if label is None:
             label = params.sample_label
-        for i, x in enumerate(self.count.keys()):
-            variable = x
+        for x in self.count.keys():
             value = self.coords[x]
             outputs.add_observation(sample=label, variable="coordinates",
                                     trait='collected coordinates',
