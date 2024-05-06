@@ -8,12 +8,12 @@ import napari
 
 def napari_open(img, show=True):
     """
-    open img in napari and label classes
+    open img in napari
 
     Inputs:
     img  = img  (grayimg, rgbimg, or hyperspectral image array data e.g.
     hyperspectraldata.array_data)
-    show = if show is True the viewer is launched. This opetion is useful for
+    show = if show is True the viewer is launched. This option is useful for
     running tests without triggering the viewer.
 
     Returns:

@@ -5,6 +5,7 @@ from plantcv.plantcv import readimage
 from plantcv.annotate.napari_join_labels import napari_join_labels
 from plantcv.plantcv import params
 
+
 def test_napari_join_labels(test_data):
     """Test for PlantCV.Annotate"""
     # Read in test data

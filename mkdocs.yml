@@ -23,7 +23,7 @@ nav:
       - Napari Open: napari_open.md
       - Napari Save: napari_save_coor.md
       - Points: Points.md
-      
+      - Get Centroids: get_centroids.md
 markdown_extensions:
   - toc:
       permalink: True

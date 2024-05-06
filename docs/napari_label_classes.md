@@ -1,7 +1,7 @@
 ## Label Image with Napari
 
 This function opens an image in Napari and then defines a set of classes to label. A random shape label is assigned to each class. 
-Image can be annotate as long as viewer is open. 
+Image can be annotated as long as viewer is open. 
 
 **plantcv.annotate.napari_label_classes*(*img, classes, show=True*)
 
