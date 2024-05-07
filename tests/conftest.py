@@ -2,6 +2,7 @@ import os
 import pytest
 import matplotlib
 
+
 # Disable plotting
 matplotlib.use("Template")
 
@@ -22,6 +23,11 @@ class TestData:
         self.pollen_all = os.path.join(self.datadir, "pollen_all_mask.png")
         self.pollen_discs = os.path.join(self.datadir, "pollen_detectdisc_mask.png")
         self.pollen_watershed = os.path.join(self.datadir, "pollen_watershed.png")
+        # Kmeans Clustered Gray image
+        self.kmeans_seed_gray_img = os.path.join(self.datadir, "silphium_seed_labeled_example.png")
+        # Small Hyperspectral image
+        self.envi_sample_data = os.path.join(self.datadir, "corn-kernel-hyperspectral.raw")
+
 
 @pytest.fixture(scope="session")
 def test_data():
