@@ -83,8 +83,8 @@ class Points:
         """Save collected coordinates to Outputs.observations""" 
         if label is None:
             label = params.sample_label
-        for x in self.count.keys():
-            value = self.count[x]
+        for key in self.count:
+            value = self.count[key]
             outputs.add_observation(sample=label, variable="object_count",
                                     trait='count of category',
                                     method='count', scale='count', datatype=int,
