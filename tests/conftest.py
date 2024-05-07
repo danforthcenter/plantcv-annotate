@@ -2,6 +2,7 @@ import os
 import pytest
 import matplotlib
 
+
 # Disable plotting
 matplotlib.use("Template")
 
@@ -19,6 +20,11 @@ class TestData:
         self.small_bin_img = os.path.join(self.datadir, "setaria_small_plant_mask.png")
         # Text file with tuple coordinates (by group label)
         self.pollen_coords = os.path.join(self.datadir, "points_file_import.coords")
+        # Kmeans Clustered Gray image
+        self.kmeans_seed_gray_img = os.path.join(self.datadir, "silphium_seed_labeled_example.png")
+        # Small Hyperspectral image
+        self.envi_sample_data = os.path.join(self.datadir, "corn-kernel-hyperspectral.raw")
+
 
 @pytest.fixture(scope="session")
 def test_data():
