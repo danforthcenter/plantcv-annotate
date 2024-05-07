@@ -80,7 +80,7 @@ class Points:
             json.dump(obj=self.coords, fp=fp, indent=4)
 
     def save_counts(self, label=None):
-        """Save collected coordinates to Outputs.observations""" 
+        """Save collected coordinates to Outputs.observations"""
         if label is None:
             label = params.sample_label
         for key in self.count:
@@ -89,9 +89,9 @@ class Points:
                                     trait='count of category',
                                     method='count', scale='count', datatype=int,
                                     value=value, label='none')
-            
+
     def save_coords(self, label=None):
-        """Save collected coordinates to Outputs.observations""" 
+        """Save collected coordinates to Outputs.observations"""
         if label is None:
             label = params.sample_label
         for x in self.count.keys():
