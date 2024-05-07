@@ -168,3 +168,13 @@ def test_points_save_coords(test_data):
     drawer.save_coords()
     
     assert outputs.observations["default"]["coordinates"]["value"] == [(158, 531), (361, 112), (500, 418)]
+
+def test_points_save_counts(test_data):
+    img = cv2.imread(test_data.small_rgb_img)
+    totalpoints1 = [(158, 531), (361, 112), (500, 418)]
+    drawer = Points(img=img)
+    # Populate attribute with coords
+    drawer.count = {'default': 1}
+    drawer.save_counts()
+    
+    assert outputs.observations["default"]["object_count"]["value"] == 1
