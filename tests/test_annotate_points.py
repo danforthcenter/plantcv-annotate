@@ -163,6 +163,7 @@ def test_points_save_coords(test_data):
     img = cv2.imread(test_data.small_rgb_img)
     drawer = Points(img=img)
     # Populate attribute with coords
+    totalpoints1 = [(158, 531), (361, 112), (500, 418)]
     drawer.coords = {'default': totalpoints1}
     drawer.save_coords()
     
@@ -170,7 +171,6 @@ def test_points_save_coords(test_data):
 
 def test_points_save_counts(test_data):
     img = cv2.imread(test_data.small_rgb_img)
-    totalpoints1 = [(158, 531), (361, 112), (500, 418)]
     drawer = Points(img=img)
     # Populate attribute with coords
     drawer.count = {'default': 1}
