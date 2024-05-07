@@ -161,7 +161,6 @@ def test_points_view_warn(test_data):
 
 def test_points_save_coords(test_data):
     img = cv2.imread(test_data.small_rgb_img)
-    totalpoints1 = [(158, 531), (361, 112), (500, 418)]
     drawer = Points(img=img)
     # Populate attribute with coords
     drawer.coords = {'default': totalpoints1}
