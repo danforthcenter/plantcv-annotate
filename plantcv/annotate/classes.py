@@ -5,7 +5,7 @@ import cv2
 import json
 from math import floor
 import matplotlib.pyplot as plt
-from plantcv.plantcv import warn, params, outputs
+from plantcv.plantcv import warn, outputs
 from plantcv.plantcv.annotate.points import _find_closest_pt
 
 
