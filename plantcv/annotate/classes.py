@@ -79,24 +79,20 @@ class Points:
             # Save the data in JSON format with indentation
             json.dump(obj=self.coords, fp=fp, indent=4)
 
-    def save_counts(self, label=None):
+    def save_counts(self):
         """Save collected coordinates to Outputs.observations"""
-        if label is None:
-            label = params.sample_label
         for key in self.count:
             value = self.count[key]
-            outputs.add_observation(sample=label, variable="object_count",
+            outputs.add_observation(sample=key, variable="object_count",
                                     trait='count of category',
                                     method='count', scale='count', datatype=int,
                                     value=value, label='none')
 
-    def save_coords(self, label=None):
+    def save_coords(self):
         """Save collected coordinates to Outputs.observations"""
-        if label is None:
-            label = params.sample_label
         for key in self.count:
             value = self.coords[key]
-            outputs.add_observation(sample=label, variable="coordinates",
+            outputs.add_observation(sample=key, variable="coordinates",
                                     trait='collected coordinates',
                                     method='annotation', scale='none', datatype=list,
                                     value=value, label='none')
