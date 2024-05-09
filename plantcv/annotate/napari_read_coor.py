@@ -3,14 +3,14 @@
 import json
 
 
-def napari_read_coor(coor, dataformat='napari'):
+def napari_read_coor(coor, dataformat='yx'):
     """
     open img in napari and label classes
 
     Inputs:
     coor  = either a dictionary of data or a path to a json file
     with dictionary of point coordinates
-    dataformat = either 'napari' or 'other'. Output of points function is in
+    dataformat = either 'yx' or 'xy'. Output of points function is in
     x,y format and Napari is in y,x format.
 
     Returns:
@@ -27,7 +27,7 @@ def napari_read_coor(coor, dataformat='napari'):
         with open(coor) as json_file:
             data = json.load(json_file)
     data1 = {}
-    if dataformat != 'napari':
+    if dataformat != 'yx':
         keys = list(data.keys())
         for key in keys:
             data2 = [(sub[1], sub[0]) for sub in data[key]]

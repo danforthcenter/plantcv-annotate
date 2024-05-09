@@ -2,14 +2,13 @@
 
 Save Points Labeled in Napari to a File
 
-**plantcv.napari_read_coor**(*coor, dataformat = 'napari'*)
+**plantcv.napari_read_coor**(*coor, dataformat = 'yx'*)
 
 **returns** dictionary of points labeled by class
 
 - **Parameters:**
     - coor - dictionary object of coordinates or a path to json datafile with dictionary of point coordinates
-    - dataformat - either 'napari' or 'other', if 'other' data is in x,y format,
-        napari takes data as y,x format. If dat is 'other' data is converted from x,y to y,x
+    - dataformat - either 'yx' or 'xy', Napari takes data as y,x format. If data is 'xy' data is converted from x,y to y,x
 
 - **Context:**
     - Import data from a file and convert to Napari format data if necessary
@@ -24,7 +23,7 @@ import plantcv.annotate as pcvan
 
 # read in data
 
-data = pcvan.napari_read_points(coor ='coor.json', dataformat = 'other')
+data = pcvan.napari_read_points(coor ='coor.json', dataformat = 'xy')
 
 ```
 
