@@ -50,6 +50,7 @@ jobs:
     - name: Tests
       uses: aganders3/headless-gui@v2
       with:
+        linux-setup-delay: 2000
         run: pytest --cov-report=xml --cov=./
     - name: Upload coverage to Deepsource
       uses: deepsourcelabs/test-coverage-action@master
