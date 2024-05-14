@@ -221,17 +221,36 @@ def correct_mask(self, bin_img, bin_img_recover, coords):
         completed_mask = floodfill(completed_mask, removecoor, 0)
 
         # points in class used for recovering and labeling
-        all_coords = []
         for names in labelnames:
             for i, (x, y) in enumerate(self.coords[names]):
                 x = int(x)
                 y = int(y)
                 # corrected coordinates
-                self.coords[names][i] = (x, y)
-                all_coords.append((x,y))
-        total_mask_minus_objs = floodfill(bin_img_recover, all_coords, 0)
-        recovered_objs = bin_img_recover - total_mask_minus_objs
-        completed_mask = completed_mask + recovered_objs
+                if completed_mask[y, x] == 0 and bin_img_recover[y,x] > 0:
+                    print(f"Recovering object at coordinates: x = {x}, y = {y}")
+                    total_mask_minus_objs = floodfill(bin_img_recover, [(y,x)], 0)
+                    recovered_objs = bin_img_recover - total_mask_minus_objs
+                    completed_mask = completed_mask + recovered_objs
+                elif completed_mask[y, x] == 0 and bin_img_recover[y,x] == 0:
+                    print(f"Un-Recoverable object at coordinates: x = {x}, y = {y}")
+                    unrecovered_ids.append(i)
+
+            # Split up "coords" attribute into two classes
+            unrec_points = []
+            for id in unrecovered_ids:
+                (x, y) = self.coords[names][id]
+                unrec_points.append((x, y))
+            new_name = str(names) + "_unrecovered"
+            # Pull out unrecovered coords into new class
+            self.coords[new_name] = unrec_points
+            # Overwrite class with only coords that have corresponding objects in the completed_mask
+            new_points = []
+            for i, (x, y) in enumerate(self.coords[names]):
+                if i not in unrecovered_ids:
+                    new_points.append((x, y))
+
+            self.coords[names] = new_points
+
 
         completed_mask1 = 1*((completed_mask + 1*(completed_mask == 255)) != 0).astype(np.uint8)
 
