@@ -238,18 +238,19 @@ class Points:
                     unrecovered_ids.append(i)
 
             # Split up "coords" attribute into two classes
-            unrec_points = []
-            for id in unrecovered_ids:
-                (x, y) = self.coords[names][id]
-                unrec_points.append((x, y))
-            new_name = str(names) + "_unrecovered"
-            # Pull out unrecovered coords into new class
-            self.coords[new_name] = unrec_points
-            # Overwrite class with only coords that have corresponding objects in the completed_mask
-            new_points = []
-            for i, (x, y) in enumerate(self.coords[names]):
-                if i not in unrecovered_ids:
-                    new_points.append((x, y))
+            if len(unrecovered_ids) > 0:
+                unrec_points = []
+                for id in unrecovered_ids:
+                    (x, y) = self.coords[names][id]
+                    unrec_points.append((x, y))
+                new_name = str(names) + "_unrecovered"
+                # Pull out unrecovered coords into new class
+                self.coords[new_name] = unrec_points
+                # Overwrite class with only coords that have corresponding objects in the completed_mask
+                new_points = []
+                for i, (x, y) in enumerate(self.coords[names]):
+                    if i not in unrecovered_ids:
+                        new_points.append((x, y))
 
             self.coords[names] = new_points
 
