@@ -160,7 +160,7 @@ def test_points_view_warn(test_data):
     assert str(drawer_rgb.fig) == "Figure(1200x600)"
 
 
-def test_plantcv_annotate_points_correct(test_data):
+def test_plantcv_annotate_points_correct_mask(test_data):
     """Test for PlantCV."""
     # Create a test tmp directory
     # generate fake testing image
@@ -174,6 +174,6 @@ def test_plantcv_annotate_points_correct(test_data):
     counter = Points(np.copy(allmask), figsize=(8, 6))
     counter.import_list(totalpoints1, label="total")
 
-    corrected_mask = counter.correct(bin_img=discs, bin_img_recover=allmask, coords=coor)
+    corrected_mask = counter.correct_mask(bin_img=discs, bin_img_recover=allmask, coords=coor)
     assert np.count_nonzero(discs) < np.count_nonzero(corrected_mask)
     assert np.count_nonzero(corrected_mask) < np.count_nonzero(allmask)
