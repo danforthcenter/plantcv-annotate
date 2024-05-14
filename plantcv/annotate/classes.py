@@ -1,13 +1,35 @@
 # Class helpers
 
 # Imports
+import os
 import cv2
 import json
+import numpy as np
 from math import floor
 import matplotlib.pyplot as plt
 from plantcv.plantcv.annotate.points import _find_closest_pt
-from plantcv.plantcv import warn
+from plantcv.plantcv import warn, params, _debug
 
+
+def _remove_points(autolist, confirmedlist):
+    """Function to remove points if interactively removed by user
+    Inputs:
+    autolist      = total list of coordinates, automatically generated
+                    from the contents of coords attribute
+    confirmedlist = coordinates of 'auto' detected points (e.g. coordinate
+                    output of pcv.filters.eccentricity)
+    Returns:
+    removecoor    = list of coordinates (of objects to remove from the binary mask)
+    :param autolist: list
+    :param confirmedlist: list
+    :return  removecoor: list
+    """
+    # internal function to remove to remove points specified by a user
+    removecoor = []
+    for element in autolist:
+        if element not in confirmedlist:
+            removecoor.append(element)
+    return removecoor
 
 class Points:
     """Point annotation/collection class to use in Jupyter notebooks. It allows the user to
@@ -158,3 +180,66 @@ class Points:
         else:
             for (x, y) in self.coords[self.label]:
                 self.ax.plot(x, y, marker='x', c=self.color)
+
+def correct_mask(self, bin_img, bin_img_recover, coords):
+        """View coordinates for a specific class label.
+
+        Parameters
+        ----------
+        bin_img : numpy.ndarray
+            binary image, filtered mask image with selected objects
+        bin_img_recover : numpy.ndarray
+            binary image, unclean mask image with all potential objects
+        coords : list
+            coordinates of 'auto' detected points (coordinate output of annotate.get_centroids)
+
+        Returns
+        ----------
+        completed_mask : numpy.ndarray
+            corrected binary mask with recovered and removed objects
+        """
+        from plantcv.plantcv.floodfill import floodfill
+
+        debug = params.debug
+        params.debug = None
+
+        labelnames = list(self.count)
+
+        completed_mask = np.copy(bin_img)
+
+        totalcoor = []
+        unrecovered_ids = []
+
+        for names in labelnames:
+            for i, (x, y) in enumerate(self.coords[names]):
+                x = int(x)
+                y = int(y)
+                totalcoor.append((y, x))
+
+        removecoor = _remove_points(coords, totalcoor)
+        removecoor = list(map(lambda sub: (sub[1], sub[0]), removecoor))
+        completed_mask = floodfill(completed_mask, removecoor, 0)
+
+        # points in class used for recovering and labeling
+        all_coords = []
+        for names in labelnames:
+            for i, (x, y) in enumerate(self.coords[names]):
+                x = int(x)
+                y = int(y)
+                # corrected coordinates
+                self.coords[names][i] = (x, y)
+                all_coords.append((x,y))
+        total_mask_minus_objs = floodfill(bin_img_recover, all_coords, 0)
+        recovered_objs = bin_img_recover - total_mask_minus_objs
+        completed_mask = completed_mask + recovered_objs
+
+        completed_mask1 = 1*((completed_mask + 1*(completed_mask == 255)) != 0).astype(np.uint8)
+
+        params.debug = debug
+
+        _debug(visual=completed_mask1,
+               filename=os.path.join(params.debug_outdir,
+                                     f"{params.device}_annotation-corrected.png"))
+
+        return completed_mask1
+
