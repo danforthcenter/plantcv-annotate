@@ -24,6 +24,12 @@ class TestData:
         self.kmeans_seed_gray_img = os.path.join(self.datadir, "silphium_seed_labeled_example.png")
         # Small Hyperspectral image
         self.envi_sample_data = os.path.join(self.datadir, "corn-kernel-hyperspectral.raw")
+        # Binary mask including all pollen grainss 
+        self.pollen_all = os.path.join(self.datadir, "pollen_all_mask.png")
+        # Binary mask Eccentricity filtered objects
+        self.pollen_discs = os.path.join(self.datadir, "pollen_detectdisc_mask.png")
+        # Labeled mask from watershed segmentation
+        self.pollen_watershed = os.path.join(self.datadir, "pollen_watershed.png")
 
 
 @pytest.fixture(scope="session")
