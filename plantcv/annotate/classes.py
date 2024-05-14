@@ -219,6 +219,7 @@ class Points:
                 totalcoor.append((y, x))
 
         removecoor = _remove_points(coords, totalcoor)
+        print(f"Removing objects at coordinates: {removecoor}")
         removecoor = list(map(lambda sub: (sub[1], sub[0]), removecoor))
         completed_mask = floodfill(completed_mask, removecoor, 0)
 
@@ -229,12 +230,12 @@ class Points:
                 y = int(y)
                 # corrected coordinates
                 if completed_mask[y, x] == 0 and bin_img_recover[y, x] > 0:
-                    print(f"Recovering object at coordinates: x = {x}, y = {y}")
+                    print(f"Recovering object at coordinate: x = {x}, y = {y}")
                     total_mask_minus_objs = floodfill(bin_img_recover, [(x, y)], 0)
                     recovered_objs = bin_img_recover - total_mask_minus_objs
                     completed_mask = completed_mask + recovered_objs
                 elif completed_mask[y, x] == 0 and bin_img_recover[y, x] == 0:
-                    print(f"Un-Recoverable object at coordinates: x = {x}, y = {y}")
+                    print(f"Un-Recoverable object at coordinate: x = {x}, y = {y}")
                     unrecovered_ids.append(i)
 
             # Split up "coords" attribute into two classes
