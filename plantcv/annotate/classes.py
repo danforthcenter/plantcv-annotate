@@ -184,7 +184,7 @@ class Points:
             for (x, y) in self.coords[self.label]:
                 self.ax.plot(x, y, marker='x', c=self.color)
 
-    def correct_mask(self, bin_img, bin_img_recover, coords):
+    def correct_mask(self, bin_img, bin_img_recover):
         """View coordinates for a specific class label.
 
         Parameters
@@ -193,8 +193,6 @@ class Points:
             binary image, filtered mask image with selected objects
         bin_img_recover : numpy.ndarray
             binary image, unclean mask image with all potential objects
-        coords : list
-            coordinates of 'auto' detected points (coordinate output of annotate.get_centroids)
 
         Returns
         ----------
@@ -221,7 +219,6 @@ class Points:
                 totalcoor.append((y, x))
                 # Draw pt annotations onto a blank mask
                 pts_mask = cv2.circle(pts_mask, (x,y), radius=0, color=(255), thickness=-1)
-
 
         # Only removes objects that were auto detected and then removed 
         labeled_mask, total_obj_num = create_labels(mask=bin_img)
