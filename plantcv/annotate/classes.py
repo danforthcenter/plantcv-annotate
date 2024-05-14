@@ -8,7 +8,9 @@ import numpy as np
 from math import floor
 import matplotlib.pyplot as plt
 from plantcv.plantcv.annotate.points import _find_closest_pt
-from plantcv.plantcv import warn, params, _debug
+from plantcv.plantcv import warn, params
+from plantcv.plantcv._debug import _debug
+
 
 
 def _remove_points(autolist, confirmedlist):
