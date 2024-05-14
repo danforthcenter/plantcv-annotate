@@ -230,7 +230,7 @@ class Points:
                 # corrected coordinates
                 if completed_mask[y, x] == 0 and bin_img_recover[y,x] > 0:
                     print(f"Recovering object at coordinates: x = {x}, y = {y}")
-                    total_mask_minus_objs = floodfill(bin_img_recover, [(y,x)], 0)
+                    total_mask_minus_objs = floodfill(bin_img_recover, [(x, y)], 0)
                     recovered_objs = bin_img_recover - total_mask_minus_objs
                     completed_mask = completed_mask + recovered_objs
                 elif completed_mask[y, x] == 0 and bin_img_recover[y,x] == 0:
