@@ -181,7 +181,7 @@ class Points:
             for (x, y) in self.coords[self.label]:
                 self.ax.plot(x, y, marker='x', c=self.color)
 
-def correct_mask(self, bin_img, bin_img_recover, coords):
+    def correct_mask(self, bin_img, bin_img_recover, coords):
         """View coordinates for a specific class label.
 
         Parameters
@@ -257,8 +257,8 @@ def correct_mask(self, bin_img, bin_img_recover, coords):
         params.debug = debug
 
         _debug(visual=completed_mask1,
-               filename=os.path.join(params.debug_outdir,
-                                     f"{params.device}_annotation-corrected.png"))
+            filename=os.path.join(params.debug_outdir,
+                                    f"{params.device}_annotation-corrected.png"))
 
         return completed_mask1
 
