@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from plantcv.plantcv.annotate.points import _find_closest_pt
 from plantcv.plantcv import warn, params
 from plantcv.plantcv._debug import _debug
+from plantcv.plantcv import create_labels, apply_mask
 
 
 def _remove_points(autolist, confirmedlist):
@@ -211,17 +212,29 @@ class Points:
 
         totalcoor = []
         unrecovered_ids = []
+        pts_mask = np.zeros(np.shape(bin_img))
 
         for names in labelnames:
             for i, (x, y) in enumerate(self.coords[names]):
                 x = int(x)
                 y = int(y)
                 totalcoor.append((y, x))
+                # Draw pt annotations onto a blank mask
+                pts_mask = cv2.circle(pts_mask, (x,y), radius=0, color=(255), thickness=-1)
 
-        removecoor = _remove_points(coords, totalcoor)
-        print(f"Removing objects at coordinates: {removecoor}")
-        removecoor = list(map(lambda sub: (sub[1], sub[0]), removecoor))
-        completed_mask = floodfill(completed_mask, removecoor, 0)
+
+        # Only removes objects that were auto detected and then removed 
+        labeled_mask, total_obj_num = create_labels(mask=bin_img)
+        # Objects that overlap with annotations get kept
+        masked_image = apply_mask(img=labeled_mask, mask=pts_mask, mask_color='black')
+        keep_object_ids = np.unique(masked_image)
+
+        for i in range(1,total_obj_num):
+            if i not in keep_object_ids:
+                # Fill in objects that are not overlapping with an annotation
+                labeled_mask[np.where(labeled_mask == i)] = 0
+                #labeled_mask = np.where(labeled_mask == i, 0, labeled_mask)
+        completed_mask = np.where(labeled_mask > 0, 255, 0)
 
         # points in class used for recovering and labeling
         for names in labelnames:
