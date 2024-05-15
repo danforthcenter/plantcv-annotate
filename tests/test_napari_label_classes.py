@@ -13,5 +13,4 @@ def test_napari_label_classes_gray(test_data):
                       face_color="red", size=1)
 
     assert len(viewer.layers['background'].data) == 1
-
     viewer.close()
