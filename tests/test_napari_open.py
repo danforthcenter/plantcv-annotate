@@ -38,3 +38,4 @@ def test_napari_open_envi(test_data):
                       face_color="red", size=1)
 
     assert len(viewer.layers['total'].data) == 2
+    viewer.close()
