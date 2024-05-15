@@ -20,15 +20,15 @@ Using [Jupyter Notebooks](https://plantcv.readthedocs.io/en/stable/jupyter/) it 
 
 **Original Image with Annotations**
 
-![Screenshot](img/documentation_images/points_correct_mask/)
+![Screenshot](img/documentation_images/points_correct_mask/annotated_stomata.png)
 
 **bin_img**
 
-![Screenshot](img/documentation_images/points_correct_mask/)
+![Screenshot](img/documentation_images/points_correct_mask/bin_img.png)
 
 **bin_img_recover**
 
-![Screenshot](img/documentation_images/points_correct_mask/)
+![Screenshot](img/documentation_images/points_correct_mask/bin_img_recover.png)
 
 ```python
 import plantcv.plantcv as pcv 
@@ -44,11 +44,16 @@ marker = pcvan.Points(img=img, figsize=(12,6))
 
 corrected_mask = marker.correct_mask(bin_img=mask_clean, bin_img_recover=bin_img_recover)
 
+debug_vis = pcv.visualize.overlay_two_imgs(img, corrected_mask, alpha=.4)
 ```
 
 **Corrected Mask**
 
-![Screenshot](img/documentation_images/points_correct_mask/)
+![Screenshot](img/documentation_images/points_correct_mask/corrected_mask.png)
+
+**Overlaid Image**
+
+![Screenshot](img/documentation_images/points_correct_mask/overlay.png)
 
 
 **Source Code:** [Here](https://github.com/danforthcenter/plantcv-annotate/blob/main/plantcv/annotate/classes.py)
