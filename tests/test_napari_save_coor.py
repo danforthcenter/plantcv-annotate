@@ -22,3 +22,4 @@ def test_napari_save_coor(test_data, tmpdir):
     _ = napari_save_coor(viewer, filename)
 
     assert os.path.exists(filename)
+    viewer.close()
