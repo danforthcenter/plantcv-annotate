@@ -22,6 +22,7 @@ nav:
       - Napari Label: napari_label_classes.md
       - Napari Open: napari_open.md
       - Points: Points.md
+      - Points Correct Mask: points_correct_mask.md
       - Get Centroids: get_centroids.md
 markdown_extensions:
   - toc:
