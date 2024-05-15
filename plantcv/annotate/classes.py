@@ -13,27 +13,6 @@ from plantcv.plantcv._debug import _debug
 from plantcv.plantcv import create_labels, apply_mask
 
 
-def _remove_points(autolist, confirmedlist):
-    """Function to remove points if interactively removed by user
-    Inputs:
-    autolist      = total list of coordinates, automatically generated
-                    from the contents of coords attribute
-    confirmedlist = coordinates of 'auto' detected points (e.g. coordinate
-                    output of pcv.filters.eccentricity)
-    Returns:
-    removecoor    = list of coordinates (of objects to remove from the binary mask)
-    :param autolist: list
-    :param confirmedlist: list
-    :return  removecoor: list
-    """
-    # internal function to remove to remove points specified by a user
-    removecoor = []
-    for element in autolist:
-        if element not in confirmedlist:
-            removecoor.append(element)
-    return removecoor
-
-
 class Points:
     """Point annotation/collection class to use in Jupyter notebooks. It allows the user to
     interactively click to collect coordinates from an image. Left click collects the point and
@@ -253,13 +232,13 @@ class Points:
                 for id in unrecovered_ids:
                     (x, y) = self.coords[names][id]
                     unrec_points.append((x, y))
-                new_name = str(names) + "_unrecovered"
                 # Put unrecovered coords into new class
-                self.coords[new_name] = unrec_points
+                self.coords[str(names)+"_unrecovered"] = unrec_points
                 # Overwrite attribute, only coords that have corresponding objects in the completed_mask
                 new_points = []
                 for i, (x, y) in enumerate(self.coords[names]):
                     if i not in unrecovered_ids:
+                        print("line_hit")
                         new_points.append((x, y))
                 self.coords[names] = new_points
 
