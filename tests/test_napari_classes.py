@@ -16,3 +16,5 @@ def test_napari_classes(make_napari_viewer):
     keys = napari_classes(viewer)
 
     assert keys == ['total', 'test']
+
+    viewer.close()
