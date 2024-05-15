@@ -242,12 +242,10 @@ class Points:
                         new_points.append((x, y))
                 self.coords[names] = new_points
 
-        completed_mask1 = 1*((completed_mask + 1*(completed_mask == 255)) != 0).astype(np.uint8)
-
         params.debug = debug
 
-        _debug(visual=completed_mask1,
+        _debug(visual=completed_mask,
                filename=os.path.join(params.debug_outdir,
                                      f"{params.device}_annotation-corrected.png"))
 
-        return completed_mask1
+        return completed_mask
