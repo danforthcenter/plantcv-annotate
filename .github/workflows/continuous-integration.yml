@@ -51,7 +51,7 @@ jobs:
       with:
         linux-setup-delay: 10000
         xvfb-screen-size: 1280x720x24
-        run: pytest -vv --cov-report=xml --cov=./
+        run: pytest -v --cov-report=xml --cov=./
     - name: Upload coverage to Deepsource
       uses: deepsourcelabs/test-coverage-action@master
       with:
