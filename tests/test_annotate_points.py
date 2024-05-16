@@ -12,7 +12,7 @@ def test_points(test_data):
     img = cv2.imread(test_data.small_rgb_img)
 
     # initialize interactive tool
-    drawer_rgb = Points(img, figsize=(12, 6))
+    drawer_rgb = Points(img, figsize=(5, 5))
 
     # simulate mouse clicks
     # event 1, left click to add point
@@ -57,7 +57,7 @@ def test_points_print_coords(test_data, tmpdir):
     img = cv2.imread(test_data.small_rgb_img)
 
     # initialize interactive tool
-    drawer_rgb = Points(img, figsize=(12, 6))
+    drawer_rgb = Points(img, figsize=(5, 5))
 
     # simulate mouse clicks
     # event 1, left click to add point
@@ -83,7 +83,7 @@ def test_points_import_list(test_data):
     # Read in a test image
     img = cv2.imread(test_data.small_rgb_img)
     # initialize interactive tool
-    drawer_rgb = Points(img, figsize=(12, 6), label="default")
+    drawer_rgb = Points(img, figsize=(5, 5), label="default")
     totalpoints1 = [(158, 531), (361, 112), (500, 418), (269.25303806488864, 385.69839981447126),
                     (231.21964288863632, 445.995245825603), (293.37177646934134, 448.778177179963),
                     (240.49608073650273, 277.1640769944342), (279.4571196975417, 240.05832560296852),
@@ -99,7 +99,7 @@ def test_points_import_list_warn(test_data):
     # Read in a test image
     img = cv2.imread(test_data.small_rgb_img)
     # initialize interactive tool
-    drawer_rgb = Points(img, figsize=(12, 6), label="default")
+    drawer_rgb = Points(img, figsize=(5, 5), label="default")
     totalpoints1 = [(158, 531), (361, 112), (500, 418), (445.50535717435065, 138.94515306122452)]
     drawer_rgb.import_list(coords=totalpoints1)
 
@@ -109,7 +109,7 @@ def test_points_import_list_warn(test_data):
 def test_points_import_file(test_data):
     """Test for plantcv-annotate."""
     img = cv2.imread(test_data.small_rgb_img)
-    counter = Points(img, figsize=(8, 6))
+    counter = Points(img, figsize=(5, 5))
     file = test_data.pollen_coords
     counter.import_file(file)
 
@@ -122,7 +122,7 @@ def test_points_view(test_data):
     img = cv2.imread(test_data.small_rgb_img)
 
     # initialize interactive tool
-    drawer_rgb = Points(img, figsize=(12, 6))
+    drawer_rgb = Points(img, figsize=(5, 5))
 
     # simulate mouse clicks
     # event 1, left click to add point
@@ -138,7 +138,7 @@ def test_points_view(test_data):
     drawer_rgb.onclick(e2)
     drawer_rgb.view(view_all=False)
 
-    assert str(drawer_rgb.fig) == "Figure(1200x600)"
+    assert str(drawer_rgb.fig) == "Figure(500x500)"
 
 
 def test_points_view_warn(test_data):
@@ -147,7 +147,7 @@ def test_points_view_warn(test_data):
     img = cv2.imread(test_data.small_rgb_img)
 
     # initialize interactive tool, implied default label and "r" color
-    drawer_rgb = Points(img, figsize=(12, 6))
+    drawer_rgb = Points(img, figsize=(5, 5))
 
     # simulate mouse clicks, event 1=left click to add point
     e1 = matplotlib.backend_bases.MouseEvent(name="button_press_event", canvas=drawer_rgb.fig.canvas,
@@ -156,7 +156,6 @@ def test_points_view_warn(test_data):
     e1.xdata, e1.ydata = point1
     drawer_rgb.onclick(e1)
     drawer_rgb.view(label="new", color='r')
-
     assert str(drawer_rgb.fig) == "Figure(1200x600)"
 
 
@@ -176,3 +175,4 @@ def test_plantcv_annotate_points_correct_mask(test_data):
     corrected_mask = counter.correct_mask(bin_img=discs, bin_img_recover=allmask)
     assert np.count_nonzero(discs) < np.count_nonzero(corrected_mask)
     assert np.count_nonzero(corrected_mask) < np.count_nonzero(allmask)
+
