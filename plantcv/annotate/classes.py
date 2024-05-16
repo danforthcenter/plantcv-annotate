@@ -11,6 +11,8 @@ from plantcv.plantcv.annotate.points import _find_closest_pt
 from plantcv.plantcv import warn, params
 from plantcv.plantcv._debug import _debug
 from plantcv.plantcv import create_labels, apply_mask
+import time
+
 
 
 class Points:
@@ -178,6 +180,7 @@ class Points:
         completed_mask : numpy.ndarray
             corrected binary mask with recovered and removed objects
         """
+        tic = time.perf_counter()
         from plantcv.plantcv.floodfill import floodfill
 
         debug = params.debug
@@ -246,5 +249,6 @@ class Points:
         _debug(visual=completed_mask,
                filename=os.path.join(params.debug_outdir,
                                      f"{params.device}_annotation-corrected.png"))
-
+        toc = time.perf_counter()
+        print(f"Function ran in {toc - tic:0.4f} seconds")
         return completed_mask
