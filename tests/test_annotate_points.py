@@ -156,7 +156,7 @@ def test_points_view_warn(test_data):
     e1.xdata, e1.ydata = point1
     drawer_rgb.onclick(e1)
     drawer_rgb.view(label="new", color='r')
-    assert str(drawer_rgb.fig) == "Figure(1200x600)"
+    assert str(drawer_rgb.fig) == "Figure(500x500)"
 
 
 def test_plantcv_annotate_points_correct_mask(test_data):
