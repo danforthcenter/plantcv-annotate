@@ -238,7 +238,6 @@ class Points:
                 new_points = []
                 for i, (x, y) in enumerate(self.coords[names]):
                     if i not in unrecovered_ids:
-                        print("line_hit")
                         new_points.append((x, y))
                 self.coords[names] = new_points
 
