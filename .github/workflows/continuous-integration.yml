@@ -30,8 +30,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        sudo apt-get update
-        sudo apt-get install --no-install-recommends libyaml-dev libegl1-mesa libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-shape0 libxcb-cursor0 xserver-xephyr xvfb
+        sudo apt-get install --no-install-recommends libyaml-dev libegl1-mesa libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-shape0 libxcb-cursor0 xserver-xephyr
         python -m pip install --upgrade pip
         pip install flake8 pytest pytest-cov pytest-qt pytest-xvfb ipython anyio
     - name: Lint with flake8
@@ -48,8 +47,9 @@ jobs:
         pip uninstall -y opencv-python
         pip install opencv-python-headless
     - name: Tests
-      uses: aganders3/headless-gui@v2
+      uses: aganders3/headless-gui@v2.2
       with:
+        xvfb-screen-size: 1280x720x24
         run: pytest --cov-report=xml --cov=./
     - name: Upload coverage to Deepsource
       uses: deepsourcelabs/test-coverage-action@master
