@@ -14,9 +14,9 @@ def napari_points_mask(img, viewer, shape='square'):
 
     Inputs:
     img  = img  (grayimg, rgbimg, or hyperspectral image array data
-        e.g. hyperspectraldata.array_data). This is used to find the x,y size 
+        e.g. hyperspectraldata.array_data). This is used to find the x,y size
         of the image
-    viewer = Napari Viewer with classes labeled. The size of the masked points 
+    viewer = Napari Viewer with classes labeled. The size of the masked points
         will be from the viewer parameters
     shape = 'square' or 'circle'
 
@@ -43,20 +43,16 @@ def napari_points_mask(img, viewer, shape='square'):
         for y, x in data:
             if shapetype == 'square':
                 startpoint = (int(x-shapesize), int(y-shapesize))
-                endpoint = (int(x+shapesize), int(y+shapesize))
+                endpoint = (int(x+shapesize-1), int(y+shapesize-1))
                 mask = cv2.rectangle(mask, startpoint, endpoint, (255), -1)
             else:
                 mask = cv2.circle(mask, (int(x), int(y)), shapesize, (255), -1)
 
         maskdict[maskname] = mask
 
-        if params.debug == 'print':
-            _debug(visual=mask, filename=os.path.join(params.debug_outdir,
-                                                      str(params.device) +
-                                                      str(maskname) +
-                                                      '_labeled_mask.png'))
-        else:
-            print(maskname)
-            _debug(visual=mask)
+        _debug(visual=mask, filename=os.path.join(params.debug_outdir,
+                                                  str(params.device) +
+                                                  str(maskname) +
+                                                  '_labeled_mask.png'))
 
     return maskdict

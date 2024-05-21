@@ -13,6 +13,7 @@ def test_napari_open_rgb(test_data):
                       face_color="red", size=1)
 
     assert len(viewer.layers['total'].data) == 2
+    viewer.close()
 
 
 def test_napari_open_gray(test_data):
@@ -25,6 +26,7 @@ def test_napari_open_gray(test_data):
                       face_color="red", size=1)
 
     assert len(viewer.layers['total'].data) == 2
+    viewer.close()
 
 
 def test_napari_open_envi(test_data):
