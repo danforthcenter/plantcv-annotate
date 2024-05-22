@@ -252,3 +252,47 @@ class Points:
         toc = time.perf_counter()
         print(f"Function ran in {toc - tic:0.4f} seconds")
         return completed_mask
+
+    def correct_mask2(self, bin_img):
+        """View coordinates for a specific class label.
+
+        Parameters
+        ----------
+        bin_img : numpy.ndarray
+            binary image, filtered mask image with selected objects
+        bin_img_recover : numpy.ndarray
+            binary image, unclean mask image with all potential objects
+
+        Returns
+        ----------
+        completed_mask : numpy.ndarray
+            corrected binary mask with recovered and removed objects
+        """
+        from skimage.color import label2rgb
+        from skimage.measure import label
+
+        tic = time.perf_counter()
+        # Output mask
+        outmask = np.zeros(bin_img.shape)
+        # Annotation mask
+        ptmask = np.zeros(bin_img.shape, dtype=np.uint8)
+
+        # Add one pixel to the annotation mask for each point
+        for lbl in self.coords:
+            for x, y in self.coords[lbl]:
+                ptmask[y, x] = 255
+        
+        # Create a labeled mask from the input mask
+        labeled_mask, num_labels = label(bin_img, background=0, return_num=True, connectivity=2)
+        # Filter the mask based on annotations
+        for i in range(1, num_labels + 1):
+            if np.max(ptmask[np.where(labeled_mask == i)]) == 255:
+                outmask[np.where(labeled_mask == i)] = i
+        # Debug output
+        colorful = label2rgb(outmask)
+        colorful = ((255*colorful).astype(np.uint8))
+        _debug(visual=colorful, filename=os.path.join(pcv.params.debug_outdir, f"{pcv.params.device}_corrected_labeled_mask.png"))
+
+        toc = time.perf_counter()
+        print(f"Function ran in {toc - tic:0.4f} seconds")
+        return outmask
