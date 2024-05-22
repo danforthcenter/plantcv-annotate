@@ -165,7 +165,7 @@ class Points:
             for (x, y) in self.coords[self.label]:
                 self.ax.plot(x, y, marker='x', c=self.color)
 
-    def correct_mask(self, bin_img, bin_img_recover):
+    def correct_mask(self, bin_img):
         """View coordinates for a specific class label.
 
         Parameters
@@ -219,13 +219,7 @@ class Points:
             for i, (x, y) in enumerate(self.coords[names]):
                 x = int(x)
                 y = int(y)
-                # corrected coordinates
-                if completed_mask[y, x] == 0 and bin_img_recover[y, x] > 0:
-                    print(f"Recovering object at coordinate: x = {x}, y = {y}")
-                    total_mask_minus_objs = floodfill(bin_img_recover, [(x, y)], 0)
-                    recovered_objs = bin_img_recover - total_mask_minus_objs
-                    completed_mask = completed_mask + recovered_objs
-                elif completed_mask[y, x] == 0 and bin_img_recover[y, x] == 0:
+                if completed_mask[y, x] == 0 and bin_img[y, x] == 0:
                     print(f"Un-Recoverable object at coordinate: x = {x}, y = {y}")
                     unrecovered_ids.append(i)
 
@@ -291,7 +285,8 @@ class Points:
         # Debug output
         colorful = label2rgb(outmask)
         colorful = ((255*colorful).astype(np.uint8))
-        _debug(visual=colorful, filename=os.path.join(pcv.params.debug_outdir, f"{pcv.params.device}_corrected_labeled_mask.png"))
+        _debug(visual=colorful, 
+               filename=os.path.join(params.debug_outdir, f"{params.device}_corrected_labeled_mask.png"))
 
         toc = time.perf_counter()
         print(f"Function ran in {toc - tic:0.4f} seconds")
