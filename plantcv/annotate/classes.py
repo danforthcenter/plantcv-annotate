@@ -208,7 +208,8 @@ class Points:
         labeled_mask, total_obj_num = create_labels(mask=bin_img)
         # Objects that overlap with annotations get kept
         masked_image = apply_mask(img=labeled_mask, mask=pts_mask, mask_color='black')
-        keep_object_ids = np.unique(masked_image)
+        keep_object_ids, counts = np.unique(masked_image, return_counts=True)
+        print(counts)
 
         for i in range(1, total_obj_num + 1):
             if i not in keep_object_ids:
@@ -229,7 +230,14 @@ class Points:
                     print(f"Un-Recoverable object at coordinate: x = {x}, y = {y}")
                     unrecovered_ids.append(i)
                 else:
-                    list_labels.append(str(object_count)+"_"+names)
+                    mask_pixel_value = completed_mask[y, x]
+                    print(counts[mask_pixel_value])
+                    if counts[mask_pixel_value] == 1:
+                        list_labels.append(str(object_count)+"_"+names)
+                    else:
+                        multiple_labels = np.where(masked_image == mask_pixel_value)
+                        print(multiple_labels)
+                    # else combine labels 
                 object_count += 1
 
             # Split up "coords" attribute into two classes
