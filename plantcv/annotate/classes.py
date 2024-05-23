@@ -184,8 +184,8 @@ class Points:
         from plantcv.plantcv.floodfill import floodfill
         from plantcv.plantcv import plot_image
 
-        # debug = params.debug
-        # params.debug = None
+        debug = params.debug
+        params.debug = None
 
         labelnames = list(self.count)
 
@@ -209,12 +209,11 @@ class Points:
         # Objects that overlap with annotations get kept
         masked_image = apply_mask(img=labeled_mask, mask=pts_mask, mask_color='black')
         keep_object_ids, counts = np.unique(masked_image, return_counts=True)
-        print(counts)
 
         for i in range(1, total_obj_num + 1):
             if i not in keep_object_ids:
                 # Fill in objects that are not overlapping with an annotation
-                print("removing an object from the mask")
+                print("filtering un-annotated object from the mask")
                 labeled_mask[np.where(labeled_mask == i)] = 0
 
         #completed_mask = np.where(labeled_mask > 0, 255, 0)
@@ -232,10 +231,14 @@ class Points:
                 else:
                     mask_pixel_value = completed_mask[y, x]
                     print(counts[mask_pixel_value])
+                    # if only one annotation overlap, then done, add label to list 
                     if counts[mask_pixel_value] == 1:
                         list_labels.append(str(object_count)+"_"+names)
+                    # otherwise combine labels if classes unique & drop labels in not unique
+                    # can we draw "unresolved" annotations where the duplicate labels happen? 
                     else:
                         multiple_labels = np.where(masked_image == mask_pixel_value)
+                        # get coordinate info and trace back to find class label name
                         print(multiple_labels)
                     # else combine labels 
                 object_count += 1
@@ -258,56 +261,10 @@ class Points:
                         new_points.append((x, y))
                 self.coords[names] = new_points
 
-        #params.debug = debug
-        print(list_labels)
+        params.debug = debug
         _debug(visual=completed_mask,
                filename=os.path.join(params.debug_outdir,
                                      f"{params.device}_annotation-corrected.png"))
         toc = time.perf_counter()
         print(f"Function ran in {toc - tic:0.4f} seconds")
         return completed_mask, list_labels
-
-    def correct_mask2(self, bin_img):
-        """View coordinates for a specific class label.
-
-        Parameters
-        ----------
-        bin_img : numpy.ndarray
-            binary image, filtered mask image with selected objects
-        bin_img_recover : numpy.ndarray
-            binary image, unclean mask image with all potential objects
-
-        Returns
-        ----------
-        completed_mask : numpy.ndarray
-            corrected binary mask with recovered and removed objects
-        """
-        from skimage.color import label2rgb
-        from skimage.measure import label
-
-        tic = time.perf_counter()
-        # Output mask
-        outmask = np.zeros(bin_img.shape)
-        # Annotation mask
-        ptmask = np.zeros(bin_img.shape, dtype=np.uint8)
-
-        # Add one pixel to the annotation mask for each point
-        for lbl in self.coords:
-            for x, y in self.coords[lbl]:
-                ptmask[y, x] = 255
-        
-        # Create a labeled mask from the input mask
-        labeled_mask, num_labels = label(bin_img, background=0, return_num=True, connectivity=2)
-        # Filter the mask based on annotations
-        for i in range(1, num_labels + 1):
-            if np.max(ptmask[np.where(labeled_mask == i)]) == 255:
-                outmask[np.where(labeled_mask == i)] = i
-        # Debug output
-        colorful = label2rgb(outmask)
-        colorful = ((255*colorful).astype(np.uint8))
-        _debug(visual=colorful, 
-               filename=os.path.join(params.debug_outdir, f"{params.device}_corrected_labeled_mask.png"))
-
-        toc = time.perf_counter()
-        print(f"Function ran in {toc - tic:0.4f} seconds")
-        return outmask
