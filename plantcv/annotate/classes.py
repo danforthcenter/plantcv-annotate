@@ -219,7 +219,7 @@ class Points:
         #completed_mask = np.where(labeled_mask > 0, 255, 0)
         completed_mask = np.copy(labeled_mask)
 
-        object_count = 1
+        object_count = 0
         # points in class used for recovering and labeling
         for names in labelnames:
             for i, (x, y) in enumerate(self.coords[names]):
@@ -235,7 +235,7 @@ class Points:
             # Split up "coords" attribute into two classes
             if len(unrecovered_ids) > 0:
                 unrec_points = []
-                for j, id in enumerate(unrecovered_ids):
+                for j, id in enumerate(unrecovered_ids, start=0):
                     (x, y) = self.coords[names][id]
                     unrec_points.append((x, y))
                     # draw a labeled pixel, pix value unique to those found in labeled_mask from bin_img
