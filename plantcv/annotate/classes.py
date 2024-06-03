@@ -91,7 +91,7 @@ class Points:
         """
         if label not in self.coords:
             self.coords[label] = []
-            for (x, y) in coords:
+            for (y, x) in coords:
                 self.coords[label].append((x, y))
                 self.sample_labels.append(label)
             self.count[label] = len(self.coords[label])

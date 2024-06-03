@@ -14,6 +14,7 @@ def test_napari_join_labels(test_data):
     labeled, _ = napari_join_labels(img, viewer)
 
     assert np.shape(labeled) == (576, 537)
+    viewer.close()
 
 
 def test_napari_join_allclass(test_data):
@@ -34,6 +35,7 @@ def test_napari_join_allclass(test_data):
     labeled, _ = napari_join_labels(img, viewer)
 
     assert np.shape(labeled) == (576, 537)
+    viewer.close()
 
 
 def test_napari_join_warn(test_data):
@@ -54,6 +56,7 @@ def test_napari_join_warn(test_data):
     labeled, _ = napari_join_labels(img, viewer)
 
     assert np.shape(labeled) == (576, 537)
+    viewer.close()
 
 
 def test_napari_join_print(test_data, tmpdir):
@@ -77,3 +80,4 @@ def test_napari_join_print(test_data, tmpdir):
     labeled, _ = napari_join_labels(img, viewer)
 
     assert np.shape(labeled) == (576, 537)
+    viewer.close()
