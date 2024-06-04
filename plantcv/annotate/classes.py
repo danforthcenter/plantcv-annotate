@@ -216,8 +216,10 @@ class Points:
                 print("filtering un-annotated object from the mask")
                 labeled_mask[np.where(labeled_mask == i)] = 0
 
-        #completed_mask = np.where(labeled_mask > 0, 255, 0)
-        completed_mask = np.copy(labeled_mask)
+        completed_mask_bin = np.where(labeled_mask > 0, 255, 0)
+        labeled_mask_all, _ = create_labels(mask=completed_mask_bin)
+        completed_mask = np.copy(labeled_mask_all)
+        pix_vals, counts = np.unique(completed_mask, return_counts=True)
 
         object_count = 0
         # points in class used for recovering and labeling
