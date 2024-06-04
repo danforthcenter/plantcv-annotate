@@ -43,6 +43,12 @@ marker = an.Points(img=img, figsize=(12,6))
 roi = pcv.roi.custom(img=img, vertices=marker.coords['default'])
 
 ```
+**plantcv.annotate.Points.view**(*label="default", color="r", view_all=False*)
+
+- **Parameters:**
+    - label - The current label (default = "default")
+    - color - The current color for annotations (default = "r")
+    - view_all - View all classes or a single class, by (default =`False`)
 
 **plantcv.annotate.Points.save_coords**()
 
@@ -121,6 +127,47 @@ pcv.outputs.observations
    'datatype': "<class 'int'>",
    'value': 2,
    'label': 'none'}}}
+```
+
+**plantcv.annotate.Points.print_coords**(*filename*)
+
+- **Context:**
+    - Once point annotations are collected, save the list of coordinates out to a text file called `filename`. 
+    Can be utilized by non-PlantCV analysis or read back in with `.import_file` annotation method. 
+
+**plantcv.annotate.Points.import_list**(*coords, label="default"*)
+
+- **Context:**
+    - Import a list of coordinates into an instance of the `Points` class. 
+
+- **Example use:**
+    - Below 
+
+```python
+import plantcv.plantcv as pcv 
+import plantcv.annotate as pcvan
+
+centers = pcvan.get_centroids()
+counter = pcvan.Points(img=img, figsize=(12,6))
+counter.import_list(coords=centers, label="detected")
+
+```
+
+**plantcv.annotate.Points.import_file**(*filename*)
+
+- **Context:**
+    - Import a list of coordinates into an instance of the `Points` class. 
+
+- **Example use:**
+    - Below 
+
+```python
+import plantcv.plantcv as pcv 
+import plantcv.annotate as pcvan
+
+drawer = pcvan.Points(img=img, figsize=(12,6))
+drawer.import_file(filename="replicate101_saved_coords.txt") )
+
 ```
 
 **Source Code:** [Here](https://github.com/danforthcenter/plantcv-annotate/blob/main/plantcv/annoate/classes.py)
