@@ -25,10 +25,9 @@ closest collected point.
 
 - **Context:**
     - Used to define a list of coordinates of interest.
-    - 
 - **Example use:**
-    - (pcv.roi.multi)
-    - (pcv.roi.custom)
+    - pcv.roi.multi
+    - pcv.roi.custom
 
 
 ```python
