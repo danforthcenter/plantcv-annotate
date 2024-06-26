@@ -180,10 +180,6 @@ class Points:
         completed_mask : numpy.ndarray
             corrected binary mask with recovered and removed objects
         """
-        tic = time.perf_counter()
-        from plantcv.plantcv.floodfill import floodfill
-        from plantcv.plantcv import plot_image
-
         debug = params.debug
         params.debug = None
 
@@ -219,7 +215,7 @@ class Points:
         completed_mask_bin = np.where(labeled_mask > 0, 255, 0)
         labeled_mask_all, _ = create_labels(mask=completed_mask_bin)
         completed_mask = np.copy(labeled_mask_all)
-        pix_vals, counts = np.unique(completed_mask, return_counts=True)
+        _, counts = np.unique(completed_mask, return_counts=True)
 
         object_count = 0
         # points in class used for recovering and labeling
@@ -267,6 +263,4 @@ class Points:
         _debug(visual=completed_mask,
                filename=os.path.join(params.debug_outdir,
                                      f"{params.device}_annotation-corrected.png"))
-        toc = time.perf_counter()
-        print(f"Function ran in {toc - tic:0.4f} seconds")
         return completed_mask, list_labels
