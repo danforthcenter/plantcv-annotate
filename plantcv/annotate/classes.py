@@ -11,8 +11,6 @@ from plantcv.plantcv.annotate.points import _find_closest_pt
 from plantcv.plantcv import warn, params
 from plantcv.plantcv._debug import _debug
 from plantcv.plantcv import create_labels, apply_mask
-import time
-
 
 
 class Points:
@@ -189,7 +187,7 @@ class Points:
 
         totalcoor = []
         unrecovered_ids = []
-        list_labels = [] 
+        list_labels = []
         total_pts_num = sum(self.count.values())
         pts_mask = np.zeros(np.shape(bin_img))
 
@@ -229,16 +227,16 @@ class Points:
                 else:
                     mask_pixel_value = completed_mask[y, x]
                     print(counts[mask_pixel_value])
-                    # if only one annotation overlap, then done, add label to list 
+                    # if only one annotation overlap, then done, add label to list
                     if counts[mask_pixel_value] == 1:
                         list_labels.append(str(object_count)+"_"+names)
                     # otherwise combine labels if classes unique & drop labels in not unique
-                    # can we draw "unresolved" annotations where the duplicate labels happen? 
+                    # can we draw "unresolved" annotations where the duplicate labels happen?
                     else:
                         multiple_labels = np.where(masked_image == mask_pixel_value)
                         # get coordinate info and trace back to find class label name
                         print(multiple_labels)
-                    # else combine labels 
+                    # else combine labels ?
                 object_count += 1
 
             # Split up "coords" attribute into two classes
