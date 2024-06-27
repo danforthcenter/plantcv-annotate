@@ -184,6 +184,6 @@ def test_plantcv_annotate_points_correct_mask(test_data):
     counter.import_list(totalpoints1, label="total")
 
     corrected_mask, _ = counter.correct_mask(bin_img=allmask)
-    assert np.count_nonzero(discs) < np.count_nonzero(corrected_mask)
+    assert np.count_nonzero(corrected_mask) < np.count_nonzero(discs)
     assert np.count_nonzero(corrected_mask) < np.count_nonzero(allmask)
 
