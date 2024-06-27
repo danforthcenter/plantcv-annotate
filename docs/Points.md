@@ -28,7 +28,7 @@ closest collected point.
     - 
 - **Example use:**
     - (pcv.roi.multi)
-    - (pcv.roi.custom)
+    - Shown below (pcv.roi.custom)
 
 
 ```python

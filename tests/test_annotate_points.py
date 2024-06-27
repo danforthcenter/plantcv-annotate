@@ -2,6 +2,7 @@
 import os
 import cv2
 import matplotlib
+import numpy as np
 from plantcv.annotate.classes import Points
 
 
@@ -155,5 +156,34 @@ def test_points_view_warn(test_data):
     e1.xdata, e1.ydata = point1
     drawer_rgb.onclick(e1)
     drawer_rgb.view(label="new", color='r')
-
     assert str(drawer_rgb.fig) == "Figure(500x500)"
+
+
+def test_plantcv_annotate_points_correct_mask(test_data):
+    """Test for PlantCV."""
+    # Create a test tmp directory
+    # generate fake testing image
+    allmask = cv2.imread(test_data.pollen_all, -1)
+    discs = cv2.imread(test_data.pollen_discs, -1)
+    totalpoints1 = [(116, 47),
+    (322, 46),
+    (364, 109),
+    (286, 152),
+    (266, 174),
+    (305, 196),
+    (184, 156),
+    (162, 185),
+    (65, 189),
+    (70, 241),
+    (100, 299),
+    (186, 351),
+    (242, 340),
+    (247, 281),
+    (279, 337)]
+    counter = Points(np.copy(allmask), figsize=(8, 6))
+    counter.import_list(totalpoints1, label="total")
+
+    corrected_mask, _ = counter.correct_mask(bin_img=allmask)
+    assert np.count_nonzero(corrected_mask) < np.count_nonzero(discs)
+    assert np.count_nonzero(corrected_mask) < np.count_nonzero(allmask)
+
