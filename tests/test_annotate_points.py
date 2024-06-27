@@ -165,10 +165,10 @@ def test_plantcv_annotate_points_correct_mask(test_data):
     # generate fake testing image
     allmask = cv2.imread(test_data.pollen_all, -1)
     discs = cv2.imread(test_data.pollen_discs, -1)
-    totalpoints1 = [(361, 112), (500, 418), (269.25303806488864, 385.69839981447126),
+    totalpoints1 = [(500, 418), (269.25303806488864, 385.69839981447126),
     (231.21964288863632, 445.995245825603), (293.37177646934134, 448.778177179963), (240.49608073650273, 277.1640769944342),
     (279.4571196975417, 240.05832560296852), (77.23077461405376, 165.84682282003712),
-    (509.5127783246289, 353.2308673469388), (527, 275), (500,500)]
+    (509.5127783246289, 353.2308673469388), (500,500)]
     counter = Points(np.copy(allmask), figsize=(8, 6))
     counter.import_list(totalpoints1, label="total")
 
