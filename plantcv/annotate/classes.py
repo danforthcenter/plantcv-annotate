@@ -228,7 +228,6 @@ class Points:
                     unrecovered_ids.append(i)
                     # Add a pixel where unresolved annotation to the mask
                     final_mask = cv2.circle(final_mask, (x, y), radius=0, color=(i), thickness=-1)
-                    #final_mask[y, x] == i
                 else:
                     mask_pixel_value = labeled_mask_all[y, x]
                     # DRAW on labeled mask with correct pixel value (object ID and np.where to copy with new label ID i)
@@ -239,9 +238,12 @@ class Points:
                     # otherwise combine labels if classes unique & drop labels in not unique
                     # can we draw "unresolved" annotations where the duplicate labels happen?
                     else:
-                        multiple_labels = np.where(masked_image == mask_pixel_value)
-                        # get coordinate info and trace back to find class label name
-                        # combine labels from both classes
+                        #multiple_labels = np.where(masked_image == mask_pixel_value)
+                        # get coordinate info and trace back to find class label name(s)
+                        # combine labels from both classes if unique
+                        #list_labels.append(combined_name)
+                        # if not unique then skip all except the first?
+                        print("Complex replicate handled")
                 object_count += 1
 
             # Split up "coords" attribute into two classes
