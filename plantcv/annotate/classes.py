@@ -170,13 +170,11 @@ class Points:
         ----------
         bin_img : numpy.ndarray
             binary image, filtered mask image with selected objects
-        bin_img_recover : numpy.ndarray
-            binary image, unclean mask image with all potential objects
 
         Returns
         ----------
-        completed_mask : numpy.ndarray
-            corrected binary mask with recovered and removed objects
+        final_mask : numpy.ndarray
+            corrected and labeled mask with recovered and removed objects
         """
         debug = params.debug
         params.debug = None
@@ -190,6 +188,7 @@ class Points:
         list_labels = []
         total_pts_num = sum(self.count.values())
         pts_mask = np.zeros(np.shape(bin_img))
+        final_mask = np.zeros(np.shape(bin_img))
 
         for names in labelnames:
             for i, (x, y) in enumerate(self.coords[names]):
@@ -198,20 +197,22 @@ class Points:
                 totalcoor.append((y, x))
                 # Draw pt annotations onto a blank mask
                 pts_mask = cv2.circle(pts_mask, (x, y), radius=0, color=(255), thickness=-1)
-        # Only removes objects that were auto detected and then removed
+        # Create a labeled mask from the input mask
         labeled_mask, total_obj_num = create_labels(mask=bin_img)
         labeled_mask1 = np.copy(labeled_mask)
-        # Objects that overlap with annotations get kept
+        # Objects that overlap with one or more annotations get kept
         masked_image = apply_mask(img=labeled_mask1, mask=pts_mask, mask_color='black')
-        keep_object_ids, counts = np.unique(masked_image, return_counts=True)
+        keep_object_ids = np.unique(masked_image)
+        print(keep_object_ids)
 
+        # Fill in objects that are not overlapping with an annotation
         for i in range(1, total_obj_num + 1):
             if i not in keep_object_ids:
-                # Fill in objects that are not overlapping with an annotation
                 print("filtering un-annotated object from the mask")
                 labeled_mask1[np.where(labeled_mask == i)] = 0
-
+        # Create new binary mask after filtering un-annotated objects
         completed_mask_bin = np.where(labeled_mask1 > 0, 255, 0)
+        # Create a new labeled annotation mask to determine number of annotation per object
         labeled_mask_all, _ = create_labels(mask=completed_mask_bin)
         labeled_annotation_overlap_mask = apply_mask(img=labeled_mask_all, mask=pts_mask, mask_color='black')
         id, counts = np.unique(labeled_annotation_overlap_mask, return_counts=True)
@@ -225,8 +226,13 @@ class Points:
                 if completed_mask[y, x] == 0 and bin_img[y, x] == 0:
                     print(f"Un-Recoverable object at coordinate: x = {x}, y = {y}")
                     unrecovered_ids.append(i)
+                    # Add a pixel where unresolved annotation to the mask
+                    final_mask = cv2.circle(final_mask, (x, y), radius=0, color=(i), thickness=-1)
+                    #final_mask[y, x] == i
                 else:
                     mask_pixel_value = labeled_mask_all[y, x]
+                    # DRAW on labeled mask with correct pixel value (object ID and np.where to copy with new label ID i)
+                    final_mask = np.where(labeled_mask_all == mask_pixel_value, i, final_mask)
                     # if only one annotation overlap, then done, add label to list
                     if counts[mask_pixel_value] == 1:
                         list_labels.append(str(object_count)+"_"+names)
@@ -235,7 +241,7 @@ class Points:
                     else:
                         multiple_labels = np.where(masked_image == mask_pixel_value)
                         # get coordinate info and trace back to find class label name
-                    # else combine labels ?
+                        # combine labels from both classes
                 object_count += 1
 
             # Split up "coords" attribute into two classes
@@ -257,7 +263,7 @@ class Points:
                 self.coords[names] = new_points
 
         params.debug = debug
-        _debug(visual=labeled_mask_all,
+        _debug(visual=final_mask,
                filename=os.path.join(params.debug_outdir,
                                      f"{params.device}_annotation-corrected.png"))
-        return labeled_mask_all, list_labels
+        return final_mask, list_labels
