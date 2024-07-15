@@ -177,6 +177,7 @@ def test_plantcv_annotate_points_correct_mask(test_data):
     (70, 241),
     (100, 299),
     (186, 351),
+    (188, 351),
     (242, 340),
     (247, 281),
     (279, 337)]
