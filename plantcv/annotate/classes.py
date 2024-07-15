@@ -200,20 +200,21 @@ class Points:
                 pts_mask = cv2.circle(pts_mask, (x, y), radius=0, color=(255), thickness=-1)
         # Only removes objects that were auto detected and then removed
         labeled_mask, total_obj_num = create_labels(mask=bin_img)
+        labeled_mask1 = np.copy(labeled_mask)
         # Objects that overlap with annotations get kept
-        masked_image = apply_mask(img=labeled_mask, mask=pts_mask, mask_color='black')
+        masked_image = apply_mask(img=labeled_mask1, mask=pts_mask, mask_color='black')
         keep_object_ids, counts = np.unique(masked_image, return_counts=True)
 
         for i in range(1, total_obj_num + 1):
             if i not in keep_object_ids:
                 # Fill in objects that are not overlapping with an annotation
                 print("filtering un-annotated object from the mask")
-                labeled_mask[np.where(labeled_mask == i)] = 0
+                labeled_mask1[np.where(labeled_mask == i)] = 0
 
-        completed_mask_bin = np.where(labeled_mask > 0, 255, 0)
+        completed_mask_bin = np.where(labeled_mask1 > 0, 255, 0)
         labeled_mask_all, _ = create_labels(mask=completed_mask_bin)
-        completed_mask = np.copy(labeled_mask_all)
-        _, counts = np.unique(completed_mask, return_counts=True)
+        labeled_annotation_overlap_mask = apply_mask(img=labeled_mask_all, mask=pts_mask, mask_color='black')
+        id, counts = np.unique(labeled_annotation_overlap_mask, return_counts=True)
 
         object_count = 0
         # points in class used for recovering and labeling
@@ -225,8 +226,7 @@ class Points:
                     print(f"Un-Recoverable object at coordinate: x = {x}, y = {y}")
                     unrecovered_ids.append(i)
                 else:
-                    mask_pixel_value = completed_mask[y, x]
-                    print(counts[mask_pixel_value])
+                    mask_pixel_value = labeled_mask_all[y, x]
                     # if only one annotation overlap, then done, add label to list
                     if counts[mask_pixel_value] == 1:
                         list_labels.append(str(object_count)+"_"+names)
@@ -235,7 +235,6 @@ class Points:
                     else:
                         multiple_labels = np.where(masked_image == mask_pixel_value)
                         # get coordinate info and trace back to find class label name
-                        print(multiple_labels)
                     # else combine labels ?
                 object_count += 1
 
@@ -258,7 +257,7 @@ class Points:
                 self.coords[names] = new_points
 
         params.debug = debug
-        _debug(visual=completed_mask,
+        _debug(visual=labeled_mask_all,
                filename=os.path.join(params.debug_outdir,
                                      f"{params.device}_annotation-corrected.png"))
-        return completed_mask, list_labels
+        return labeled_mask_all, list_labels
