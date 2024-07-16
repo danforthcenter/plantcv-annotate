@@ -236,7 +236,6 @@ class Points:
                     if counts[mask_pixel_value] == 1:
                         list_labels.append(str(object_count)+"_"+names)
                     # otherwise combine labels if classes unique & drop labels in not unique
-                    # can we draw "unresolved" annotations where the duplicate labels happen?
                     else:
                         #multiple_labels = np.where(masked_image == mask_pixel_value)
                         # get coordinate info and trace back to find class label name(s)
@@ -254,7 +253,7 @@ class Points:
                     unrec_points.append((x, y))
                     # draw a labeled pixel, pix value unique to those found in labeled_mask from bin_img
                     completed_mask[y, x] = total_pts_num + j
-                    list_labels.append(str(object_count)+"_"+names+"_unrecovered")
+                    list_labels.append(str(id)+"_"+names+"_unrecovered")
                 # Put unrecovered coords into new class
                 self.coords[str(names)+"_unrecovered"] = unrec_points
                 # Overwrite attribute, only coords that have corresponding objects in the completed_mask
