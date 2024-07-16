@@ -262,9 +262,10 @@ class Points:
                     if i not in unrecovered_ids:
                         new_points.append((x, y))
                 self.coords[names] = new_points
-
+        
+        list_labels.sort()
         params.debug = debug
         _debug(visual=final_mask,
                filename=os.path.join(params.debug_outdir,
                                      f"{params.device}_annotation-corrected.png"))
-        return final_mask, list_labels.sort()
+        return final_mask, list_labels
