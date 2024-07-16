@@ -203,7 +203,6 @@ class Points:
         # Objects that overlap with one or more annotations get kept
         masked_image = apply_mask(img=labeled_mask1, mask=pts_mask, mask_color='black')
         keep_object_ids = np.unique(masked_image)
-        print(keep_object_ids)
 
         # Fill in objects that are not overlapping with an annotation
         for i in range(1, total_obj_num + 1):
