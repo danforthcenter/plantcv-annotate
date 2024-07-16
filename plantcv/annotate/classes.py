@@ -223,13 +223,13 @@ class Points:
             for i, (x, y) in enumerate(self.coords[names]):
                 x = int(x)
                 y = int(y)
-                if bin_img[y, x] == 0:
+                mask_pixel_value = labeled_mask_all[y, x]
+                if mask_pixel_value == 0:
                     print(f"Un-Recoverable object at coordinate: x = {x}, y = {y}")
                     unrecovered_ids.append(i)
                     # Add a pixel where unresolved annotation to the mask
                     final_mask = cv2.circle(final_mask, (x, y), radius=0, color=(i), thickness=-1)
                 else:
-                    mask_pixel_value = labeled_mask_all[y, x]
                     # DRAW on labeled mask with correct pixel value (object ID and np.where to copy with new label ID i)
                     final_mask = np.where(labeled_mask_all == mask_pixel_value, i, final_mask)
                     # if only one annotation overlap, then done, add label to list
