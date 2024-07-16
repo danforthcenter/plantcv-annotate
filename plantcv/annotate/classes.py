@@ -267,4 +267,4 @@ class Points:
         _debug(visual=final_mask,
                filename=os.path.join(params.debug_outdir,
                                      f"{params.device}_annotation-corrected.png"))
-        return final_mask, list_labels
+        return final_mask, list_labels.sort()
