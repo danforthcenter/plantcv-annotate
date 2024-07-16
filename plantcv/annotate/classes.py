@@ -223,7 +223,7 @@ class Points:
             for i, (x, y) in enumerate(self.coords[names]):
                 x = int(x)
                 y = int(y)
-                if completed_mask[y, x] == 0 and bin_img[y, x] == 0:
+                if bin_img[y, x] == 0:
                     print(f"Un-Recoverable object at coordinate: x = {x}, y = {y}")
                     unrecovered_ids.append(i)
                     # Add a pixel where unresolved annotation to the mask
