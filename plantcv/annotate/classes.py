@@ -261,7 +261,7 @@ class Points:
                     if i not in unrecovered_ids:
                         new_points.append((x, y))
                 self.coords[names] = new_points
-        
+
         list_labels.sort()
         params.debug = debug
         _debug(visual=final_mask,
