@@ -222,7 +222,7 @@ class Points:
                 else:
                     # DRAW on labeled mask with correct pixel value (object ID and np.where to copy with new label ID i)
                     final_mask = np.where(labeled_mask_all == mask_pixel_value, i, final_mask)
-                    
+
         params.debug = debug
         _debug(visual=final_mask,
                filename=os.path.join(params.debug_outdir,
