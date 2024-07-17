@@ -180,13 +180,8 @@ class Points:
         params.debug = None
 
         labelnames = list(self.count)
-
-        completed_mask = np.copy(bin_img)
-
         totalcoor = []
         unrecovered_ids = []
-        list_labels = []
-        total_pts_num = sum(self.count.values())
         pts_mask = np.zeros(np.shape(bin_img))
         final_mask = np.zeros(np.shape(bin_img))
 
@@ -207,16 +202,12 @@ class Points:
         # Fill in objects that are not overlapping with an annotation
         for i in range(1, total_obj_num + 1):
             if i not in keep_object_ids:
-                print("filtering un-annotated object from the mask")
                 labeled_mask1[np.where(labeled_mask == i)] = 0
         # Create new binary mask after filtering un-annotated objects
         completed_mask_bin = np.where(labeled_mask1 > 0, 255, 0)
         # Create a new labeled annotation mask to determine number of annotation per object
         labeled_mask_all, _ = create_labels(mask=completed_mask_bin)
-        labeled_annotation_overlap_mask = apply_mask(img=labeled_mask_all, mask=pts_mask, mask_color='black')
-        id, counts = np.unique(labeled_annotation_overlap_mask, return_counts=True)
 
-        object_count = 0
         # points in class used for recovering and labeling
         for names in labelnames:
             for i, (x, y) in enumerate(self.coords[names]):
@@ -231,40 +222,9 @@ class Points:
                 else:
                     # DRAW on labeled mask with correct pixel value (object ID and np.where to copy with new label ID i)
                     final_mask = np.where(labeled_mask_all == mask_pixel_value, i, final_mask)
-                    # if only one annotation overlap, then done, add label to list
-                    if counts[mask_pixel_value] == 1:
-                        list_labels.append(str(object_count)+"_"+names)
-                    # otherwise combine labels if classes unique & drop labels in not unique
-                    else:
-                        #multiple_labels = np.where(masked_image == mask_pixel_value)
-                        # get coordinate info and trace back to find class label name(s)
-                        # combine labels from both classes if unique
-                        #list_labels.append(combined_name)
-                        # if not unique then skip all except the first?
-                        print("Complex replicate handled")
-                object_count += 1
-
-            # Split up "coords" attribute into two classes
-            if len(unrecovered_ids) > 0:
-                unrec_points = []
-                for j, id in enumerate(unrecovered_ids, start=0):
-                    (x, y) = self.coords[names][id]
-                    unrec_points.append((x, y))
-                    # draw a labeled pixel, pix value unique to those found in labeled_mask from bin_img
-                    completed_mask[y, x] = total_pts_num + j
-                    list_labels.append(str(id)+"_"+names+"_unrecovered")
-                # Put unrecovered coords into new class
-                self.coords[str(names)+"_unrecovered"] = unrec_points
-                # Overwrite attribute, only coords that have corresponding objects in the completed_mask
-                new_points = []
-                for i, (x, y) in enumerate(self.coords[names]):
-                    if i not in unrecovered_ids:
-                        new_points.append((x, y))
-                self.coords[names] = new_points
-
-        list_labels.sort()
+                    
         params.debug = debug
         _debug(visual=final_mask,
                filename=os.path.join(params.debug_outdir,
                                      f"{params.device}_annotation-corrected.png"))
-        return final_mask, list_labels
+        return final_mask
