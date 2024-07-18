@@ -94,6 +94,9 @@ colorful = pcv.visualize.colorize_label_img(label_img=corrected_mask)
 # Analysis steps here
 size_img = pcv.analyze.size(img=img, labeled_mask=corrected_mask, n_labels=num)
 ```
+**Annotations post Human Corrections**
+
+![Screenshot](img/documentation_images/points_correct_mask/annotated_stomata.png)
 
 **Corrected (and [Colorized](https://plantcv.readthedocs.io/en/stable/visualize_colorize_label_img/)) Mask**
 
