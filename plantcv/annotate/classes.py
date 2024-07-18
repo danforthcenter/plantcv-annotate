@@ -227,4 +227,7 @@ class Points:
         _debug(visual=final_mask,
                filename=os.path.join(params.debug_outdir,
                                      f"{params.device}_annotation-corrected.png"))
-        return final_mask
+        # Count the number of objects in the final mask
+        num = len(np.unique(final_mask))
+
+        return final_mask, num
