@@ -27,8 +27,8 @@ closest collected point.
     - Used to define a list of coordinates of interest.
     - Can be helpful to ground truth counting algorithms, and exported coordinates could be used in other image analysis workflows.
 - **Example use:**
-    - (pcv.roi.multi)
-    - Shown below (pcv.roi.custom)
+    - [pcv.roi.multi](https://plantcv.readthedocs.io/en/stable/roi_multi/)
+    - Shown below [pcv.roi.custom](https://plantcv.readthedocs.io/en/stable/roi_custom/)
 
 
 ```python
@@ -64,13 +64,13 @@ Using [Jupyter Notebooks](https://plantcv.readthedocs.io/en/stable/jupyter/) it 
     - Remove noise from a microscopy image that is otherwise difficult to filter out with traditional computer vision
     techniques, and recover stomata that were filtered out during mask cleaning. 
 
-**Original Image with Annotations**
+**Original Image with "auto-detected" Annotations**
 
-![Screenshot](img/documentation_images/points_correct_mask/annotated_stomata.png)
+![Screenshot](img/documentation_images/points_correct_mask/auto_annotated_stomata.png)
 
 **bin_img**
 
-![Screenshot](img/documentation_images/points_correct_mask/bin_img.png)
+![Screenshot](img/documentation_images/points_correct_mask/bin_mask.png)
 
 ```python
 import plantcv.plantcv as pcv 
@@ -79,22 +79,28 @@ import plantcv.annotate as pcvan
 # Create an instance of the Points class
 img, path, name = pcv.readimage("stomata.tif")
 
-# Segmentation & mask clean up steps here 
+# Segmentation & mask clean up, get_centroids steps here 
 
 # Create an instance of the Points class & click on stomata
 marker = pcvan.Points(img=img, figsize=(12,6))
+marker.import_list(coords=centroid_coords, label="stomata")
 
-corrected_mask = marker.correct_mask(bin_img=mask_clean, bin_img_recover=bin_img_recover)
+# Filter the binary mask based on corrected annotations
+corrected_mask = marker.correct_mask(bin_img=bin_mask)
 
-debug_vis = pcv.visualize.overlay_two_imgs(img, corrected_mask, alpha=.4)
+# Optional for visualization
+colorful = pcv.visualize.colorize_label_img(label_img=corrected_mask)
+
+# Analysis steps here
+size_img = pcv.analyze.size(img=img, labeled_mask=corrected_mask, n_labels=num)
 ```
 
-**Corrected Mask**
+**Corrected (and [Colorized](https://plantcv.readthedocs.io/en/stable/visualize_colorize_label_img/)) Mask**
 
-![Screenshot](img/documentation_images/points_correct_mask/corrected_mask.png)
+![Screenshot](img/documentation_images/points_correct_mask/colorized_labele_img.png)
 
-**Overlaid Image**
+**Size Analysis Image**
 
-![Screenshot](img/documentation_images/points_correct_mask/overlay.png)
+![Screenshot](img/documentation_images/points_correct_mask/shape_img.png)
 
 **Source Code:** [Here](https://github.com/danforthcenter/plantcv-annotate/blob/main/plantcv/annoate/classes.py)
