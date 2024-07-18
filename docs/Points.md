@@ -52,13 +52,13 @@ Using [Jupyter Notebooks](https://plantcv.readthedocs.io/en/stable/jupyter/) it 
 
 **plantcv.annotate.Points.correct_mask**(*bin_img*)
 
-**returns** corrected_mask
+**returns** corrected_mask, num
 
 - **Parameters:**
     - bin_img - binary image, filtered mask image with selected objects
     
 - **Context:**
-    - Filters objects from the `bin_mask` if they do not overlap with an annotation in the `Points` class instance. Also adds a labeled pixel to the corrected mask if an object cannot be resolved for any annotations.
+    - Filters objects from the `bin_mask` if they do not overlap with an annotation in the `Points` class instance. Also adds a labeled pixel to the corrected mask if an object cannot be resolved for any annotations. Also returns the number of unique objects in the `corrected_mask` which is useful for downstream analysis.
 
 - **Example use:**
     - Remove noise from a microscopy image that is otherwise difficult to filter out with traditional computer vision
@@ -86,7 +86,7 @@ marker = pcvan.Points(img=img, figsize=(12,6))
 marker.import_list(coords=centroid_coords, label="stomata")
 
 # Filter the binary mask based on corrected annotations
-corrected_mask = marker.correct_mask(bin_img=bin_mask)
+corrected_mask, num = marker.correct_mask(bin_img=bin_mask)
 
 # Optional visualization
 colorful = pcv.visualize.colorize_label_img(label_img=corrected_mask)
