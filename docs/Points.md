@@ -1,6 +1,6 @@
 ## Interactive Point Annotation Tool
 
-Using [Jupyter Notebooks](https://plantcv.readthedocs.io/en/stable/jupyter/) it is possible to interactively click to collect coordinates from an image, which can be used in various downstream applications. Left click on the image to collect a point. Right click removes the
+Using [Jupyter Notebooks](https://plantcv.readthedocs.io/en/stable/jupyter/) it is possible to interactively click on an image to collect coordinates, which can be used in various downstream applications. Left click on the image to collect a point. Right click removes the
 closest collected point.
 
 **plantcv.annotate.Points**(*img, figsize=(12,6), label="dafault"*)
@@ -13,9 +13,9 @@ closest collected point.
     - label - The current label (default = "default")
 
 - **Attributes:**
-    - coords - dictionary of all coordinates per group label
+    - coords - dictionary of all coordinates per sample label
     - events - includes right and left click events
-    - count - dictionary that save the counts of different groups (labels)
+    - count - dictionary that save the counts of different groups (sample_labels)
     - label - the current label
     - sample_labels - list of all sample labels, one to one with coordinates collected 
     - view_all - flag indicating whether or not to view all labels 
@@ -64,13 +64,13 @@ Using [Jupyter Notebooks](https://plantcv.readthedocs.io/en/stable/jupyter/) it 
     - Remove noise from a microscopy image that is otherwise difficult to filter out with traditional computer vision
     techniques, and recover stomata that were filtered out during mask cleaning. 
 
-**Original Image with "auto-detected" Annotations**
-
-![Screenshot](img/documentation_images/points_correct_mask/auto_annotated_stomata.png)
-
 **bin_img**
 
 ![Screenshot](img/documentation_images/points_correct_mask/bin_mask.png)
+
+**Original Image with "auto-detected" Annotations**
+
+![Screenshot](img/documentation_images/points_correct_mask/auto_annotated_stomata.png)
 
 ```python
 import plantcv.plantcv as pcv 
@@ -88,7 +88,7 @@ marker.import_list(coords=centroid_coords, label="stomata")
 # Filter the binary mask based on corrected annotations
 corrected_mask = marker.correct_mask(bin_img=bin_mask)
 
-# Optional for visualization
+# Optional visualization
 colorful = pcv.visualize.colorize_label_img(label_img=corrected_mask)
 
 # Analysis steps here
@@ -97,7 +97,7 @@ size_img = pcv.analyze.size(img=img, labeled_mask=corrected_mask, n_labels=num)
 
 **Corrected (and [Colorized](https://plantcv.readthedocs.io/en/stable/visualize_colorize_label_img/)) Mask**
 
-![Screenshot](img/documentation_images/points_correct_mask/colorized_labele_img.png)
+![Screenshot](img/documentation_images/points_correct_mask/colorized_label_img.png)
 
 **Size Analysis Image**
 
