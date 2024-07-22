@@ -182,8 +182,10 @@ class Points:
         labelnames = list(self.count)
         totalcoor = []
         unrecovered_ids = []
-        pts_mask = np.zeros(np.shape(bin_img))
-        final_mask = np.zeros(np.shape(bin_img))
+        pts_mask = np.zeros(np.shape(bin_img), np.uint8)
+        final_mask = pts_mask.copy()
+        debug_img = pts_mask.copy()
+        debug_img = cv2.cvtColor(debug_img, cv2.COLOR_GRAY2RGB)
 
         for names in labelnames:
             for i, (x, y) in enumerate(self.coords[names]):
@@ -203,6 +205,7 @@ class Points:
         for i in range(1, total_obj_num + 1):
             if i not in keep_object_ids:
                 labeled_mask1[np.where(labeled_mask == i)] = 0
+                debug_img[np.where(labeled_mask == i)] = (50,50,50)
         # Create new binary mask after filtering un-annotated objects
         completed_mask_bin = np.where(labeled_mask1 > 0, 255, 0)
         # Create a new labeled annotation mask to determine number of annotation per object
@@ -227,6 +230,9 @@ class Points:
         _debug(visual=final_mask,
                filename=os.path.join(params.debug_outdir,
                                      f"{params.device}_annotation-corrected.png"))
+        _debug(visual=debug_img,
+               filename=os.path.join(params.debug_outdir,
+                                     f"{params.device}_annotation-corrected-debug.png"))
         # Count the number of objects in the final mask
         num = len(np.unique(final_mask))
 
