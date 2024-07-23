@@ -176,12 +176,16 @@ class Points:
         final_mask : numpy.ndarray
             corrected and labeled mask with recovered and removed objects
         """
+        from plantcv.plantcv import color_palette
+
         debug = params.debug
         params.debug = None
 
         labelnames = list(self.count)
         totalcoor = []
         unrecovered_ids = []
+        debug_coords = []
+        debug_labels = []
         pts_mask = np.zeros(np.shape(bin_img), np.uint8)
         final_mask = pts_mask.copy()
         debug_img = pts_mask.copy()
@@ -200,6 +204,8 @@ class Points:
         # Objects that overlap with one or more annotations get kept
         masked_image = apply_mask(img=labeled_mask1, mask=pts_mask, mask_color='black')
         keep_object_ids = np.unique(masked_image)
+        # Create a color scale, use a previously stored scale if available
+        rand_color = color_palette(num=len(keep_object_ids), saved=True)
 
         # Fill in objects that are not overlapping with an annotation
         for i in range(1, total_obj_num + 1):
@@ -217,15 +223,25 @@ class Points:
                 x = int(x)
                 y = int(y)
                 mask_pixel_value = labeled_mask_all[y, x]
+                text = f"ID:{i}"
+                
+                debug_coords.append(tuple([x,y]))
+                debug_labels.append(text)
+                
                 if mask_pixel_value == 0:
                     print(f"Un-Recoverable object at coordinate: x = {x}, y = {y}")
                     unrecovered_ids.append(i)
                     # Add a pixel where unresolved annotation to the mask
                     final_mask = cv2.circle(final_mask, (x, y), radius=0, color=(i), thickness=-1)
+                    # Add a thicker pixel where unresolved annotation to the debug img
+                    debug_img = cv2.circle(debug_img, (x, y), radius=params.line_thickness, color=(i), thickness=-1)
                 else:
                     # DRAW on labeled mask with correct pixel value (object ID and np.where to copy with new label ID i)
                     final_mask = np.where(labeled_mask_all == mask_pixel_value, i, final_mask)
-
+                    debug_img = np.where(labeled_mask_all == mask_pixel_value, i, final_mask)
+        for id, id_label in enumerate(debug_labels):
+            cv2.putText(img=debug_img, text=id_label, org=debug_coords[id], fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                        fontScale=params.text_size, color=(150, 150, 150), thickness=params.text_thickness)
         params.debug = debug
         _debug(visual=final_mask,
                filename=os.path.join(params.debug_outdir,
