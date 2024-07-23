@@ -176,7 +176,7 @@ class Points:
         final_mask : numpy.ndarray
             corrected and labeled mask with recovered and removed objects
         """
-        from plantcv.plantcv import color_palette
+        from plantcv.plantcv.visualize import colorize_label_img
 
         debug = params.debug
         params.debug = None
@@ -189,8 +189,10 @@ class Points:
         pts_mask = np.zeros(np.shape(bin_img), np.uint8)
         final_mask = pts_mask.copy()
         debug_img = pts_mask.copy()
+        
         debug_img = cv2.cvtColor(debug_img, cv2.COLOR_GRAY2RGB)
-
+        debug_img_removed = debug_img.copy()
+        
         for names in labelnames:
             for i, (x, y) in enumerate(self.coords[names]):
                 x = int(x)
@@ -204,14 +206,12 @@ class Points:
         # Objects that overlap with one or more annotations get kept
         masked_image = apply_mask(img=labeled_mask1, mask=pts_mask, mask_color='black')
         keep_object_ids = np.unique(masked_image)
-        # Create a color scale, use a previously stored scale if available
-        rand_color = color_palette(num=len(keep_object_ids), saved=True)
 
         # Fill in objects that are not overlapping with an annotation
         for i in range(1, total_obj_num + 1):
             if i not in keep_object_ids:
                 labeled_mask1[np.where(labeled_mask == i)] = 0
-                debug_img[np.where(labeled_mask == i)] = (50,50,50)
+                debug_img_removed[np.where(labeled_mask == i)] = (50,50,50)
         # Create new binary mask after filtering un-annotated objects
         completed_mask_bin = np.where(labeled_mask1 > 0, 255, 0)
         # Create a new labeled annotation mask to determine number of annotation per object
@@ -239,6 +239,9 @@ class Points:
                     # DRAW on labeled mask with correct pixel value (object ID and np.where to copy with new label ID i)
                     final_mask = np.where(labeled_mask_all == mask_pixel_value, i, final_mask)
                     debug_img = np.where(labeled_mask_all == mask_pixel_value, i, final_mask)
+        
+        debug_img = colorize_label_img(debug_img)
+        debug_img = debug_img + debug_img_removed
         for id, id_label in enumerate(debug_labels):
             cv2.putText(img=debug_img, text=id_label, org=debug_coords[id], fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                         fontScale=params.text_size, color=(150, 150, 150), thickness=params.text_thickness)
