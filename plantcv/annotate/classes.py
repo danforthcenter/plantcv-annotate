@@ -218,9 +218,7 @@ class Points:
         labeled_mask_all, _ = create_labels(mask=completed_mask_bin)
 
         # points in class used for recovering and labeling
-        multiplier = 0
         for names in labelnames:
-            multiplier =+1 
             for i, (x, y) in enumerate(self.coords[names]):
                 x = int(x)
                 y = int(y)
@@ -234,9 +232,10 @@ class Points:
                     print(f"Un-Recoverable object at coordinate: x = {x}, y = {y}")
                     unrecovered_ids.append(i)
                     # Add a pixel where unresolved annotation to the mask
-                    final_mask = cv2.circle(final_mask, (x, y), radius=0, color=i+1, thickness=-1)
+                    final_mask = cv2.circle(final_mask, (x, y), radius=0, color=(i+1), thickness=-1)
                     # Add a thicker pixel where unresolved annotation to the debug img
-                    debug_img = cv2.circle(debug_img, (x, y), radius=int(params.line_thickness), color=i+1, thickness=-1)
+                    j = i+1
+                    debug_img = cv2.circle(debug_img, (x, y), params.line_thickness, color=(j, j, j), thickness=2)
                 else:
                     # DRAW on labeled mask with correct pixel value (object ID and np.where to copy with new label ID i)
                     final_mask = np.where(labeled_mask_all == mask_pixel_value, i+1, final_mask)
