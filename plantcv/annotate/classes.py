@@ -254,4 +254,4 @@ class Points:
         # Count the number of objects in the final mask
         num = len(np.unique(final_mask))
 
-        return final_mask, num, debug_img
+        return final_mask, num
