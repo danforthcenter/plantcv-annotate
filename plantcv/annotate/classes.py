@@ -189,9 +189,8 @@ class Points:
         pts_mask = np.zeros(np.shape(bin_img), np.uint8)
         final_mask = pts_mask.copy()
         debug_img = pts_mask.copy()
-        
-        debug_img = cv2.cvtColor(debug_img, cv2.COLOR_GRAY2RGB)
-        debug_img_removed = debug_img.copy()
+        debug_img_removed = pts_mask.copy()
+        debug_img_removed = cv2.cvtColor(debug_img_removed, cv2.COLOR_GRAY2RGB)
         
         for names in labelnames:
             for i, (x, y) in enumerate(self.coords[names]):
@@ -223,7 +222,7 @@ class Points:
                 x = int(x)
                 y = int(y)
                 mask_pixel_value = labeled_mask_all[y, x]
-                text = f"ID:{i}"
+                text = f"ID:{i+1}"
                 
                 debug_coords.append(tuple([x,y]))
                 debug_labels.append(text)
@@ -234,12 +233,11 @@ class Points:
                     # Add a pixel where unresolved annotation to the mask
                     final_mask = cv2.circle(final_mask, (x, y), radius=0, color=(i+1), thickness=-1)
                     # Add a thicker pixel where unresolved annotation to the debug img
-                    j = i+1
-                    debug_img = cv2.circle(debug_img, (x, y), params.line_thickness, color=(j, j, j), thickness=2)
+                    debug_img = cv2.circle(debug_img, (x, y), radius=params.line_thickness, color=(i+1), thickness=-1)
                 else:
                     # DRAW on labeled mask with correct pixel value (object ID and np.where to copy with new label ID i)
                     final_mask = np.where(labeled_mask_all == mask_pixel_value, i+1, final_mask)
-                    debug_img = np.where(labeled_mask_all == mask_pixel_value, i+1, final_mask)
+                    debug_img = np.where(labeled_mask_all == mask_pixel_value, i+1, debug_img)
         
         debug_img = colorize_label_img(debug_img)
         debug_img = debug_img + debug_img_removed
