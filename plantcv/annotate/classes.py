@@ -222,7 +222,7 @@ class Points:
                 x = int(x)
                 y = int(y)
                 mask_pixel_value = labeled_mask_all[y, x]
-                text = f"ID:{i+1}"
+                text = str(i+1)
                 
                 debug_coords.append(tuple([x,y]))
                 debug_labels.append(text)
