@@ -164,17 +164,19 @@ class Points:
                 self.ax.plot(x, y, marker='x', c=self.color)
 
     def correct_mask(self, bin_img):
-        """View coordinates for a specific class label.
+        """Fitler a binary mask and make a labeled mask for analysis.
 
         Parameters
         ----------
         bin_img : numpy.ndarray
-            binary image, filtered mask image with selected objects
+            binary image, mask to get corrected
 
         Returns
         ----------
         final_mask : numpy.ndarray
             corrected and labeled mask with recovered and removed objects
+        num : int
+            number of objects represented within the labeled mask
         """
         from plantcv.plantcv.visualize import colorize_label_img
 
