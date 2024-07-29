@@ -188,7 +188,7 @@ class Points:
         debug_coords = []
         debug_labels = []
         pts_mask = np.zeros(np.shape(bin_img), np.uint8)
-        final_mask = pts_mask.copy()
+        final_mask = pts_mask.copy().astype(np.uint32)
         debug_img = pts_mask.copy()
         debug_img_removed = pts_mask.copy()
         debug_img_removed = cv2.cvtColor(debug_img_removed, cv2.COLOR_GRAY2RGB)
