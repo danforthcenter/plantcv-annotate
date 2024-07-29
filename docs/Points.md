@@ -36,7 +36,7 @@ import plantcv.plantcv as pcv
 import plantcv.annotate as an
 
 # Create an instance of the Points class
-marker = an.Points(img=img, figsize=(12,6))
+marker = an.Points(img=img, figsize=(12,6), label='default')
 
 # Click on the plotted image to collect coordinates
 
@@ -62,7 +62,10 @@ Using [Jupyter Notebooks](https://plantcv.readthedocs.io/en/stable/jupyter/) it 
     - num - The number of unique objects in the `corrected_mask`.
 
 - **Context:**
-    - Filters objects from the `bin_mask` if they do not overlap with an annotation in the `Points` class instance. Also adds a labeled pixel to the corrected mask if an object cannot be resolved for any annotations. Also returns the number of unique objects in the `corrected_mask` which is useful for downstream analysis.
+    - Filters objects from the `bin_mask` if they do not overlap with an annotation in the `Points` class instance. 
+    - Adds a labeled pixel to the corrected mask if an object cannot be resolved for any annotations (false negatives can be counted but cannot have their size measured downstream). 
+    - Returns the number of unique objects in the `corrected_mask` which is useful for downstream analysis.
+    - Debug image is a colorized representation of the labeled mask. The "unresolved" annotation replicates are plotted with a radius of `pcv.params.line_thickness` (default = 5). 
 
 - **Example use:**
     - Remove noise from a microscopy image that is otherwise difficult to filter out with traditional computer vision
