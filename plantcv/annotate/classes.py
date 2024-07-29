@@ -182,7 +182,6 @@ class Points:
 
         debug = params.debug
         params.debug = None
-
         labelnames = list(self.count)
         totalcoor = []
         unrecovered_ids = []
@@ -193,7 +192,7 @@ class Points:
         debug_img = pts_mask.copy()
         debug_img_removed = pts_mask.copy()
         debug_img_removed = cv2.cvtColor(debug_img_removed, cv2.COLOR_GRAY2RGB)
-        
+
         for names in labelnames:
             for i, (x, y) in enumerate(self.coords[names]):
                 x = int(x)
@@ -212,23 +211,21 @@ class Points:
         for i in range(1, total_obj_num + 1):
             if i not in keep_object_ids:
                 labeled_mask1[np.where(labeled_mask == i)] = 0
-                debug_img_removed[np.where(labeled_mask == i)] = (50,50,50)
+                debug_img_removed[np.where(labeled_mask == i)] = (50, 50, 50)
         # Create new binary mask after filtering un-annotated objects
         completed_mask_bin = np.where(labeled_mask1 > 0, 255, 0)
         # Create a new labeled annotation mask to determine number of annotation per object
         labeled_mask_all, _ = create_labels(mask=completed_mask_bin)
-
-        # points in class used for recovering and labeling
+        # pts in class used for recovering and labeling
         for names in labelnames:
             for i, (x, y) in enumerate(self.coords[names]):
                 x = int(x)
                 y = int(y)
                 mask_pixel_value = labeled_mask_all[y, x]
                 text = str(i+1)
-                
-                debug_coords.append(tuple([x,y]))
+                debug_coords.append((x, y))
                 debug_labels.append(text)
-                
+                # Check if current annotation can be resolved to an object in the mask
                 if mask_pixel_value == 0:
                     print(f"Un-Recoverable object at coordinate: x = {x}, y = {y}")
                     unrecovered_ids.append(i)
@@ -237,10 +234,10 @@ class Points:
                     # Add a thicker pixel where unresolved annotation to the debug img
                     debug_img = cv2.circle(debug_img, (x, y), radius=params.line_thickness, color=(i+1), thickness=-1)
                 else:
-                    # DRAW on labeled mask with correct pixel value (object ID and np.where to copy with new label ID i)
+                    # Draw on labeled mask with correct pixel value
                     final_mask = np.where(labeled_mask_all == mask_pixel_value, i+1, final_mask)
                     debug_img = np.where(labeled_mask_all == mask_pixel_value, i+1, debug_img)
-        
+
         debug_img = colorize_label_img(debug_img)
         debug_img = debug_img + debug_img_removed
         for id, id_label in enumerate(debug_labels):
