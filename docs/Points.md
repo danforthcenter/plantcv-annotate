@@ -95,9 +95,6 @@ marker.import_list(coords=centroid_coords, label="stomata")
 # Filter the binary mask based on corrected annotations
 corrected_mask, num = marker.correct_mask(bin_img=bin_mask)
 
-# Optional visualization
-colorful = pcv.visualize.colorize_label_img(label_img=corrected_mask)
-
 # Analysis steps here
 size_img = pcv.analyze.size(img=img, labeled_mask=corrected_mask, n_labels=num)
 ```
