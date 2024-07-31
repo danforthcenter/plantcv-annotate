@@ -224,7 +224,7 @@ class Points:
                 x = int(x)
                 y = int(y)
                 mask_pixel_value = labeled_mask_all[y, x]
-                text = str(i+1)
+                text = str(object_id_count)
                 debug_coords.append((x, y))
                 debug_labels.append(text)
                 # Check if current annotation can be resolved to an object in the mask
