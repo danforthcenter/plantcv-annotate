@@ -179,6 +179,7 @@ class Points:
             number of objects represented within the labeled mask
         """
         from plantcv.plantcv.visualize import colorize_label_img
+        from plantcv.plantcv import dilate
 
         debug = params.debug
         params.debug = None
@@ -194,6 +195,7 @@ class Points:
         debug_img = pts_mask.copy()
         debug_img_removed = pts_mask.copy()
         debug_img_removed = cv2.cvtColor(debug_img_removed, cv2.COLOR_GRAY2RGB)
+        debug_img_duplicates = debug_img_removed.copy()
 
         for names in labelnames:
             for i, (x, y) in enumerate(self.coords[names]):
@@ -255,7 +257,7 @@ class Points:
                         coord_class_label = [k for k, v in self.coords.items() if (x, y) in v]
                         if coord_class_label[0] in original_label:
                             # We found a duplicate so skip ????? 
-                            debug_img = np.where(labeled_mask_all == mask_pixel_value, 0.5, debug_img)
+                            debug_img_duplicates = np.where(labeled_mask_all == mask_pixel_value, (255), debug_img)
                             pass
                         else:
                             # Combine labels 
@@ -264,8 +266,10 @@ class Points:
                 object_id_count += 1
 
         # Combine and colorize the debug image
+        debug_img_duplicates = dilate(debug_img_duplicates, ksize=params.line_thickness, i=1)
+        debug_img_duplicates = cv2.cvtColor(debug_img_duplicates, cv2.COLOR_GRAY2RGB)
         debug_img = colorize_label_img(debug_img)
-        debug_img = debug_img + debug_img_removed
+        debug_img = debug_img + debug_img_removed + debug_img_duplicates
         # Write ID labels
         for id, id_label in enumerate(debug_labels):
             cv2.putText(img=debug_img, text=id_label, org=debug_coords[id], fontFace=cv2.FONT_HERSHEY_SIMPLEX,
