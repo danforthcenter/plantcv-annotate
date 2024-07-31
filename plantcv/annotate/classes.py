@@ -188,6 +188,7 @@ class Points:
         debug_coords = []
         debug_labels = []
         added_obj_labels = []
+        added_obj_classes = []
         pts_mask = np.zeros(np.shape(bin_img), np.uint8)
         final_mask = pts_mask.copy().astype(np.uint32)
         debug_img = pts_mask.copy()
@@ -241,13 +242,20 @@ class Points:
                     if mask_pixel_value not in added_obj_labels:
                         # New object getting added
                         added_obj_labels.append(mask_pixel_value)
+                        added_obj_classes.append(names)
                         # Draw on labeled mask with correct pixel value
                         final_mask = np.where(labeled_mask_all == mask_pixel_value, object_id_count, final_mask)
                         debug_img = np.where(labeled_mask_all == mask_pixel_value, object_id_count, debug_img)
                     else:
+                        original_label = added_obj_classes[added_obj_labels.index(mask_pixel_value)]
                         # Determine label duplicate or unique for combination
-                        class_labels_list = [k for k, v in self.coords.items() if v == (x,y)]
-                        print(class_labels_list)
+                        coord_class_label = [k for k, v in self.coords.items() if (x, y) in v]
+                        if original_label == coord_class_label:
+                            # We found a duplicate so skip ????? 
+                            pass
+                        else:
+                            # Combine labels 
+                            added_obj_classes[added_obj_labels.index(mask_pixel_value)] = original_label + "_" + coord_class_label[0]
 
                 object_id_count += 1
 
@@ -267,5 +275,6 @@ class Points:
                                      f"{params.device}_annotation-corrected-debug.png"))
         # Count the number of objects in the final mask
         num = len(np.unique(final_mask))
+        print(added_obj_classes)
 
         return final_mask, num
