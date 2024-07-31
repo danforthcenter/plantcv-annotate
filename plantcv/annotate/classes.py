@@ -229,12 +229,10 @@ class Points:
                 debug_labels.append(text)
                 # Check if current annotation can be resolved to an object in the mask
                 if mask_pixel_value == 0:
-                    print(f"Un-Recoverable object at coordinate: x = {x}, y = {y}")
+                    print(f"Object could not be resolved at coordinate: x = {x}, y = {y}")
                     unrecovered_ids.append(i)
                     # Add a pixel where unresolved annotation to the mask
-                    # final_mask = cv2.circle(final_mask, (x, y), radius=0,
-                    #                         color=(object_id_count), thickness=-1)
-                    cv2.drawContours(final_mask, [(x, y)], -1, (object_id_count), -1)
+                    final_mask[y,x] = object_id_count
                     # Add a thicker pixel where unresolved annotation to the debug img
                     cv2.circle(debug_img, (x, y), radius=params.line_thickness, color=(object_id_count), thickness=-1)
                 else:
@@ -243,8 +241,10 @@ class Points:
                     debug_img = np.where(labeled_mask_all == mask_pixel_value, object_id_count, debug_img)
                 object_id_count += 1
 
+        # Combine and colorize the debug image
         debug_img = colorize_label_img(debug_img)
         debug_img = debug_img + debug_img_removed
+        # Write ID labels
         for id, id_label in enumerate(debug_labels):
             cv2.putText(img=debug_img, text=id_label, org=debug_coords[id], fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                         fontScale=params.text_size, color=(150, 150, 150), thickness=params.text_thickness)
