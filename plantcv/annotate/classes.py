@@ -249,10 +249,11 @@ class Points:
                         final_mask = np.where(labeled_mask_all == mask_pixel_value, object_id_count, final_mask)
                         debug_img = np.where(labeled_mask_all == mask_pixel_value, object_id_count, debug_img)
                     else:
+                        # Object annotated more than once so find original object label 
                         original_label = analysis_labels[added_obj_labels.index(mask_pixel_value)]
                         # Determine label duplicate or unique for combination
                         coord_class_label = [k for k, v in self.coords.items() if (x, y) in v]
-                        if original_label == coord_class_label[0]:
+                        if coord_class_label[0] in original_label:
                             # We found a duplicate so skip ????? 
                             debug_img = np.where(labeled_mask_all == mask_pixel_value, 0.5, debug_img)
                             pass
