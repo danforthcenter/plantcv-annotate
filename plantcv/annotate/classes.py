@@ -229,7 +229,8 @@ class Points:
                 debug_labels.append(text)
                 # Check if current annotation can be resolved to an object in the mask
                 if mask_pixel_value == 0:
-                    print(f"Object could not be resolved at coordinate: x = {x}, y = {y}")
+                    if params.verbose == True:
+                        print(f"Object could not be resolved at coordinate: x = {x}, y = {y}")
                     unrecovered_ids.append(i)
                     # Add a pixel where unresolved annotation to the mask
                     final_mask[y,x] = object_id_count
