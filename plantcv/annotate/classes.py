@@ -187,6 +187,7 @@ class Points:
         unrecovered_ids = []
         debug_coords = []
         debug_labels = []
+        added_obj_labels = []
         pts_mask = np.zeros(np.shape(bin_img), np.uint8)
         final_mask = pts_mask.copy().astype(np.uint32)
         debug_img = pts_mask.copy()
@@ -236,10 +237,18 @@ class Points:
                     final_mask[y,x] = object_id_count
                     # Add a thicker pixel where unresolved annotation to the debug img
                     cv2.circle(debug_img, (x, y), radius=params.line_thickness, color=(object_id_count), thickness=-1)
-                else:
-                    # Draw on labeled mask with correct pixel value
-                    final_mask = np.where(labeled_mask_all == mask_pixel_value, object_id_count, final_mask)
-                    debug_img = np.where(labeled_mask_all == mask_pixel_value, object_id_count, debug_img)
+                if mask_pixel_value > 0:
+                    if mask_pixel_value not in added_obj_labels:
+                        # New object getting added
+                        added_obj_labels.append(mask_pixel_value)
+                        # Draw on labeled mask with correct pixel value
+                        final_mask = np.where(labeled_mask_all == mask_pixel_value, object_id_count, final_mask)
+                        debug_img = np.where(labeled_mask_all == mask_pixel_value, object_id_count, debug_img)
+                    else:
+                        # Determine label duplicate or unique for combination
+                        class_labels_list = [k for k, v in self.coords.items() if v == (x,y)]
+                        print(class_labels_list)
+
                 object_id_count += 1
 
         # Combine and colorize the debug image
