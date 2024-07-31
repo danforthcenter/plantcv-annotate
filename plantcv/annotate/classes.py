@@ -216,6 +216,8 @@ class Points:
         completed_mask_bin = np.where(labeled_mask1 > 0, 255, 0)
         # Create a new labeled annotation mask to determine number of annotation per object
         labeled_mask_all, _ = create_labels(mask=completed_mask_bin)
+        # Initialize object count
+        object_id_count = 1
         # pts in class used for recovering and labeling
         for names in labelnames:
             for i, (x, y) in enumerate(self.coords[names]):
@@ -230,13 +232,16 @@ class Points:
                     print(f"Un-Recoverable object at coordinate: x = {x}, y = {y}")
                     unrecovered_ids.append(i)
                     # Add a pixel where unresolved annotation to the mask
-                    final_mask = cv2.circle(final_mask, (x, y), radius=0, color=(i+1), thickness=-1)
+                    # final_mask = cv2.circle(final_mask, (x, y), radius=0,
+                    #                         color=(object_id_count), thickness=-1)
+                    cv2.drawContours(final_mask, [(x, y)], -1, (object_id_count), -1)
                     # Add a thicker pixel where unresolved annotation to the debug img
-                    debug_img = cv2.circle(debug_img, (x, y), radius=params.line_thickness, color=(i+1), thickness=-1)
+                    cv2.circle(debug_img, (x, y), radius=params.line_thickness, color=(object_id_count), thickness=-1)
                 else:
                     # Draw on labeled mask with correct pixel value
-                    final_mask = np.where(labeled_mask_all == mask_pixel_value, i+1, final_mask)
-                    debug_img = np.where(labeled_mask_all == mask_pixel_value, i+1, debug_img)
+                    final_mask = np.where(labeled_mask_all == mask_pixel_value, object_id_count, final_mask)
+                    debug_img = np.where(labeled_mask_all == mask_pixel_value, object_id_count, debug_img)
+                object_id_count += 1
 
         debug_img = colorize_label_img(debug_img)
         debug_img = debug_img + debug_img_removed
