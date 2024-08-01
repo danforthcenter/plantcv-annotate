@@ -237,8 +237,7 @@ class Points:
                 y = int(y)
                 mask_pixel_value = labeled_mask_all[y, x]
                 text = str(object_id_count)
-                debug_coords.append((x, y))
-                debug_labels.append(text)
+                
                 # Check if current annotation can be resolved to an object in the mask
                 if mask_pixel_value == 0:
                     if params.verbose == True:
@@ -250,6 +249,9 @@ class Points:
                     final_mask[y,x] = object_id_count
                     # Add a thicker pixel where unresolved annotation to the debug img
                     cv2.circle(debug_img, (x, y), radius=params.line_thickness, color=(object_id_count), thickness=-1)
+                    # Add debug label annotations later
+                    debug_coords.append((x, y))
+                    debug_labels.append(text)
                 if mask_pixel_value > 0:
                     # An object is resolved but check if it's already been annotated
                     if mask_pixel_value not in added_obj_labels:
@@ -259,6 +261,9 @@ class Points:
                         # Draw on labeled mask with correct pixel value
                         final_mask = np.where(labeled_mask_all == mask_pixel_value, object_id_count, final_mask)
                         debug_img = np.where(labeled_mask_all == mask_pixel_value, object_id_count, debug_img)
+                        # Add debug label annotations later
+                        debug_coords.append((x, y))
+                        debug_labels.append(text)
                     else:
                         # Object annotated more than once so find original object label 
                         original_index = added_obj_labels.index(mask_pixel_value)
