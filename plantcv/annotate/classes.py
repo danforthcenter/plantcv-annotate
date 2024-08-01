@@ -242,8 +242,8 @@ class Points:
                 if mask_pixel_value == 0:
                     if params.verbose == True:
                         print(f"Object could not be resolved at coordinate: x = {x}, y = {y}")
-                    unrecovered_ids.append(i)
-                    added_obj_labels.append(mask_pixel_value)
+                    unrecovered_ids.append(object_id_count)
+                    added_obj_labels.append(object_id_count)
                     analysis_labels.append(names)
                     # Add a pixel where unresolved annotation to the mask
                     final_mask[y,x] = object_id_count
@@ -272,15 +272,24 @@ class Points:
                         # Determine label duplicate or unique for combination
                         coord_class_label = [k for k, v in self.coords.items() if (x, y) in v]
                         if coord_class_label[0] in original_label:
-                            # We found a duplicate
-                            debug_img = np.where(labeled_mask_all == mask_pixel_value, (0), debug_img)
+                            # We found a duplicate label
+                            # New object getting added
+                            added_obj_labels.append(object_id_count)
+                            analysis_labels.append(names)
+                            # Fill in the duplicate object in the debug mask
+                            debug_img = np.where(debug_img == mask_pixel_value, (0), debug_img)
+                            # Replace with pixel annotations in debug
                             cv2.circle(debug_img, (x, y), radius=params.line_thickness, color=(object_id_count), thickness=-1)
                             cv2.circle(debug_img, original_coord, radius=params.line_thickness, color=(original_index), thickness=-1)
+                            # Draw the ghost of objects removed
                             debug_img_duplicates = np.where(labeled_mask_all == mask_pixel_value, (255), debug_img_duplicates)
+                            # Add debug label annotations later
+                            debug_coords.append((x, y))
+                            debug_labels.append(text)
                             # Fill in the duplicate object in the labeled mask, replace with pixel annotations
                             final_mask = np.where(labeled_mask_all == mask_pixel_value, (0), final_mask)
                             final_mask[y,x] = object_id_count
-                            final_mask[original_coord[1], original_coord[0]] = original_index
+                            final_mask[original_coord[1], original_coord[0]] = original_index + 1
                         else:
                             # If unique then combine labels 
                             analysis_labels[added_obj_labels.index(mask_pixel_value)] = original_label + "_" + coord_class_label[0]
