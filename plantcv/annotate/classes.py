@@ -195,7 +195,7 @@ class Points:
         debug_img = pts_mask.copy()
         debug_img_removed = pts_mask.copy()
         debug_img_removed = cv2.cvtColor(debug_img_removed, cv2.COLOR_GRAY2RGB)
-        debug_img_duplicates = debug_img_removed.copy()
+        debug_img_duplicates = pts_mask.copy()
 
         for names in labelnames:
             for i, (x, y) in enumerate(self.coords[names]):
@@ -216,6 +216,14 @@ class Points:
             if i not in keep_object_ids:
                 labeled_mask1[np.where(labeled_mask == i)] = 0
                 debug_img_removed[np.where(labeled_mask == i)] = (50, 50, 50)
+            # # Check if annotation is unique
+            # if counts[i] > 1:
+            #     # Remove the object
+            #     labeled_mask1[np.where(labeled_mask == i)] = 0
+            #     # Draw a pixel at each of the annotation
+            #     labeled_mask1 = np.where(masked_image == i, (255), labeled_mask1)
+            #     # Removed object drawn on debug image
+            #     debug_img_removed[np.where(labeled_mask == i)] = (100, 100, 100)
         # Create new binary mask after filtering un-annotated objects
         completed_mask_bin = np.where(labeled_mask1 > 0, 255, 0)
         # Create a new labeled annotation mask to determine number of annotation per object
@@ -243,6 +251,7 @@ class Points:
                     # Add a thicker pixel where unresolved annotation to the debug img
                     cv2.circle(debug_img, (x, y), radius=params.line_thickness, color=(object_id_count), thickness=-1)
                 if mask_pixel_value > 0:
+                    # An object is resolved but check if it's already been annotated
                     if mask_pixel_value not in added_obj_labels:
                         # New object getting added
                         added_obj_labels.append(mask_pixel_value)
@@ -252,21 +261,33 @@ class Points:
                         debug_img = np.where(labeled_mask_all == mask_pixel_value, object_id_count, debug_img)
                     else:
                         # Object annotated more than once so find original object label 
-                        original_label = analysis_labels[added_obj_labels.index(mask_pixel_value)]
+                        original_index = added_obj_labels.index(mask_pixel_value)
+                        original_label = analysis_labels[original_index]
+                        original_coord = debug_coords[original_index]
                         # Determine label duplicate or unique for combination
                         coord_class_label = [k for k, v in self.coords.items() if (x, y) in v]
                         if coord_class_label[0] in original_label:
-                            # We found a duplicate so skip ????? 
-                            debug_img_duplicates = np.where(labeled_mask_all == mask_pixel_value, (255), debug_img)
-                            pass
+                            # We found a duplicate
+                            debug_img = np.where(labeled_mask_all == mask_pixel_value, (0), debug_img)
+                            cv2.circle(debug_img, (x, y), radius=params.line_thickness, color=(object_id_count), thickness=-1)
+                            cv2.circle(debug_img, original_coord, radius=params.line_thickness, color=(original_index), thickness=-1)
+                            debug_img_duplicates = np.where(labeled_mask_all == mask_pixel_value, (255), debug_img_duplicates)
+                            # Fill in the duplicate object in the labeled mask, replace with pixel annotations
+                            final_mask = np.where(labeled_mask_all == mask_pixel_value, (0), final_mask)
+                            final_mask[y,x] = object_id_count
+                            final_mask[original_coord[1], original_coord[0]] = original_index
                         else:
-                            # Combine labels 
+                            # If unique then combine labels 
                             analysis_labels[added_obj_labels.index(mask_pixel_value)] = original_label + "_" + coord_class_label[0]
+                            # De-increment object count since just a single object
+                            object_id_count -= 1
 
                 object_id_count += 1
 
         # Combine and colorize the debug image
-        debug_img_duplicates = dilate(debug_img_duplicates, ksize=params.line_thickness, i=1)
+        # Dilate duplicate objs and subtract the object itself to leave just a halo around
+        debug_img_duplicates1 = dilate(debug_img_duplicates, ksize=params.line_thickness, i=1)
+        debug_img_duplicates = debug_img_duplicates1 - debug_img_duplicates
         debug_img_duplicates = cv2.cvtColor(debug_img_duplicates, cv2.COLOR_GRAY2RGB)
         debug_img = colorize_label_img(debug_img)
         debug_img = debug_img + debug_img_removed + debug_img_duplicates
