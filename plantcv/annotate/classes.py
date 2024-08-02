@@ -277,7 +277,7 @@ class Points:
                             added_obj_labels.append(object_id_count)
                             analysis_labels.append(names)
                             # Fill in the duplicate object in the debug mask
-                            debug_img = np.where(debug_img == mask_pixel_value, (0), debug_img)
+                            debug_img = np.where(debug_img == original_index, (0), debug_img)
                             # Replace with pixel annotations in debug
                             cv2.circle(debug_img, (x, y), radius=params.line_thickness, color=(object_id_count), thickness=-1)
                             cv2.circle(debug_img, original_coord, radius=params.line_thickness, color=(original_index), thickness=-1)
@@ -310,9 +310,9 @@ class Points:
             cv2.putText(img=debug_img, text=id_label, org=debug_coords[id], fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                         fontScale=params.text_size, color=(150, 150, 150), thickness=params.text_thickness)
         params.debug = debug
-        _debug(visual=final_mask,
-               filename=os.path.join(params.debug_outdir,
-                                     f"{params.device}_annotation-corrected.png"))
+        # _debug(visual=final_mask,
+        #        filename=os.path.join(params.debug_outdir,
+        #                              f"{params.device}_annotation-corrected.png"))
         _debug(visual=debug_img,
                filename=os.path.join(params.debug_outdir,
                                      f"{params.device}_annotation-corrected-debug.png"))
