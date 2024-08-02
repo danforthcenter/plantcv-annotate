@@ -216,18 +216,12 @@ class Points:
             if i not in keep_object_ids:
                 labeled_mask1[np.where(labeled_mask == i)] = 0
                 debug_img_removed[np.where(labeled_mask == i)] = (50, 50, 50)
-            # # Check if annotation is unique
-            # if counts[i] > 1:
-            #     # Remove the object
-            #     labeled_mask1[np.where(labeled_mask == i)] = 0
-            #     # Draw a pixel at each of the annotation
-            #     labeled_mask1 = np.where(masked_image == i, (255), labeled_mask1)
-            #     # Removed object drawn on debug image
-            #     debug_img_removed[np.where(labeled_mask == i)] = (100, 100, 100)
         # Create new binary mask after filtering un-annotated objects
         completed_mask_bin = np.where(labeled_mask1 > 0, 255, 0)
         # Create a new labeled annotation mask to determine number of annotation per object
         labeled_mask_all, _ = create_labels(mask=completed_mask_bin)
+        masked_image2 = apply_mask(img=labeled_mask_all, mask=pts_mask, mask_color='black')
+        keep_object_ids, keep_object_count = np.unique(masked_image2, return_counts=True) 
         # Initialize object count
         object_id_count = 1
         # pts in class used for recovering and labeling
@@ -254,7 +248,8 @@ class Points:
                     debug_labels.append(text)
                 if mask_pixel_value > 0:
                     # An object is resolved but check if it's already been annotated
-                    if mask_pixel_value not in added_obj_labels:
+                    resolved_id = keep_object_ids.index(mask_pixel_value)
+                    if keep_object_count[resolved_id] == 1:
                         # New object getting added
                         added_obj_labels.append(mask_pixel_value)
                         analysis_labels.append(names)
@@ -264,7 +259,7 @@ class Points:
                         # Add debug label annotations later
                         debug_coords.append((x, y))
                         debug_labels.append(text)
-                    else:
+                    if keep_object_count[resolved_id] > 1:
                         # Object annotated more than once so find original object label 
                         original_index = added_obj_labels.index(mask_pixel_value)
                         original_label = analysis_labels[original_index]
