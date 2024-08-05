@@ -223,7 +223,7 @@ class Points:
         masked_image2 = apply_mask(img=labeled_mask_all, mask=pts_mask, mask_color='black')
         keep_object_ids, keep_object_count = np.unique(masked_image2, return_counts=True) 
         print("ids: " + str(keep_object_ids))
-        print("ids: " + str(keep_object_count))
+        print("counts: " + str(keep_object_count))
         # Initialize object count
         object_id_count = 1
         # pts in class used for recovering and labeling
@@ -271,6 +271,19 @@ class Points:
                             coord_class_label = [k for k, v in self.coords.items() if (dup_coord[1], dup_coord[0]) in v]
                             coord_labels.append(coord_class_label)
                         print(coord_labels)
+                        re, count = np.unique(coord_labels, return_counts=True)
+                        if len(re) == 1:
+                            # Labels are duplicated
+                            # Draw the ghost of objects removed
+                            debug_img_duplicates = np.where(labeled_mask_all == mask_pixel_value, (255), debug_img_duplicates)
+                            # Fill in the duplicate object in the labeled mask, replace with pixel annotations
+                            final_mask = np.where(labeled_mask_all == mask_pixel_value, (0), final_mask)
+                            for dup_coord in associated_coords:
+                                final_mask[dup_coord[1], dup_coord[0]] = object_id_count
+                            params.debug = debug
+                            _debug(visual=final_mask,
+                                filename=os.path.join(params.debug_outdir,
+                                f"{params.device}_annotation-corrected.png"))
                         # If there are duplication in labels (e.g. [['total'], ['total']] then add to list)
                         dupes = [x for n, x in enumerate(coord_labels) if x in coord_labels[:n]]
                         # original_index = added_obj_labels.index(mask_pixel_value)
