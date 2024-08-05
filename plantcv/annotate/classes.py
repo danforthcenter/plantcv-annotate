@@ -271,8 +271,8 @@ class Points:
                             coord_class_label = [k for k, v in self.coords.items() if (dup_coord[1], dup_coord[0]) in v]
                             coord_labels.append(coord_class_label)
                         print(coord_labels)
-                        _, lbl_count = np.unique(coord_class_label, save_counts=True)
-                        print(lbl_count)
+                        # If there are duplication in labels (e.g. [['total'], ['total']] then add to list)
+                        dupes = [x for n, x in enumerate(coord_labels) if x in coord_labels[:n]]
                         # original_index = added_obj_labels.index(mask_pixel_value)
                         # original_label = analysis_labels[original_index]
                         # original_coord = debug_coords[original_index]
