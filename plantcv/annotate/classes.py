@@ -286,6 +286,27 @@ class Points:
                             _debug(visual=final_mask,
                                 filename=os.path.join(params.debug_outdir,
                                 f"{params.device}_annotation-corrected.png"))
+                        if len(re) > 1: # and count of each label = 1 (count is all "1"s??)
+                            # More than one class label associated with a given object
+                            splitup = []
+                            # Split on "_" in case something has already been combined
+                            for lbl in re:
+                                list_lbl = lbl[0].split("_")
+                                splitup.append(list_lbl)
+                                
+                            # Flatten list of labels
+                            flat = np.concatenate(splitup)
+                            # Grab each unique label from the list
+                            unique_lbls = np.unique(flat)
+                            # Concat with "_" delimiter
+                            concat_lbl = "_".join(list(unique_lbls))
+                            # Adding the object
+                            added_obj_labels.append(object_id_count)
+                            analysis_labels.append(concat_lbl)
+                            final_mask = np.where(labeled_mask_all == mask_pixel_value, object_id_count, final_mask)
+                            # Add debug label annotations later
+                            debug_coords.append((x, y))
+                            debug_labels.append(text)
                         # If there are duplication in labels (e.g. [['total'], ['total']] then add to list)
                         dupes = [x for n, x in enumerate(coord_labels) if x in coord_labels[:n]]
                         # original_index = added_obj_labels.index(mask_pixel_value)
