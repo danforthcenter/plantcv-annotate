@@ -280,6 +280,8 @@ class Points:
                             final_mask = np.where(labeled_mask_all == mask_pixel_value, (0), final_mask)
                             for dup_coord in associated_coords:
                                 final_mask[dup_coord[1], dup_coord[0]] = object_id_count
+                                # Increment object count up so each pixel drawn in labeled mask is unique
+                                object_id_count += 1
                             params.debug = debug
                             _debug(visual=final_mask,
                                 filename=os.path.join(params.debug_outdir,
