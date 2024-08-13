@@ -180,7 +180,7 @@ class Points:
         pts_mask = np.zeros(np.shape(bin_img), np.uint8)
         # Create points mask from all annotations
         for names in labelnames:
-            for i, (x, y) in enumerate(self.coords[names]):
+            for (x, y) in self.coords[names]:
                 x = int(x)
                 y = int(y)
                 # Draw pt annotations onto a blank mask
