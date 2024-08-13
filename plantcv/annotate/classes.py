@@ -261,12 +261,12 @@ class Points:
                         # New object getting added
                         added_obj_labels.append(mask_pixel_value)
                         analysis_labels.append(names)
-                        # Draw on labeled mask with correct pixel value
-                        final_mask = np.where(labeled_mask_all == mask_pixel_value, object_id_count, final_mask)
-                        debug_img = np.where(labeled_mask_all == mask_pixel_value, object_id_count, debug_img)
                         # Add debug label annotations later
                         debug_coords.append((x, y))
                         debug_labels.append(text)
+                        # Draw on labeled mask and debug img
+                        debug_img, final_mask, object_id_count = _draw_resolved(debug_img, final_mask, labeled_mask_all,
+                                                                                mask_pixel_value, object_id_count)
                     if associated_count > 1:
                         # Object annotated more than once so find all associated annotations 
                         associated_coords = np.where(masked_image2 == mask_pixel_value)
@@ -298,11 +298,7 @@ class Points:
                                     debug_labels.append(str(object_id_count))
                                     # Increment object count up so each pixel drawn in labeled mask is unique
                                     object_id_count += 1
-                            params.debug = debug
                             print(np.unique(final_mask))
-                            _debug(visual=final_mask,
-                                filename=os.path.join(params.debug_outdir,
-                                f"{params.device}_annotation-corrected.png"))
                         if len(re) > 1: # and count of each label = 1 (count is all "1"s??)
                             # More than one class label associated with a given object
                             splitup = []
@@ -321,10 +317,12 @@ class Points:
                                 # Adding the object
                                 added_obj_labels.append(object_id_count)
                                 analysis_labels.append(concat_lbl)
-                                final_mask = np.where(labeled_mask_all == mask_pixel_value, object_id_count, final_mask)
                                 # Add debug label annotations later
                                 debug_coords.append((x, y))
                                 debug_labels.append(text)
+                                # Draw on labeled mask and debug img
+                                debug_img, final_mask, object_id_count = _draw_resolved(
+                                    debug_img, final_mask, labeled_mask_all, mask_pixel_value, object_id_count)
                             else:
                                 # Draw the ghost of objects removed
                                 debug_img_duplicates = np.where(labeled_mask_all == mask_pixel_value, (255), debug_img_duplicates)
