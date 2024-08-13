@@ -216,7 +216,7 @@ class Points:
         added_obj_labels = []
         analysis_labels = []
         
-        pts_mask = _create_pts_mask(bin_img)
+        pts_mask = self._create_pts_mask(bin_img)
         
         final_mask = np.zeros(np.shape(bin_img), np.uint32)
         debug_img = np.zeros(np.shape(bin_img), np.uint8)
