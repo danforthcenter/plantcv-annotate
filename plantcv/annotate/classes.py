@@ -163,11 +163,38 @@ class Points:
             for (x, y) in self.coords[self.label]:
                 self.ax.plot(x, y, marker='x', c=self.color)
 
-    def _remove_unannotated_objects(self, bin_img):
+    def _create_pts_mask(self, bin_img):
         """Fitler a binary mask based on annotations.
 
         Parameters
         ----------
+        bin_img : numpy.ndarray
+            binary image
+
+        Returns
+        ----------
+        pts_mask : numpy.ndarray
+            binary mask of annotations
+        """
+        labelnames = list(self.count)
+        pts_mask = np.zeros(np.shape(bin_img), np.uint8)
+        # Create points mask from all annotations
+        for names in labelnames:
+            for i, (x, y) in enumerate(self.coords[names]):
+                x = int(x)
+                y = int(y)
+                # Draw pt annotations onto a blank mask
+                pts_mask = cv2.circle(pts_mask, (x, y), radius=0, color=(255), thickness=-1)
+        
+        return pts_mask
+    
+    def _remove_unannotated_objects(pts_mask, bin_img):
+        """Fitler a binary mask based on annotations.
+
+        Parameters
+        ----------
+        pts_mask : numpy.ndarray
+            binary image, mask with all annotations plotted as pixels
         bin_img : numpy.ndarray
             binary image, mask to get corrected
 
@@ -178,17 +205,8 @@ class Points:
         debug_img_removed : numpy.ndarray
             binary mask of objects that were removed
         """
-        labelnames = list(self.count)
-        pts_mask = np.zeros(np.shape(bin_img), np.uint8)
         debug_img_removed = cv2.cvtColor(pts_mask.copy(), cv2.COLOR_GRAY2RGB)
         
-        # Create points mask from all annotations
-        for names in labelnames:
-            for i, (x, y) in enumerate(self.coords[names]):
-                x = int(x)
-                y = int(y)
-                # Draw pt annotations onto a blank mask
-                pts_mask = cv2.circle(pts_mask, (x, y), radius=0, color=(255), thickness=-1)
         # Create a labeled mask from the input mask
         labeled_mask, total_obj_num = create_labels(mask=bin_img)
         labeled_mask1 = np.copy(labeled_mask)
@@ -235,12 +253,14 @@ class Points:
         added_obj_labels = []
         analysis_labels = []
         
+        pts_mask = _create_pts_mask(bin_img)
+        
         final_mask = np.zeros(np.shape(bin_img), np.uint32)
         debug_img = np.zeros(np.shape(bin_img), np.uint8)
         
         debug_img_duplicates = debug_img.copy()
 
-        completed_mask_bin, debug_img_removed = _remove_unannotated_objects(self, bin_img)
+        completed_mask_bin, debug_img_removed = _remove_unannotated_objects(pts_mask, bin_img)
 
         # Create a new labeled annotation mask to determine number of annotation per object
         labeled_mask_all, _ = create_labels(mask=completed_mask_bin)
