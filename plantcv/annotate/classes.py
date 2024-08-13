@@ -324,14 +324,13 @@ class Points:
                                 debug_img, final_mask, object_id_count = _draw_resolved(
                                     debug_img, final_mask, labeled_mask_all, mask_pixel_value, object_id_count)
                             else:
-                                # Draw the ghost of objects removed
-                                debug_img_duplicates = np.where(labeled_mask_all == mask_pixel_value, (255), debug_img_duplicates)
-                                # Fill in the duplicate object in the labeled mask, replace with pixel annotations
-                                final_mask = np.where(labeled_mask_all == mask_pixel_value, (0), final_mask)
+                                if mask_pixel_value not in added_obj_labels:
+                                    # Draw the ghost of objects removed
+                                    debug_img_duplicates = np.where(labeled_mask_all == mask_pixel_value, (255), debug_img_duplicates)
+                                    # Fill in the duplicate object in the labeled mask, replace with pixel annotations
+                                    final_mask = np.where(labeled_mask_all == mask_pixel_value, (0), final_mask)
                         # If there are duplication in labels (e.g. [['total'], ['total']] then add to list)
                         dupes = [x for n, x in enumerate(coord_labels) if x in coord_labels[:n]]
-
-                object_id_count += 1
 
         # Combine and colorize the debug image
         # Dilate duplicate objs and subtract the object itself to leave just a halo around
