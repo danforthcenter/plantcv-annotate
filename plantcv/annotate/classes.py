@@ -188,43 +188,6 @@ class Points:
         
         return pts_mask
     
-    def _remove_unannotated_objects(pts_mask, bin_img):
-        """Fitler a binary mask based on annotations.
-
-        Parameters
-        ----------
-        pts_mask : numpy.ndarray
-            binary image, mask with all annotations plotted as pixels
-        bin_img : numpy.ndarray
-            binary image, mask to get corrected
-
-        Returns
-        ----------
-        filetered_mask : numpy.ndarray
-            corrected mask
-        debug_img_removed : numpy.ndarray
-            binary mask of objects that were removed
-        """
-        debug_img_removed = cv2.cvtColor(pts_mask.copy(), cv2.COLOR_GRAY2RGB)
-        
-        # Create a labeled mask from the input mask
-        labeled_mask, total_obj_num = create_labels(mask=bin_img)
-        labeled_mask1 = np.copy(labeled_mask)
-        # Objects that overlap with one or more annotations get kept
-        masked_image = apply_mask(img=labeled_mask1, mask=pts_mask, mask_color='black')
-        keep_object_ids = np.unique(masked_image)
-        
-        # Fill in objects that are not overlapping with an annotation
-        for i in range(1, total_obj_num + 1):
-            if i not in keep_object_ids:
-                labeled_mask1[np.where(labeled_mask == i)] = 0
-                debug_img_removed[np.where(labeled_mask == i)] = (50, 50, 50)
-                
-        # Create new binary mask after filtering un-annotated objects
-        completed_mask_bin = np.where(labeled_mask1 > 0, 255, 0)
-                
-        return completed_mask_bin, debug_img_removed
-    
 
     def correct_mask(self, bin_img):
         """Fitler a binary mask and make a labeled mask for analysis.
@@ -424,3 +387,41 @@ class Points:
         num = len(np.unique(final_mask)) - 1
 
         return final_mask, analysis_labels, num
+
+
+def _remove_unannotated_objects(pts_mask, bin_img):
+        """Fitler a binary mask based on annotations.
+
+        Parameters
+        ----------
+        pts_mask : numpy.ndarray
+            binary image, mask with all annotations plotted as pixels
+        bin_img : numpy.ndarray
+            binary image, mask to get corrected
+
+        Returns
+        ----------
+        filetered_mask : numpy.ndarray
+            corrected mask
+        debug_img_removed : numpy.ndarray
+            binary mask of objects that were removed
+        """
+        debug_img_removed = cv2.cvtColor(pts_mask.copy(), cv2.COLOR_GRAY2RGB)
+        
+        # Create a labeled mask from the input mask
+        labeled_mask, total_obj_num = create_labels(mask=bin_img)
+        labeled_mask1 = np.copy(labeled_mask)
+        # Objects that overlap with one or more annotations get kept
+        masked_image = apply_mask(img=labeled_mask1, mask=pts_mask, mask_color='black')
+        keep_object_ids = np.unique(masked_image)
+        
+        # Fill in objects that are not overlapping with an annotation
+        for i in range(1, total_obj_num + 1):
+            if i not in keep_object_ids:
+                labeled_mask1[np.where(labeled_mask == i)] = 0
+                debug_img_removed[np.where(labeled_mask == i)] = (50, 50, 50)
+                
+        # Create new binary mask after filtering un-annotated objects
+        completed_mask_bin = np.where(labeled_mask1 > 0, 255, 0)
+                
+        return completed_mask_bin, debug_img_removed
