@@ -249,11 +249,11 @@ class Points:
                     unrecovered_ids.append(object_id_count)
                     added_obj_labels.append(object_id_count)
                     analysis_labels.append(names)
-                    # Add a pixel where unresolved annotation to the mask
-                    debug_img, final_mask, object_id_count = _draw_unresolved_object(debug_img, final_mask, obj_number=object_id_count, coord=(x, y))
                     # Add debug label annotations later
                     debug_coords.append((x, y))
                     debug_labels.append(text)
+                    # Add the unresolved object to the labeled mask and the debug img
+                    debug_img, final_mask, object_id_count = _draw_unresolved_object(debug_img, final_mask, obj_number=object_id_count, coord=(x, y))
                 if mask_pixel_value > 0:
                     # An object is resolved but check if there are other annotations associated with an object
                     associated_count = keep_object_count[mask_pixel_value]
@@ -398,7 +398,7 @@ def _remove_unannotated_objects(pts_mask, bin_img):
 
 
 def _draw_unresolved_object(debug_img, final_mask, obj_number, coord):
-    """Fitler a binary mask based on annotations.
+    """Draw unresolved objects as a labeled pixel
 
         Parameters
         ----------
@@ -425,6 +425,40 @@ def _draw_unresolved_object(debug_img, final_mask, obj_number, coord):
     final_mask[y,x] = obj_number
     # Add a thicker pixel where unresolved annotation to the debug img
     cv2.circle(debug_img, (x, y), radius=params.line_thickness, color=(obj_number), thickness=-1)
+    # Increment ID number up by one
+    obj_number += 1
+    return debug_img, final_mask, obj_number
+
+
+def _draw_resolved(debug_img, final_mask, pre_lbls_mask, mask_pixel_value, obj_number):
+    """Draw resolved/measurable objects
+
+        Parameters
+        ----------
+        debug_img : numpy.ndarray
+            debug image of objects, unresolved annotations, etc
+        final_mask : numpy.ndarray
+            corrected and labeled mask with recovered and removed objects
+        pre_lbls_mask : numpy.ndarray
+            labeled mask of all resolvable objects
+        mask_pixel_value : int
+            ID number for the current resolved object in pre_lbls_mask
+        obj_number : int
+            ID number for the current object getting added
+
+        Returns
+        ----------
+        debug_img : numpy.ndarray
+            debug image of objects, unresolved annotations, etc
+        final_mask : numpy.ndarray
+            corrected and labeled mask with recovered and removed objects
+        obj_number : int
+            ID number for the current object getting added
+        """
+    # Add a pixel where unresolved annotation to the mask
+    # Draw on labeled mask
+    final_mask = np.where(pre_lbls_mask == mask_pixel_value, obj_number, final_mask)
+    debug_img = np.where(pre_lbls_mask == mask_pixel_value, obj_number, debug_img)
     # Increment ID number up by one
     obj_number += 1
     return debug_img, final_mask, obj_number
