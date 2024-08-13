@@ -237,12 +237,11 @@ class Points:
         object_id_count = 1
         # pts in class used for recovering and labeling
         for names in labelnames:
-            for i, (x, y) in enumerate(self.coords[names]):
+            for (x, y) in self.coords[names]:
                 x = int(x)
                 y = int(y)
                 mask_pixel_value = labeled_mask_all[y, x]
                 text = str(object_id_count)
-                
                 # Check if current annotation can be resolved to an object in the mask
                 if mask_pixel_value == 0:
                     if params.verbose == True:
@@ -251,9 +250,7 @@ class Points:
                     added_obj_labels.append(object_id_count)
                     analysis_labels.append(names)
                     # Add a pixel where unresolved annotation to the mask
-                    final_mask[y,x] = object_id_count
-                    # Add a thicker pixel where unresolved annotation to the debug img
-                    cv2.circle(debug_img, (x, y), radius=params.line_thickness, color=(object_id_count), thickness=-1)
+                    debug_img, final_mask, object_id_count = _draw_unresolved_object(debug_img, final_mask, obj_number=object_id_count, coord=(x, y))
                     # Add debug label annotations later
                     debug_coords.append((x, y))
                     debug_labels.append(text)
@@ -335,35 +332,6 @@ class Points:
                                 final_mask = np.where(labeled_mask_all == mask_pixel_value, (0), final_mask)
                         # If there are duplication in labels (e.g. [['total'], ['total']] then add to list)
                         dupes = [x for n, x in enumerate(coord_labels) if x in coord_labels[:n]]
-                        # original_index = added_obj_labels.index(mask_pixel_value)
-                        # original_label = analysis_labels[original_index]
-                        # original_coord = debug_coords[original_index]
-                        # # Determine label duplicate or unique for combination
-                        # coord_class_label = [k for k, v in self.coords.items() if (x, y) in v]
-                        # if coord_class_label[0] in original_label:
-                        #     # We found a duplicate label
-                        #     # New object getting added
-                        #     added_obj_labels.append(object_id_count)
-                        #     analysis_labels.append(names)
-                        #     # Fill in the duplicate object in the debug mask
-                        #     debug_img = np.where(debug_img == original_index, (0), debug_img)
-                        #     # Replace with pixel annotations in debug
-                        #     cv2.circle(debug_img, (x, y), radius=params.line_thickness, color=(object_id_count), thickness=-1)
-                        #     cv2.circle(debug_img, original_coord, radius=params.line_thickness, color=(original_index), thickness=-1)
-                        #     # Draw the ghost of objects removed
-                        #     debug_img_duplicates = np.where(labeled_mask_all == mask_pixel_value, (255), debug_img_duplicates)
-                        #     # Add debug label annotations later
-                        #     debug_coords.append((x, y))
-                        #     debug_labels.append(text)
-                        #     # Fill in the duplicate object in the labeled mask, replace with pixel annotations
-                        #     final_mask = np.where(labeled_mask_all == mask_pixel_value, (0), final_mask)
-                        #     final_mask[y,x] = object_id_count
-                        #     final_mask[original_coord[1], original_coord[0]] = original_index + 1
-                        # else:
-                        #     # If unique then combine labels 
-                        #     analysis_labels[added_obj_labels.index(mask_pixel_value)] = original_label + "_" + coord_class_label[0]
-                        #     # De-increment object count since just a single object
-                        #     object_id_count -= 1
 
                 object_id_count += 1
 
@@ -427,3 +395,36 @@ def _remove_unannotated_objects(pts_mask, bin_img):
         completed_mask_bin = np.where(labeled_mask1 > 0, 255, 0)
                 
         return completed_mask_bin, debug_img_removed
+
+
+def _draw_unresolved_object(debug_img, final_mask, obj_number, coord):
+    """Fitler a binary mask based on annotations.
+
+        Parameters
+        ----------
+        debug_img : numpy.ndarray
+            debug image of objects, unresolved annotations, etc
+        final_mask : numpy.ndarray
+            corrected and labeled mask with recovered and removed objects
+        obj_number : int
+            ID number for the current object getting added
+        coord : tuple
+            coordinate of the unresolved object annotation
+
+        Returns
+        ----------
+        debug_img : numpy.ndarray
+            debug image of objects, unresolved annotations, etc
+        final_mask : numpy.ndarray
+            corrected and labeled mask with recovered and removed objects
+        obj_number : int
+            ID number for the current object getting added
+        """
+    (x, y) = coord
+    # Add a pixel where unresolved annotation to the mask
+    final_mask[y,x] = obj_number
+    # Add a thicker pixel where unresolved annotation to the debug img
+    cv2.circle(debug_img, (x, y), radius=params.line_thickness, color=(obj_number), thickness=-1)
+    # Increment ID number up by one
+    obj_number += 1
+    return debug_img, final_mask, obj_number
