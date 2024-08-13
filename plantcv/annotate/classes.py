@@ -163,7 +163,8 @@ class Points:
             for (x, y) in self.coords[self.label]:
                 self.ax.plot(x, y, marker='x', c=self.color)
 
-    def _create_pts_mask(self, bin_img):
+
+    def _create_pts_mask(self, bin_img, labelnames):
         """Fitler a binary mask based on annotations.
 
         Parameters
@@ -176,7 +177,6 @@ class Points:
         pts_mask : numpy.ndarray
             binary mask of annotations
         """
-        labelnames = list(self.count)
         pts_mask = np.zeros(np.shape(bin_img), np.uint8)
         # Create points mask from all annotations
         for names in labelnames:
@@ -216,7 +216,9 @@ class Points:
         added_obj_labels = []
         analysis_labels = []
         
-        pts_mask = self._create_pts_mask(bin_img)
+        labelnames = list(self.count)
+        
+        pts_mask = self._create_pts_mask(bin_img, labelnames)
         
         final_mask = np.zeros(np.shape(bin_img), np.uint32)
         debug_img = np.zeros(np.shape(bin_img), np.uint8)
