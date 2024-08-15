@@ -341,7 +341,7 @@ class Points:
         # Write ID labels
         for id, id_label in enumerate(debug_labels):
             cv2.putText(img=debug_img, text=id_label, org=debug_coords[id], fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                        fontScale=params.text_size, color=(150, 150, 150), thickness=params.text_thickness)
+                        fontScale=params.text_size, color=(150, 150, 150), thickness=(params.text_thickness+2))
         params.debug = debug
         # _debug(visual=final_mask,
         #        filename=os.path.join(params.debug_outdir,
