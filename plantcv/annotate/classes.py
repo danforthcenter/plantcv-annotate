@@ -277,7 +277,7 @@ class Points:
                                 coord_class_label = [k for k, v in self.coords.items() if (dup_coord[1], dup_coord[0]) in v]
                                 coord_labels.append(coord_class_label)
                             # Is there more than one class label associated with the given object?
-                            re = np.unique(coord_labels)
+                            re, rep = np.unique(coord_labels, return_counts=True)
                             if len(re) == 1:
                                 # Labels are duplicated e.g. "total", "total"
                                 # Draw the ghost of objects removed
@@ -298,11 +298,13 @@ class Points:
                                     object_id_count += 1
                             if len(re) > 1:
                                 # More than one class label associated with a given object
-                                splitup = np.empty((len(re), 1), dtype='U25')
+                                splitup = []
                                 # Split on "_" in case something has already been combined
-                                for k, lbl in enumerate(re):
-                                    list_lbl = lbl.split("_")
-                                    splitup[k] = list_lbl
+                                for lbls in coord_labels:
+                                    list_lbl = []
+                                    for lbl in lbls: 
+                                        list_lbl.append(lbl.split("_"))
+                                    splitup.append(np.concatenate(list_lbl))
                                 # Flatten list of labels
                                 flat = np.concatenate(splitup, dtype='<U25')
                                 # Grab each unique label from the list
@@ -325,7 +327,7 @@ class Points:
                                         debug_img, final_mask, labeled_mask_all, mask_pixel_value, object_id_count)
                                         
                                 else:
-                                    print("The follow labels were associated and could not be resolved: " + str(flat))
+                                    print("The object at {0} was removed for being too complex. It was associated with the following labels: {1}".format(str(first_coord), str(flat)))
                                     # "total", "total", "germinated" is too complex to measure so 
                                     added_obj_labels.append(mask_pixel_value)
                                     # Draw the ghost of objects removed
