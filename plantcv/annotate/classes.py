@@ -230,8 +230,6 @@ class Points:
         labeled_mask_all, _ = create_labels(mask=completed_mask_bin)
         masked_image2 = apply_mask(img=labeled_mask_all, mask=pts_mask, mask_color='black')
         keep_object_ids, keep_object_count = np.unique(masked_image2, return_counts=True) 
-        print("ids: " + str(keep_object_ids))
-        print("counts: " + str(keep_object_count))
         # Initialize object count
         object_id_count = 1
         # pts in class used for recovering and labeling
@@ -278,7 +276,6 @@ class Points:
                                 # Flip x & y for numpy, and find the associated class label with each coordinate
                                 coord_class_label = [k for k, v in self.coords.items() if (dup_coord[1], dup_coord[0]) in v]
                                 coord_labels.append(coord_class_label)
-                            print(coord_labels)
                             # Is there more than one class label associated with the given object?
                             re = np.unique(coord_labels)
                             if len(re) == 1:
@@ -300,16 +297,15 @@ class Points:
                                         debug_labels.append(str(object_id_count))
                                         # Increment object count up so each pixel drawn in labeled mask is unique
                                         object_id_count += 1
-                                print(np.unique(final_mask))
-                            if len(re) > 1: # and count of each label = 1 (count is all "1"s??)
+                            if len(re) > 1:
                                 # More than one class label associated with a given object
-                                splitup = []
+                                splitup = np.empty((len(re), 1), dtype='U25')
                                 # Split on "_" in case something has already been combined
-                                for lbl in re:
-                                    list_lbl = lbl[0].split("_")
-                                    splitup.append(list_lbl)
+                                for k, lbl in enumerate(re):
+                                    list_lbl = lbl.split("_")
+                                    splitup[k] = list_lbl
                                 # Flatten list of labels
-                                flat = np.concatenate(splitup)
+                                flat = np.concatenate(splitup, dtype='<U25')
                                 # Grab each unique label from the list
                                 unique_lbls, lbl_counts = np.unique(flat, return_counts=True)
                                 # Is there duplication within each class label for the given object?
@@ -321,7 +317,12 @@ class Points:
                                         added_obj_labels.append(mask_pixel_value)
                                         analysis_labels.append(concat_lbl)
                                         # Add debug label annotations later
-                                        #debug_coords.append((associated_coords[0]))
+                                        first_coord = (associated_coords[0][1], associated_coords[0][0])
+                                        if params.verbose == True:
+                                            print("labels getting concatenated to '{0}' at {1}".format(str(concat_lbl), str(first_coord)))
+                                        debug_coords.append(first_coord)
+                                        debug_labels.append(str(object_id_count))
+                                        
                                         # Draw on labeled mask and debug img
                                         debug_img, final_mask, object_id_count = _draw_resolved(
                                             debug_img, final_mask, labeled_mask_all, mask_pixel_value, object_id_count)
@@ -334,8 +335,7 @@ class Points:
                                         debug_img_duplicates = np.where(labeled_mask_all == mask_pixel_value, (255), debug_img_duplicates)
                                         # Fill in the duplicate object in the labeled mask, replace with pixel annotations
                                         final_mask = np.where(labeled_mask_all == mask_pixel_value, (0), final_mask)
-                            # If there are duplication in labels (e.g. [['total'], ['total']] then add to list)
-                            dupes = [x for n, x in enumerate(coord_labels) if x in coord_labels[:n]]
+                                        ### ADD PIXEL ANNOTATIONS TO FINAL MASK AND TO DEBUG 
 
         # Combine and colorize components of the debug image
         debug_img_duplicates_rgb = _draw_ghost_of_duplicates_removed(debug_img_duplicates)
@@ -343,7 +343,6 @@ class Points:
         debug_img = debug_img + debug_img_removed + debug_img_duplicates_rgb
         
         # Write ID labels
-        print("debug labels:" + str(debug_labels))
         for id, id_label in enumerate(debug_labels):
             cv2.putText(img=debug_img, text=id_label, org=debug_coords[id], fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                         fontScale=params.text_size, color=(150, 150, 150), thickness=params.text_thickness)
