@@ -325,6 +325,7 @@ class Points:
                                         debug_img, final_mask, labeled_mask_all, mask_pixel_value, object_id_count)
                                         
                                 else:
+                                    print("The follow labels were associated and could not be resolved: " + str(flat))
                                     # "total", "total", "germinated" is too complex to measure so 
                                     added_obj_labels.append(mask_pixel_value)
                                     # Draw the ghost of objects removed
@@ -341,7 +342,7 @@ class Points:
         # Write ID labels
         for id, id_label in enumerate(debug_labels):
             cv2.putText(img=debug_img, text=id_label, org=debug_coords[id], fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                        fontScale=params.text_size, color=(150, 150, 150), thickness=(params.text_thickness+2))
+                        fontScale=params.text_size, color=(150, 150, 150), thickness=(params.text_thickness))
         params.debug = debug
         # _debug(visual=final_mask,
         #        filename=os.path.join(params.debug_outdir,
@@ -477,7 +478,7 @@ def _draw_ghost_of_duplicates_removed(dupes_mask):
         from plantcv.plantcv import dilate
 
         # Dilate duplicate objs and subtract the object itself to leave just a halo around
-        debug_img_duplicates = dilate(dupes_mask, ksize=params.line_thickness, i=1)
+        debug_img_duplicates = dilate(dupes_mask, ksize=params.line_thickness+2, i=1)
         debug_img_duplicates = debug_img_duplicates - dupes_mask
         debug_img_duplicates = cv2.cvtColor(debug_img_duplicates, cv2.COLOR_GRAY2RGB)
         return debug_img_duplicates
