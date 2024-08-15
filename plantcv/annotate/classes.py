@@ -318,7 +318,7 @@ class Points:
                                         # If no, Concat with "_" delimiter
                                         concat_lbl = "_".join(list(unique_lbls))
                                         # Adding the object
-                                        added_obj_labels.append(object_id_count)
+                                        added_obj_labels.append(mask_pixel_value)
                                         analysis_labels.append(concat_lbl)
                                         # Add debug label annotations later
                                         #debug_coords.append((associated_coords[0]))
