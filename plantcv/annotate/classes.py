@@ -205,7 +205,6 @@ class Points:
             number of objects represented within the labeled mask
         """
         from plantcv.plantcv.visualize import colorize_label_img
-        from plantcv.plantcv import dilate
 
         debug = params.debug
         params.debug = None
@@ -291,6 +290,7 @@ class Points:
                                     final_mask = np.where(labeled_mask_all == mask_pixel_value, (0), final_mask)
                                     added_obj_labels.append(mask_pixel_value)
                                     for dup_coord in associated_coords:
+                                        # Draw each pixel in the final mask
                                         final_mask[dup_coord] = object_id_count
                                         analysis_labels.append(names)
                                         # Add a thicker pixel where unresolved annotation to the debug img
@@ -320,10 +320,14 @@ class Points:
                                         # Adding the object
                                         added_obj_labels.append(object_id_count)
                                         analysis_labels.append(concat_lbl)
+                                        # Add debug label annotations later
+                                        #debug_coords.append((associated_coords[0]))
                                         # Draw on labeled mask and debug img
                                         debug_img, final_mask, object_id_count = _draw_resolved(
                                             debug_img, final_mask, labeled_mask_all, mask_pixel_value, object_id_count)
+                                        
                                 else:
+                                    # "total", "total", "germinated" is too complex to measure so 
                                     if mask_pixel_value not in added_obj_labels:
                                         added_obj_labels.append(mask_pixel_value)
                                         # Draw the ghost of objects removed
@@ -333,14 +337,13 @@ class Points:
                             # If there are duplication in labels (e.g. [['total'], ['total']] then add to list)
                             dupes = [x for n, x in enumerate(coord_labels) if x in coord_labels[:n]]
 
-        # Combine and colorize the debug image
-        # Dilate duplicate objs and subtract the object itself to leave just a halo around
-        debug_img_duplicates1 = dilate(debug_img_duplicates, ksize=params.line_thickness, i=1)
-        debug_img_duplicates = debug_img_duplicates1 - debug_img_duplicates
-        debug_img_duplicates = cv2.cvtColor(debug_img_duplicates, cv2.COLOR_GRAY2RGB)
+        # Combine and colorize components of the debug image
+        debug_img_duplicates_rgb = _draw_ghost_of_duplicates_removed(debug_img_duplicates)
         debug_img = colorize_label_img(debug_img)
-        debug_img = debug_img + debug_img_removed + debug_img_duplicates
+        debug_img = debug_img + debug_img_removed + debug_img_duplicates_rgb
+        
         # Write ID labels
+        print("debug labels:" + str(debug_labels))
         for id, id_label in enumerate(debug_labels):
             cv2.putText(img=debug_img, text=id_label, org=debug_coords[id], fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                         fontScale=params.text_size, color=(150, 150, 150), thickness=params.text_thickness)
@@ -460,3 +463,26 @@ def _draw_resolved(debug_img, final_mask, pre_lbls_mask, mask_pixel_value, obj_n
     # Increment ID number up by one
     obj_number += 1
     return debug_img, final_mask, obj_number
+
+def _draw_ghost_of_duplicates_removed(dupes_mask):
+        """Fitler a binary mask based on annotations.
+
+        Parameters
+        ----------
+        dupes_mask : numpy.ndarray
+            binary image, mask with all removed (because duplicate annotations) objects
+        removed_mask : numpy.ndarray
+            binary image, mask of unannotated and removed objects
+
+        Returns
+        ----------
+        removed_mask : numpy.ndarray
+            combined mask with all removed objects for debug visualization
+        """
+        from plantcv.plantcv import dilate
+
+        # Dilate duplicate objs and subtract the object itself to leave just a halo around
+        debug_img_duplicates = dilate(dupes_mask, ksize=params.line_thickness, i=1)
+        debug_img_duplicates = debug_img_duplicates - dupes_mask
+        debug_img_duplicates = cv2.cvtColor(debug_img_duplicates, cv2.COLOR_GRAY2RGB)
+        return debug_img_duplicates
