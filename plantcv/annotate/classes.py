@@ -286,7 +286,8 @@ class Points:
                                     final_mask[dup_coord] = object_id_count
                                     analysis_labels.append(names)
                                     # Add a thicker pixel where unresolved annotation to the debug img
-                                    cv2.circle(debug_img, (dup_coord[1], dup_coord[0]), radius=params.line_thickness, color=(object_id_count), thickness=-1)
+                                    cv2.circle(debug_img, (dup_coord[1], dup_coord[0]), radius=params.line_thickness,
+                                               color=(object_id_count), thickness=-1)
                                     # Add debug label annotations later
                                     debug_labels, debug_coords = _add_debug_id(debug_labels, debug_coords,
                                                                                object_id_count, (dup_coord[1], dup_coord[0]))
@@ -310,31 +311,40 @@ class Points:
                                     # If no, Concat with "_" delimiter
                                     concat_lbl = "_".join(list(unique_lbls))
                                     if params.verbose:
-                                        print("labels getting concatenated to '{0}' at {1}".format(str(concat_lbl), str(first_coord)))
+                                        print("labels getting concatenated to '{0}' at "
+                                              "{1}".format(str(concat_lbl), str(first_coord)))
                                     # Adding the object
                                     added_obj_labels.append(mask_pixel_value)
                                     analysis_labels.append(concat_lbl)
                                     # Add debug label annotations later
-                                    debug_labels, debug_coords = _add_debug_id(debug_labels, debug_coords, object_id_count, first_coord)
+                                    debug_labels, debug_coords = _add_debug_id(debug_labels, debug_coords,
+                                                                               object_id_count, first_coord)
                                     # Draw on labeled mask and debug img
                                     debug_img, final_mask, object_id_count = _draw_resolved(
                                         debug_img, final_mask, labeled_mask_all, mask_pixel_value, object_id_count)
                                         
                                 else:
-                                    # e.g. "total", "total", "germinated" is too complex to measure 
-                                    print("The object at {0} was removed for being too complex. It was associated with the following labels: {1}".format(str(first_coord), str(flat)))
+                                    # e.g. "total", "total", "germinated" is too complex to measure
+                                    if params.verbose:
+                                        print("The object at {0} was removed for being too complex. "
+                                              "It was associated with the following "
+                                              "labels: {1}".format(str(first_coord), str(flat)))
                                     added_obj_labels.append(mask_pixel_value)
                                     # Draw the ghost of objects removed
-                                    debug_img_duplicates = np.where(labeled_mask_all == mask_pixel_value, (255), debug_img_duplicates)
+                                    debug_img_duplicates = np.where(labeled_mask_all == mask_pixel_value,
+                                                                    (255), debug_img_duplicates)
                                     # Fill in the duplicate object in the labeled mask
                                     final_mask = np.where(labeled_mask_all == mask_pixel_value, (0), final_mask)
-                                    ### ADD PIXEL ANNOTATIONS TO FINAL MASK AND TO DEBUG ?
+                                    # ADD PIXEL ANNOTATIONS TO FINAL MASK AND TO DEBUG ?
                                     for i, dup_coord in enumerate(associated_coords):
                                         final_mask[dup_coord] = object_id_count
                                         analysis_labels.append(coord_labels[i])
-                                        cv2.circle(debug_img, (dup_coord[1], dup_coord[0]), radius=params.line_thickness, color=(object_id_count), thickness=-1)
+                                        cv2.circle(debug_img, (dup_coord[1], dup_coord[0]),
+                                                   radius=params.line_thickness, color=(object_id_count),
+                                                   thickness=-1)
                                         debug_labels, debug_coords = _add_debug_id(debug_labels, debug_coords,
-                                                                                   object_id_count, (dup_coord[1], dup_coord[0]))
+                                                                                   object_id_count,
+                                                                                   (dup_coord[1], dup_coord[0]))
                                         object_id_count += 1
         # Combine and colorize components of the debug image
         debug_img_duplicates_rgb = _draw_ghost_of_duplicates_removed(debug_img_duplicates)
@@ -461,6 +471,7 @@ def _draw_resolved(debug_img, final_mask, pre_lbls_mask, mask_pixel_value, obj_n
     # Increment ID number up by one
     obj_number += 1
     return debug_img, final_mask, obj_number
+
 
 def _draw_ghost_of_duplicates_removed(dupes_mask):
         """Fitler a binary mask based on annotations.
