@@ -321,15 +321,17 @@ class Points:
                                         debug_img, final_mask, labeled_mask_all, mask_pixel_value, object_id_count)
                                         
                                 else:
+                                    # e.g. "total", "total", "germinated" is too complex to measure 
                                     print("The object at {0} was removed for being too complex. It was associated with the following labels: {1}".format(str(first_coord), str(flat)))
-                                    # "total", "total", "germinated" is too complex to measure so 
                                     added_obj_labels.append(mask_pixel_value)
                                     # Draw the ghost of objects removed
                                     debug_img_duplicates = np.where(labeled_mask_all == mask_pixel_value, (255), debug_img_duplicates)
-                                    # Fill in the duplicate object in the labeled mask, replace with pixel annotations
+                                    # Fill in the duplicate object in the labeled mask
                                     final_mask = np.where(labeled_mask_all == mask_pixel_value, (0), final_mask)
-                                    ### ADD PIXEL ANNOTATIONS TO FINAL MASK AND TO DEBUG 
-                                    for dup_coord in associated_coords:
+                                    ### ADD PIXEL ANNOTATIONS TO FINAL MASK AND TO DEBUG ?
+                                    for i, dup_coord in enumerate(associated_coords):
+                                        final_mask[dup_coord] = object_id_count
+                                        analysis_labels.append(coord_labels[i])
                                         cv2.circle(debug_img, (dup_coord[1], dup_coord[0]), radius=params.line_thickness, color=(object_id_count), thickness=-1)
                                         debug_labels, debug_coords = _add_debug_id(debug_labels, debug_coords,
                                                                                    object_id_count, (dup_coord[1], dup_coord[0]))
@@ -344,9 +346,9 @@ class Points:
             cv2.putText(img=debug_img, text=id_label, org=debug_coords[id], fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                         fontScale=params.text_size, color=(150, 150, 150), thickness=(params.text_thickness))
         params.debug = debug
-        # _debug(visual=final_mask,
-        #        filename=os.path.join(params.debug_outdir,
-        #                              f"{params.device}_annotation-corrected.png"))
+        _debug(visual=final_mask,
+               filename=os.path.join(params.debug_outdir,
+                                     f"{params.device}_annotation-corrected.png"))
         _debug(visual=debug_img,
                filename=os.path.join(params.debug_outdir,
                                      f"{params.device}_annotation-corrected-debug.png"))
