@@ -52,13 +52,14 @@ Using [Jupyter Notebooks](https://plantcv.readthedocs.io/en/stable/jupyter/) it 
 
 **plantcv.annotate.Points.correct_mask**(*bin_img*)
 
-**returns** corrected_mask, num
+**returns** corrected_mask, lbls, num
 
 - **Parameters:**
     - bin_img - binary image, filtered mask image with selected objects
     
 - **Returns:**
-    - corrected_mask - A labeled mask with non-annotated objects filtered out, and unresolvable annotations marked with a single, labeled pixel. 
+    - corrected_mask - A labeled mask with non-annotated objects filtered out, and unresolvable annotations marked with a labeled pixel. 
+    - lbls - A list of class labels ordered the same as the corrected mask object IDs
     - num - The number of unique objects in the `corrected_mask`.
 
 - **Context:**
@@ -66,6 +67,7 @@ Using [Jupyter Notebooks](https://plantcv.readthedocs.io/en/stable/jupyter/) it 
     - Adds a labeled pixel to the corrected mask if an object cannot be resolved for any annotations (false negatives can be counted but cannot have their size measured downstream). 
     - Returns the number of unique objects in the `corrected_mask` which is useful for downstream analysis.
     - Debug image is a colorized representation of the labeled mask. The "unresolved" annotation replicates are plotted with a radius of `pcv.params.line_thickness` (default = 5). 
+    - Hint: set `pcv.params.text_size=0` to skip ID labeling and instead only plot the annotation coordinate.
 
 - **Example use:**
     - Remove noise from a microscopy image that is otherwise difficult to filter out with traditional computer vision
@@ -93,10 +95,10 @@ marker = pcvan.Points(img=img, figsize=(12,6))
 marker.import_list(coords=centroid_coords, label="stomata")
 
 # Filter the binary mask based on corrected annotations
-corrected_mask, num = marker.correct_mask(bin_img=bin_mask)
+corrected_mask, lbls, num = marker.correct_mask(bin_img=bin_mask)
 
 # Analysis steps here
-size_img = pcv.analyze.size(img=img, labeled_mask=corrected_mask, n_labels=num)
+size_img = pcv.analyze.size(img=img, labeled_mask=corrected_mask, n_labels=num, label=lbls)
 ```
 **Annotations After Human Corrections**
 
