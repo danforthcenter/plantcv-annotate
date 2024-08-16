@@ -208,20 +208,16 @@ class Points:
 
         debug = params.debug
         params.debug = None
-
+        # Initialize lists and arrays
         unrecovered_ids = []
         debug_coords = []
         debug_labels = []
         added_obj_labels = []
         analysis_labels = []
-        
         labelnames = list(self.count)
-        
         pts_mask = self._create_pts_mask(bin_img, labelnames)
-        
         final_mask = np.zeros(np.shape(bin_img), np.uint32)
         debug_img = np.zeros(np.shape(bin_img), np.uint8)
-        
         debug_img_duplicates = debug_img.copy()
 
         completed_mask_bin, debug_img_removed = _remove_unannotated_objects(pts_mask, bin_img)
@@ -229,7 +225,8 @@ class Points:
         # Create a new labeled annotation mask to determine number of annotation per object
         labeled_mask_all, _ = create_labels(mask=completed_mask_bin)
         masked_image2 = apply_mask(img=labeled_mask_all, mask=pts_mask, mask_color='black')
-        keep_object_ids, keep_object_count = np.unique(masked_image2, return_counts=True) 
+        _, keep_object_count = np.unique(masked_image2, return_counts=True)
+        
         # Initialize object count
         object_id_count = 1
         # pts in class used for recovering and labeling
@@ -238,7 +235,6 @@ class Points:
                 x = int(x)
                 y = int(y)
                 mask_pixel_value = labeled_mask_all[y, x]
-                text = str(object_id_count)
                 # Check if current annotation can be resolved to an object in the mask
                 if mask_pixel_value == 0:
                     if params.verbose == True:
@@ -246,9 +242,9 @@ class Points:
                     unrecovered_ids.append(object_id_count)
                     added_obj_labels.append(object_id_count)
                     analysis_labels.append(names)
-                    # Add debug label annotations later
-                    debug_coords.append((x, y))
-                    debug_labels.append(text)
+                    # Add info to label object IDs in debug img
+                    debug_labels, debug_coords = _add_debug_id(debug_labels, debug_coords,
+                                                               object_id_count, (x, y))
                     # Add the unresolved object to the labeled mask and the debug img
                     debug_img, final_mask, object_id_count = _draw_unresolved_object(debug_img, final_mask, obj_number=object_id_count, coord=(x, y))
                 if mask_pixel_value > 0:
@@ -258,9 +254,8 @@ class Points:
                         # New object getting added
                         added_obj_labels.append(mask_pixel_value)
                         analysis_labels.append(names)
-                        # Add debug label annotations later
-                        debug_coords.append((x, y))
-                        debug_labels.append(text)
+                        debug_labels, debug_coords = _add_debug_id(debug_labels, debug_coords,
+                                                                   object_id_count, (x, y))
                         # Draw on labeled mask and debug img
                         debug_img, final_mask, object_id_count = _draw_resolved(debug_img, final_mask, labeled_mask_all,
                                                                                 mask_pixel_value, object_id_count)
@@ -270,6 +265,7 @@ class Points:
                             # Object annotated more than once so find all associated annotations 
                             associated_coords = np.where(masked_image2 == mask_pixel_value)
                             associated_coords = tuple(zip(*associated_coords))
+                            first_coord = (associated_coords[0][1], associated_coords[0][0])
                             coord_labels = []
                             # Find all class labels for each annotation
                             for dup_coord in associated_coords:
@@ -292,8 +288,8 @@ class Points:
                                     # Add a thicker pixel where unresolved annotation to the debug img
                                     cv2.circle(debug_img, (dup_coord[1], dup_coord[0]), radius=params.line_thickness, color=(object_id_count), thickness=-1)
                                     # Add debug label annotations later
-                                    debug_coords.append((dup_coord[1], dup_coord[0]))
-                                    debug_labels.append(str(object_id_count))
+                                    debug_labels, debug_coords = _add_debug_id(debug_labels, debug_coords,
+                                                                               object_id_count, (dup_coord[1], dup_coord[0]))
                                     # Increment object count up so each pixel drawn in labeled mask is unique
                                     object_id_count += 1
                             if len(re) > 1:
@@ -313,15 +309,13 @@ class Points:
                                 if np.all(lbl_counts == 1):
                                     # If no, Concat with "_" delimiter
                                     concat_lbl = "_".join(list(unique_lbls))
+                                    if params.verbose == True:
+                                        print("labels getting concatenated to '{0}' at {1}".format(str(concat_lbl), str(first_coord)))
                                     # Adding the object
                                     added_obj_labels.append(mask_pixel_value)
                                     analysis_labels.append(concat_lbl)
                                     # Add debug label annotations later
-                                    first_coord = (associated_coords[0][1], associated_coords[0][0])
-                                    if params.verbose == True:
-                                        print("labels getting concatenated to '{0}' at {1}".format(str(concat_lbl), str(first_coord)))
-                                    debug_coords.append(first_coord)
-                                    debug_labels.append(str(object_id_count))
+                                    debug_labels, debug_coords = _add_debug_id(debug_labels, debug_coords, object_id_count, first_coord)
                                     # Draw on labeled mask and debug img
                                     debug_img, final_mask, object_id_count = _draw_resolved(
                                         debug_img, final_mask, labeled_mask_all, mask_pixel_value, object_id_count)
@@ -335,7 +329,11 @@ class Points:
                                     # Fill in the duplicate object in the labeled mask, replace with pixel annotations
                                     final_mask = np.where(labeled_mask_all == mask_pixel_value, (0), final_mask)
                                     ### ADD PIXEL ANNOTATIONS TO FINAL MASK AND TO DEBUG 
-
+                                    for dup_coord in associated_coords:
+                                        cv2.circle(debug_img, (dup_coord[1], dup_coord[0]), radius=params.line_thickness, color=(object_id_count), thickness=-1)
+                                        debug_labels, debug_coords = _add_debug_id(debug_labels, debug_coords,
+                                                                                   object_id_count, (dup_coord[1], dup_coord[0]))
+                                        object_id_count += 1
         # Combine and colorize components of the debug image
         debug_img_duplicates_rgb = _draw_ghost_of_duplicates_removed(debug_img_duplicates)
         debug_img = colorize_label_img(debug_img)
@@ -484,3 +482,30 @@ def _draw_ghost_of_duplicates_removed(dupes_mask):
         debug_img_duplicates = debug_img_duplicates - dupes_mask
         debug_img_duplicates = cv2.cvtColor(debug_img_duplicates, cv2.COLOR_GRAY2RGB)
         return debug_img_duplicates
+    
+    
+def _add_debug_id(debug_labels_list, debug_coords_list, id, coord):
+        """Updates the list of IDs and coordinates for labeling things
+        in the debugging image
+
+        Parameters
+        ----------
+        debug_labels_list : list
+            list of ID labels for the debug image
+        debug_coords_list : list
+            list of coordinates for ID labels in the debug image
+        id : int
+            current object ID number 
+        coord : tuple
+            coordinate resovled to the current object
+
+        Returns
+        ----------
+        debug_labels_list : list
+            updated corrected mask
+        debug_coords_list : list
+            updated list of coordinates for ID labels in the debug image
+        """
+        debug_labels_list.append(str(id))
+        debug_coords_list.append(coord)
+        return debug_labels_list, debug_coords_list
