@@ -237,7 +237,7 @@ class Points:
                 mask_pixel_value = labeled_mask_all[y, x]
                 # Check if current annotation can be resolved to an object in the mask
                 if mask_pixel_value == 0:
-                    if params.verbose == True:
+                    if params.verbose:
                         print(f"Object could not be resolved at coordinate: x = {x}, y = {y}")
                     unrecovered_ids.append(object_id_count)
                     added_obj_labels.append(object_id_count)
@@ -309,7 +309,7 @@ class Points:
                                 if np.all(lbl_counts == 1):
                                     # If no, Concat with "_" delimiter
                                     concat_lbl = "_".join(list(unique_lbls))
-                                    if params.verbose == True:
+                                    if params.verbose:
                                         print("labels getting concatenated to '{0}' at {1}".format(str(concat_lbl), str(first_coord)))
                                     # Adding the object
                                     added_obj_labels.append(mask_pixel_value)
