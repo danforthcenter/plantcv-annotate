@@ -307,6 +307,7 @@ class Points:
                                 flat = np.concatenate(splitup, dtype='<U25')
                                 # Grab each unique label from the list
                                 unique_lbls, lbl_counts = np.unique(flat, return_counts=True)
+                                flat1 = str(flat)
                                 # Is there duplication within each class label for the given object?
                                 if np.all(lbl_counts == 1):
                                     # If no, Concat with "_" delimiter
@@ -327,9 +328,9 @@ class Points:
                                 else:
                                     # e.g. "total", "total", "germinated" is too complex to measure
                                     if params.verbose:
-                                        print("The object at {0} was removed for being too complex. "
+                                        print(f"The object at {first_coord} was removed for being too complex. "
                                               "It was associated with the following "
-                                              "labels: {1}".format(str(first_coord), str(flat)))
+                                              "labels: {flat1}")
                                     added_obj_labels.append(mask_pixel_value)
                                     # Draw the ghost of objects removed
                                     debug_img_duplicates = np.where(labeled_mask_all == mask_pixel_value,
