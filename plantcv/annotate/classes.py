@@ -370,41 +370,41 @@ class Points:
 
 
 def _remove_unannotated_objects(pts_mask, bin_img):
-        """Fitler a binary mask based on annotations.
+    """Fitler a binary mask based on annotations.
 
-        Parameters
-        ----------
-        pts_mask : numpy.ndarray
-            binary image, mask with all annotations plotted as pixels
-        bin_img : numpy.ndarray
-            binary image, mask to get corrected
+    Parameters
+    ----------
+    pts_mask : numpy.ndarray
+        binary image, mask with all annotations plotted as pixels
+    bin_img : numpy.ndarray
+        binary image, mask to get corrected
 
-        Returns
-        ----------
-        filetered_mask : numpy.ndarray
-            corrected mask
-        debug_img_removed : numpy.ndarray
-            binary mask of objects that were removed
-        """
-        debug_img_removed = cv2.cvtColor(pts_mask.copy(), cv2.COLOR_GRAY2RGB)
-        
-        # Create a labeled mask from the input mask
-        labeled_mask, total_obj_num = create_labels(mask=bin_img)
-        labeled_mask1 = np.copy(labeled_mask)
-        # Objects that overlap with one or more annotations get kept
-        masked_image = apply_mask(img=labeled_mask1, mask=pts_mask, mask_color='black')
-        keep_object_ids = np.unique(masked_image)
-        
-        # Fill in objects that are not overlapping with an annotation
-        for i in range(1, total_obj_num + 1):
-            if i not in keep_object_ids:
-                labeled_mask1[np.where(labeled_mask == i)] = 0
-                debug_img_removed[np.where(labeled_mask == i)] = (50, 50, 50)
-                
-        # Create new binary mask after filtering un-annotated objects
-        completed_mask_bin = np.where(labeled_mask1 > 0, 255, 0)
-                
-        return completed_mask_bin, debug_img_removed
+    Returns
+    ----------
+    filetered_mask : numpy.ndarray
+        corrected mask
+    debug_img_removed : numpy.ndarray
+        binary mask of objects that were removed
+    """
+    debug_img_removed = cv2.cvtColor(pts_mask.copy(), cv2.COLOR_GRAY2RGB)
+    
+    # Create a labeled mask from the input mask
+    labeled_mask, total_obj_num = create_labels(mask=bin_img)
+    labeled_mask1 = np.copy(labeled_mask)
+    # Objects that overlap with one or more annotations get kept
+    masked_image = apply_mask(img=labeled_mask1, mask=pts_mask, mask_color='black')
+    keep_object_ids = np.unique(masked_image)
+    
+    # Fill in objects that are not overlapping with an annotation
+    for i in range(1, total_obj_num + 1):
+        if i not in keep_object_ids:
+            labeled_mask1[np.where(labeled_mask == i)] = 0
+            debug_img_removed[np.where(labeled_mask == i)] = (50, 50, 50)
+            
+    # Create new binary mask after filtering un-annotated objects
+    completed_mask_bin = np.where(labeled_mask1 > 0, 255, 0)
+            
+    return completed_mask_bin, debug_img_removed
 
 
 def _draw_unresolved_object(debug_img, final_mask, obj_number, coord):
@@ -474,51 +474,51 @@ def _draw_resolved(debug_img, final_mask, pre_lbls_mask, mask_pixel_value, obj_n
 
 
 def _draw_ghost_of_duplicates_removed(dupes_mask):
-        """Fitler a binary mask based on annotations.
+    """Fitler a binary mask based on annotations.
 
-        Parameters
-        ----------
-        dupes_mask : numpy.ndarray
-            binary image, mask with all removed (because duplicate annotations) objects
-        removed_mask : numpy.ndarray
-            binary image, mask of unannotated and removed objects
+    Parameters
+    ----------
+    dupes_mask : numpy.ndarray
+        binary image, mask with all removed (because duplicate annotations) objects
+    removed_mask : numpy.ndarray
+        binary image, mask of unannotated and removed objects
 
-        Returns
-        ----------
-        removed_mask : numpy.ndarray
-            combined mask with all removed objects for debug visualization
-        """
-        from plantcv.plantcv import dilate
+    Returns
+    ----------
+    removed_mask : numpy.ndarray
+        combined mask with all removed objects for debug visualization
+    """
+    from plantcv.plantcv import dilate
 
-        # Dilate duplicate objs and subtract the object itself to leave just a halo around
-        debug_img_duplicates = dilate(dupes_mask, ksize=params.line_thickness+2, i=1)
-        debug_img_duplicates = debug_img_duplicates - dupes_mask
-        debug_img_duplicates = cv2.cvtColor(debug_img_duplicates, cv2.COLOR_GRAY2RGB)
-        return debug_img_duplicates
+    # Dilate duplicate objs and subtract the object itself to leave just a halo around
+    debug_img_duplicates = dilate(dupes_mask, ksize=params.line_thickness+2, i=1)
+    debug_img_duplicates = debug_img_duplicates - dupes_mask
+    debug_img_duplicates = cv2.cvtColor(debug_img_duplicates, cv2.COLOR_GRAY2RGB)
+    return debug_img_duplicates
 
 
 def _add_debug_id(debug_labels_list, debug_coords_list, id, coord):
-        """Updates the list of IDs and coordinates for labeling things
-        in the debugging image
+    """Updates the list of IDs and coordinates for labeling things
+    in the debugging image
 
-        Parameters
-        ----------
-        debug_labels_list : list
-            list of ID labels for the debug image
-        debug_coords_list : list
-            list of coordinates for ID labels in the debug image
-        id : int
-            current object ID number
-        coord : tuple
-            coordinate resovled to the current object
+    Parameters
+    ----------
+    debug_labels_list : list
+        list of ID labels for the debug image
+    debug_coords_list : list
+        list of coordinates for ID labels in the debug image
+    id : int
+        current object ID number
+    coord : tuple
+        coordinate resovled to the current object
 
-        Returns
-        ----------
-        debug_labels_list : list
-            updated corrected mask
-        debug_coords_list : list
-            updated list of coordinates for ID labels in the debug image
-        """
-        debug_labels_list.append(str(id))
-        debug_coords_list.append(coord)
-        return debug_labels_list, debug_coords_list
+    Returns
+    ----------
+    debug_labels_list : list
+        updated corrected mask
+    debug_coords_list : list
+        updated list of coordinates for ID labels in the debug image
+    """
+    debug_labels_list.append(str(id))
+    debug_coords_list.append(coord)
+    return debug_labels_list, debug_coords_list
