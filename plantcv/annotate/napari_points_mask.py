@@ -36,13 +36,12 @@ def napari_points_mask(img, viewer):
     for key in keys:
         maskname = str(key)
         mask = np.zeros((size[0], size[1]))
-        shapetype = str(viewer.layers['background']._current_symbol).split()[-1]
         data = list(viewer.layers[key].data)
         shapesize = int(viewer.layers[key]._current_size/2)
         for y, x in data:
-                startpoint = (int(x-shapesize), int(y-shapesize))
-                endpoint = (int(x+shapesize-1), int(y+shapesize-1))
-                mask = cv2.rectangle(mask, startpoint, endpoint, (255), -1)
+            startpoint = (int(x-shapesize), int(y-shapesize))
+            endpoint = (int(x+shapesize-1), int(y+shapesize-1))
+            mask = cv2.rectangle(mask, startpoint, endpoint, (255), -1)
 
         maskdict[maskname] = mask
 
