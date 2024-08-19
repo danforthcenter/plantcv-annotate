@@ -182,9 +182,11 @@ def test_plantcv_annotate_points_correct_mask(test_data):
     (242, 340),
     (247, 281),
     (279, 337)]
+    dupe_pt = [(116, 47)]
     counter = Points(np.copy(allmask), figsize=(8, 6))
     counter.import_list(totalpoints1, label="total")
-    counter.import_list(totalpoints1[0], label="dupe")
+    #counter.import_list(totalpoints1[0], label="dupe")
+    counter.import_list(dupe_pt, label="dupe")
 
     corrected_mask, _, _ = counter.correct_mask(bin_img=allmask)
     assert np.count_nonzero(corrected_mask) < np.count_nonzero(discs)
