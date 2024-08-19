@@ -25,9 +25,9 @@ import plantcv.annotate as pcvan
 import napari
 
 # Create an instance of the Points class
-img, path, name = pcv.readimage("./grayimg.png")
+img, path, name = pcv.readimage("./wheat.png")
 
-viewer = pcvan.napari_label_classes(img,['background','leaf', 'rust', 'chlorosis'], size = 4)
+viewer = pcvan.napari_label_classes(img,['background','healthy', 'rust', 'chlorosis'], size = 4)
 
 maskdict = pcvan.napari_points_mask(img,viewer)
 
@@ -35,7 +35,22 @@ maskdict = pcvan.napari_points_mask(img,viewer)
 
 ```
 
-![Screenshot](img/documentation_images/napari_points_mask/)
+![Screenshot](img/documentation_images/napari_points_mask/viewer_labeled.png)
 
+***Background Mask***
+
+![Screenshot](img/documentation_images/napari_points_mask/background.png)
+
+***Healthy Mask***
+
+![Screenshot](img/documentation_images/napari_points_mask/healthy.png)
+
+***Rust Mask***
+
+![Screenshot](img/documentation_images/napari_points_mask/rust.png)
+
+***Chlorosis Mask***
+
+![Screenshot](img/documentation_images/napari_points_mask/chlorosis.png)
 
 **Source Code:** [Here](https://github.com/danforthcenter/plantcv-annotate/blob/main/plantcv/annotate/napari_points_mask.py)
