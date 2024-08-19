@@ -163,7 +163,6 @@ class Points:
             for (x, y) in self.coords[self.label]:
                 self.ax.plot(x, y, marker='x', c=self.color)
 
-
     def _create_pts_mask(self, bin_img, labelnames):
         """Fitler a binary mask based on annotations.
 
@@ -185,9 +184,8 @@ class Points:
                 y = int(y)
                 # Draw pt annotations onto a blank mask
                 pts_mask = cv2.circle(pts_mask, (x, y), radius=0, color=(255), thickness=-1)
-        
+
         return pts_mask
-    
 
     def correct_mask(self, bin_img):
         """Fitler a binary mask and make a labeled mask for analysis.
@@ -226,7 +224,6 @@ class Points:
         labeled_mask_all, _ = create_labels(mask=completed_mask_bin)
         masked_image2 = apply_mask(img=labeled_mask_all, mask=pts_mask, mask_color='black')
         _, keep_object_count = np.unique(masked_image2, return_counts=True)
-        
         # Initialize object count
         object_id_count = 1
         # pts in class used for recovering and labeling
@@ -246,7 +243,10 @@ class Points:
                     debug_labels, debug_coords = _add_debug_id(debug_labels, debug_coords,
                                                                object_id_count, (x, y))
                     # Add the unresolved object to the labeled mask and the debug img
-                    debug_img, final_mask, object_id_count = _draw_unresolved_object(debug_img, final_mask, obj_number=object_id_count, coord=(x, y))
+                    debug_img, final_mask, object_id_count = _draw_unresolved_object(debug_img,
+                                                                                     final_mask,
+                                                                                     obj_number=object_id_count,
+                                                                                     coord=(x, y))
                 if mask_pixel_value > 0:
                     # An object is resolved but check if there are other annotations associated with an object
                     associated_count = keep_object_count[mask_pixel_value]
@@ -260,9 +260,9 @@ class Points:
                         debug_img, final_mask, object_id_count = _draw_resolved(debug_img, final_mask, labeled_mask_all,
                                                                                 mask_pixel_value, object_id_count)
                     if associated_count > 1:
-                        # Has this object been handled already? 
+                        # Has this object been handled already?
                         if mask_pixel_value not in added_obj_labels:
-                            # Object annotated more than once so find all associated annotations 
+                            # Object annotated more than once so find all associated annotations
                             associated_coords = np.where(masked_image2 == mask_pixel_value)
                             associated_coords = tuple(zip(*associated_coords))
                             first_coord = (associated_coords[0][1], associated_coords[0][0])
@@ -277,7 +277,8 @@ class Points:
                             if len(re) == 1:
                                 # Labels are duplicated e.g. "total", "total"
                                 # Draw the ghost of objects removed
-                                debug_img_duplicates = np.where(labeled_mask_all == mask_pixel_value, (255), debug_img_duplicates)
+                                debug_img_duplicates = np.where(labeled_mask_all == mask_pixel_value,
+                                                                (255), debug_img_duplicates)
                                 # Fill in the duplicate object in the labeled mask, replace with pixel annotations
                                 final_mask = np.where(labeled_mask_all == mask_pixel_value, (0), final_mask)
                                 added_obj_labels.append(mask_pixel_value)
@@ -299,7 +300,7 @@ class Points:
                                 # Split on "_" in case something has already been combined
                                 for lbls in coord_labels:
                                     list_lbl = []
-                                    for lbl in lbls: 
+                                    for lbl in lbls:
                                         list_lbl.append(lbl.split("_"))
                                     splitup.append(np.concatenate(list_lbl))
                                 # Flatten list of labels
@@ -438,7 +439,6 @@ def _draw_unresolved_object(debug_img, final_mask, obj_number, coord):
     obj_number += 1
     return debug_img, final_mask, obj_number
 
-
 def _draw_resolved(debug_img, final_mask, pre_lbls_mask, mask_pixel_value, obj_number):
     """Draw resolved/measurable objects
 
@@ -495,8 +495,8 @@ def _draw_ghost_of_duplicates_removed(dupes_mask):
         debug_img_duplicates = debug_img_duplicates - dupes_mask
         debug_img_duplicates = cv2.cvtColor(debug_img_duplicates, cv2.COLOR_GRAY2RGB)
         return debug_img_duplicates
-    
-    
+
+
 def _add_debug_id(debug_labels_list, debug_coords_list, id, coord):
         """Updates the list of IDs and coordinates for labeling things
         in the debugging image
@@ -508,7 +508,7 @@ def _add_debug_id(debug_labels_list, debug_coords_list, id, coord):
         debug_coords_list : list
             list of coordinates for ID labels in the debug image
         id : int
-            current object ID number 
+            current object ID number
         coord : tuple
             coordinate resovled to the current object
 
