@@ -313,8 +313,8 @@ class Points:
                                     # If no, Concat with "_" delimiter
                                     concat_lbl = "_".join(list(unique_lbls))
                                     if params.verbose:
-                                        print("labels getting concatenated to '{0}' at "
-                                              "{1}".format(str(concat_lbl), str(first_coord)))
+                                        print(f"labels getting concatenated to '{concat_lbl}' at "
+                                              "{first_coord}")
                                     # Adding the object
                                     added_obj_labels.append(mask_pixel_value)
                                     analysis_labels.append(concat_lbl)
