@@ -167,7 +167,7 @@ def test_plantcv_annotate_points_correct_mask(test_data):
     discs = cv2.imread(test_data.pollen_discs, -1)
     totalpoints1 = [(116, 47),
     (322, 46),
-    (322, 48),
+    (322, 47),
     (364, 109),
     (286, 152),
     (266, 174),
@@ -182,7 +182,7 @@ def test_plantcv_annotate_points_correct_mask(test_data):
     (242, 340),
     (247, 281),
     (279, 337)]
-    dupe_pt = [(116, 47)]
+    dupe_pt = [(116, 46)]
     counter = Points(np.copy(allmask), figsize=(8, 6))
     counter.import_list(totalpoints1, label="total")
     #counter.import_list(totalpoints1[0], label="dupe")
