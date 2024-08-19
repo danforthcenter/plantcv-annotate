@@ -11,7 +11,7 @@ def test_napari_label_classes_gray(test_data):
     viewer = napari_label_classes(img, ['total'], size=5, importdata=data,
                                   show=False)
     coor = [(50, 25)]
-    viewer.add_points(np.array(coor), symbol="o", name='coor',
+    viewer.add_points(np.array(coor), symbol="square", name='coor',
                       face_color="red", size=5)
 
     assert len(viewer.layers['total'].data) == 1

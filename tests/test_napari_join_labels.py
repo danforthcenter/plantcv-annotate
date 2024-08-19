@@ -23,10 +23,10 @@ def test_napari_join_allclass(test_data):
     img, _, _ = readimage(test_data.kmeans_seed_gray_img)
     viewer = napari_open(img, show=False)
     background = [(54, 143), (77, 246)]
-    viewer.add_points(np.array(background), symbol="o", name='background',
+    viewer.add_points(np.array(background), symbol="square", name='background',
                       face_color="red", size=1)
     wing = [(275, 54)]
-    viewer.add_points(np.array(wing), symbol="o", name='wing',
+    viewer.add_points(np.array(wing), symbol="square", name='wing',
                       face_color="red", size=1)
     seed = [(280, 218)]
     viewer.add_points(np.array(seed), symbol="o", name='seed',
@@ -44,13 +44,13 @@ def test_napari_join_warn(test_data):
     img, _, _ = readimage(test_data.kmeans_seed_gray_img)
     viewer = napari_open(img, show=False)
     background = [(54, 143), (77, 246)]
-    viewer.add_points(np.array(background), symbol="o", name='background',
+    viewer.add_points(np.array(background), symbol="square", name='background',
                       face_color="red", size=1)
     wing = [(275, 54)]
-    viewer.add_points(np.array(wing), symbol="o", name='wing',
+    viewer.add_points(np.array(wing), symbol="square", name='wing',
                       face_color="red", size=1)
     seed = [(275, 54)]
-    viewer.add_points(np.array(seed), symbol="o", name='seed',
+    viewer.add_points(np.array(seed), symbol="square", name='seed',
                       face_color="red", size=1)
 
     labeled, _ = napari_join_labels(img, viewer)
@@ -68,13 +68,13 @@ def test_napari_join_print(test_data, tmpdir):
     img, _, _ = readimage(test_data.kmeans_seed_gray_img)
     viewer = napari_open(img, show=False)
     background = [(54, 143), (77, 246)]
-    viewer.add_points(np.array(background), symbol="o", name='background',
+    viewer.add_points(np.array(background), symbol="square", name='background',
                       face_color="red", size=1)
     wing = [(280, 218)]
-    viewer.add_points(np.array(wing), symbol="o", name='wing',
+    viewer.add_points(np.array(wing), symbol="square", name='wing',
                       face_color="red", size=1)
     seed = [(275, 54)]
-    viewer.add_points(np.array(seed), symbol="o", name='seed',
+    viewer.add_points(np.array(seed), symbol="square", name='seed',
                       face_color="red", size=1)
 
     labeled, _ = napari_join_labels(img, viewer)

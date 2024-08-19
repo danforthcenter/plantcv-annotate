@@ -8,7 +8,7 @@ from plantcv.plantcv import params
 from plantcv.plantcv._debug import _debug
 
 
-def napari_points_mask(img, viewer, shape='square'):
+def napari_points_mask(img, viewer):
     """
     draw points mask based on Napari viewer annotations
 
@@ -18,7 +18,6 @@ def napari_points_mask(img, viewer, shape='square'):
         of the image
     viewer = Napari Viewer with classes labeled. The size of the masked points
         will be from the viewer parameters
-    shape = 'square' or 'circle'
 
     Returns:
     mask_dict   = dictionary of masks; mask for each labelled class
@@ -32,21 +31,18 @@ def napari_points_mask(img, viewer, shape='square'):
     # get shape of image
     size = np.shape(img)
     keys = napari_classes(viewer)
-    shapetype = shape
     maskdict = {}
 
     for key in keys:
         maskname = str(key)
         mask = np.zeros((size[0], size[1]))
+        shapetype = str(viewer.layers['background']._current_symbol).split()[-1]
         data = list(viewer.layers[key].data)
         shapesize = int(viewer.layers[key]._current_size/2)
         for y, x in data:
-            if shapetype == 'square':
                 startpoint = (int(x-shapesize), int(y-shapesize))
                 endpoint = (int(x+shapesize-1), int(y+shapesize-1))
                 mask = cv2.rectangle(mask, startpoint, endpoint, (255), -1)
-            else:
-                mask = cv2.circle(mask, (int(x), int(y)), shapesize, (255), -1)
 
         maskdict[maskname] = mask
 
