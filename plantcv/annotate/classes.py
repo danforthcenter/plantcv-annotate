@@ -325,7 +325,6 @@ class Points:
                                     # Draw on labeled mask and debug img
                                     debug_img, final_mask, object_id_count = _draw_resolved(
                                         debug_img, final_mask, labeled_mask_all, mask_pixel_value, object_id_count)
-                                        
                                 else:
                                     # e.g. "total", "total", "germinated" is too complex to measure
                                     if params.verbose:
