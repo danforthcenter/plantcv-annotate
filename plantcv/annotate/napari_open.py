@@ -3,7 +3,7 @@
 import cv2
 import numpy as np
 from skimage.color import label2rgb
-import napari
+from plantcv.annotate import Viewer
 
 
 def napari_open(img, show=True):
@@ -34,6 +34,6 @@ def napari_open(img, show=True):
         if shape[2] > 3:
             img = img.transpose(2, 0, 1)
     showcall = show
-    viewer = napari.Viewer(show=showcall)
+    viewer = Viewer(show=showcall)
     viewer.add_image(img)
     return viewer
