@@ -199,7 +199,7 @@ class Points:
         ----------
         final_mask : numpy.ndarray
             corrected and labeled mask with recovered and removed objects
-        analysis_labels : list 
+        analysis_labels : list
             list of analysis labels in the same order of the objects in the final_mask
         num : int
             number of objects represented within the labeled mask
@@ -310,7 +310,6 @@ class Points:
                                 flat = np.concatenate(splitup, dtype='<U25')
                                 # Grab each unique label from the list
                                 unique_lbls, lbl_counts = np.unique(flat, return_counts=True)
-                                flat1 = str(flat)
                                 # Is there duplication within each class label for the given object?
                                 if np.all(lbl_counts == 1):
                                     # If no, Concat with "_" delimiter
@@ -354,11 +353,11 @@ class Points:
         debug_img_duplicates_rgb = _draw_ghost_of_duplicates_removed(debug_img_duplicates)
         debug_img = colorize_label_img(debug_img)
         debug_img = debug_img + debug_img_removed + debug_img_duplicates_rgb
-        
+
         # Write ID labels
         for id, id_label in enumerate(debug_labels):
             cv2.putText(img=debug_img, text=id_label, org=debug_coords[id], fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                        fontScale=params.text_size, color=(150, 150, 150), thickness=(params.text_thickness))
+                        fontScale=params.text_size, color=(150, 150, 150), thickness=params.text_thickness)
         params.debug = debug
         _debug(visual=final_mask,
                filename=os.path.join(params.debug_outdir,
@@ -389,12 +388,10 @@ def _remove_unannotated_objects(pts_mask, mask):
     debug_img_removed : numpy.ndarray
         binary mask of objects that were removed
     """
-    from plantcv import plantcv as pcv
     debug_img_removed = cv2.cvtColor(pts_mask.copy(), cv2.COLOR_GRAY2RGB)
-
     # Create a labeled mask from the input mask
     input_type = len(np.unique(mask))
-    if  input_type == 2:
+    if input_type == 2:
         labeled_mask, total_obj_num = create_labels(mask=mask)
     if input_type > 2:
         labeled_mask = np.copy(mask)
@@ -415,26 +412,26 @@ def _remove_unannotated_objects(pts_mask, mask):
 def _draw_unresolved_object(debug_img, final_mask, obj_number, coord):
     """Draw unresolved objects as a labeled pixel
 
-        Parameters
-        ----------
-        debug_img : numpy.ndarray
-            debug image of objects, unresolved annotations, etc
-        final_mask : numpy.ndarray
-            corrected and labeled mask with recovered and removed objects
-        obj_number : int
-            ID number for the current object getting added
-        coord : tuple
-            coordinate of the unresolved object annotation
+    Parameters
+    ----------
+    debug_img : numpy.ndarray
+        debug image of objects, unresolved annotations, etc
+    final_mask : numpy.ndarray
+        corrected and labeled mask with recovered and removed objects
+    obj_number : int
+        ID number for the current object getting added
+    coord : tuple
+        coordinate of the unresolved object annotation
 
-        Returns
-        ----------
-        debug_img : numpy.ndarray
-            debug image of objects, unresolved annotations, etc
-        final_mask : numpy.ndarray
-            corrected and labeled mask with recovered and removed objects
-        obj_number : int
-            ID number for the current object getting added
-        """
+    Returns
+    ----------
+    debug_img : numpy.ndarray
+        debug image of objects, unresolved annotations, etc
+    final_mask : numpy.ndarray
+        corrected and labeled mask with recovered and removed objects
+    obj_number : int
+        ID number for the current object getting added
+    """
     (x, y) = coord
     # Add a pixel where unresolved annotation to the mask
     final_mask[y, x] = obj_number
@@ -444,31 +441,32 @@ def _draw_unresolved_object(debug_img, final_mask, obj_number, coord):
     obj_number += 1
     return debug_img, final_mask, obj_number
 
+
 def _draw_resolved(debug_img, final_mask, pre_lbls_mask, mask_pixel_value, obj_number):
     """Draw resolved/measurable objects
 
-        Parameters
-        ----------
-        debug_img : numpy.ndarray
-            debug image of objects, unresolved annotations, etc
-        final_mask : numpy.ndarray
-            corrected and labeled mask with recovered and removed objects
-        pre_lbls_mask : numpy.ndarray
-            labeled mask of all resolvable objects
-        mask_pixel_value : int
-            ID number for the current resolved object in pre_lbls_mask
-        obj_number : int
-            ID number for the current object getting added
+    Parameters
+    ----------
+    debug_img : numpy.ndarray
+        debug image of objects, unresolved annotations, etc
+    final_mask : numpy.ndarray
+        corrected and labeled mask with recovered and removed objects
+    pre_lbls_mask : numpy.ndarray
+        labeled mask of all resolvable objects
+    mask_pixel_value : int
+        ID number for the current resolved object in pre_lbls_mask
+    obj_number : int
+        ID number for the current object getting added
 
-        Returns
-        ----------
-        debug_img : numpy.ndarray
-            debug image of objects, unresolved annotations, etc
-        final_mask : numpy.ndarray
-            corrected and labeled mask with recovered and removed objects
-        obj_number : int
-            ID number for the current object getting added
-        """
+    Returns
+    ----------
+    debug_img : numpy.ndarray
+        debug image of objects, unresolved annotations, etc
+    final_mask : numpy.ndarray
+        corrected and labeled mask with recovered and removed objects
+    obj_number : int
+        ID number for the current object getting added
+    """
     # Add a pixel where unresolved annotation to the mask
     # Draw on labeled mask
     final_mask = np.where(pre_lbls_mask == mask_pixel_value, obj_number, final_mask)
