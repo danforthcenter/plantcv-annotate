@@ -187,18 +187,20 @@ class Points:
 
         return pts_mask
 
-    def correct_mask(self, bin_img):
+    def correct_mask(self, mask):
         """Fitler a binary mask and make a labeled mask for analysis.
 
         Parameters
         ----------
-        bin_img : numpy.ndarray
-            binary image, mask to get corrected
+        mask : numpy.ndarray
+            binary image or labeled mask, mask to get corrected
 
         Returns
         ----------
         final_mask : numpy.ndarray
             corrected and labeled mask with recovered and removed objects
+        analysis_labels : list 
+            list of analysis labels in the same order of the objects in the final_mask
         num : int
             number of objects represented within the labeled mask
         """
@@ -213,17 +215,24 @@ class Points:
         added_obj_labels = []
         analysis_labels = []
         labelnames = list(self.count)
-        pts_mask = self._create_pts_mask(bin_img, labelnames)
-        final_mask = np.zeros(np.shape(bin_img), np.uint32)
-        debug_img = np.zeros(np.shape(bin_img), np.uint8)
+        pts_mask = self._create_pts_mask(mask, labelnames)
+        final_mask = np.zeros(np.shape(mask), np.uint32)
+        debug_img = np.zeros(np.shape(mask), np.uint8)
         debug_img_duplicates = debug_img.copy()
 
-        completed_mask_bin, debug_img_removed = _remove_unannotated_objects(pts_mask, bin_img)
+        bin_mask = np.where(mask < 0, 255, 0).astype(np.uint8)
+        completed_mask_bin, debug_img_removed = _remove_unannotated_objects(pts_mask, bin_mask)
 
+        # Make labeled mask if the input mask is binary
+        input_type = len(np.unique(mask))
+        if  input_type == 2:
+            labeled_mask_all, _ = create_labels(mask=completed_mask_bin)
+        if input_type > 2:
+            labeled_mask_all = np.copy(mask)
         # Create a new labeled annotation mask to determine number of annotation per object
-        labeled_mask_all, _ = create_labels(mask=completed_mask_bin)
         masked_image2 = apply_mask(img=labeled_mask_all, mask=pts_mask, mask_color='black')
-        _, keep_object_count = np.unique(masked_image2, return_counts=True)
+        keep_pixel_vals, keep_object_count = np.unique(masked_image2, return_counts=True)
+        print(keep_object_count)
         # Initialize object count
         object_id_count = 1
         # pts in class used for recovering and labeling
@@ -249,7 +258,8 @@ class Points:
                                                                                      coord=(x, y))
                 if mask_pixel_value > 0:
                     # An object is resolved but check if there are other annotations associated with an object
-                    associated_count = keep_object_count[mask_pixel_value]
+                    mask_pixel_index = np.where(keep_pixel_vals == mask_pixel_value)[0]
+                    associated_count = keep_object_count[mask_pixel_index]
                     if associated_count == 1:
                         # New object getting added
                         added_obj_labels.append(mask_pixel_value)
