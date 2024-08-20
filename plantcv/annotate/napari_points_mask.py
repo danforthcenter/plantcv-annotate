@@ -37,7 +37,7 @@ def napari_points_mask(img, viewer):
         maskname = str(key)
         mask = np.zeros((size[0], size[1]))
         data = list(viewer.layers[key].data)
-        shapesize = viewer.layer_size(key)
+        shapesize = viewer.layers[key]._current_size
         shapesizehalf = int(shapesize/2)
 
         for y, x in data:

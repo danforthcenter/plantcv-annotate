@@ -1,8 +1,8 @@
 import numpy as np
-from plantcv.annotate.napari_open import napari_open
-from plantcv.annotate.napari_label_classes import napari_label_classes
+from plantcv.annotate import napari_open
+from plantcv.annotate import napari_label_classes
 from plantcv.plantcv import readimage
-from plantcv.annotate.napari_join_labels import napari_join_labels
+from plantcv.annotate import napari_join_labels
 from plantcv.plantcv import params
 
 
