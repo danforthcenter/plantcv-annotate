@@ -178,6 +178,16 @@ def test_plantcv_annotate_points_correct_mask(test_data):
     counter.import_list(totalpoints1, label="total")
     counter.import_list(dupe_pts, label="dupe")
 
-    corrected_mask, _, _ = counter.correct_mask(bin_img=allmask)
+    corrected_mask, _, _ = counter.correct_mask(mask=allmask)
     assert np.count_nonzero(corrected_mask) < np.count_nonzero(discs)
     assert np.count_nonzero(corrected_mask) < np.count_nonzero(allmask)
+    
+def test_plantcv_annotate_points_correct_mask_labeled(test_data):
+    """Test for PlantCV."""
+    lbl_mask = cv2.imread(test_data.kmeans_seed_gray_img, -1)
+    dupe_pts = [(100, 281), (274, 525)]
+    counter = Points(np.copy(lbl_mask), figsize=(8, 6))
+    counter.import_list(dupe_pts, label="total")
+    corrected_mask, _, _ = counter.correct_mask(mask=lbl_mask)
+    assert np.count_nonzero(corrected_mask) < np.count_nonzero(lbl_mask)
+    
