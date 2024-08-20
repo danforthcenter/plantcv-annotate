@@ -117,7 +117,7 @@ class Points:
 
         for key in keys:
             keycoor = coords[key]
-            keycoor = list(map(lambda sub: (sub[1], sub[0]), keycoor))
+            keycoor = list(map(lambda sub: (sub[0], sub[1]), keycoor))
             self.import_list(keycoor, label=key)
 
     def view(self, label="default", color="r", view_all=False):
@@ -163,20 +163,20 @@ class Points:
             for (x, y) in self.coords[self.label]:
                 self.ax.plot(x, y, marker='x', c=self.color)
 
-    def _create_pts_mask(self, bin_img, labelnames):
+    def _create_pts_mask(self, mask, labelnames):
         """Fitler a binary mask based on annotations.
 
         Parameters
         ----------
-        bin_img : numpy.ndarray
-            binary image
+        mask : numpy.ndarray
+            mask for image size
 
         Returns
         ----------
         pts_mask : numpy.ndarray
             binary mask of annotations
         """
-        pts_mask = np.zeros(np.shape(bin_img), np.uint8)
+        pts_mask = np.zeros(np.shape(mask), np.uint8)
         # Create points mask from all annotations
         for names in labelnames:
             for (x, y) in self.coords[names]:
@@ -215,24 +215,17 @@ class Points:
         added_obj_labels = []
         analysis_labels = []
         labelnames = list(self.count)
-        pts_mask = self._create_pts_mask(mask, labelnames)
         final_mask = np.zeros(np.shape(mask), np.uint32)
         debug_img = np.zeros(np.shape(mask), np.uint8)
         debug_img_duplicates = debug_img.copy()
 
-        bin_mask = np.where(mask < 0, 255, 0).astype(np.uint8)
-        completed_mask_bin, debug_img_removed = _remove_unannotated_objects(pts_mask, bin_mask)
+        bin_mask = np.where(mask > 0, 255, 0).astype(np.uint8)
+        pts_mask = self._create_pts_mask(bin_mask, labelnames)
+        labeled_mask_all, debug_img_removed = _remove_unannotated_objects(pts_mask, mask)
 
-        # Make labeled mask if the input mask is binary
-        input_type = len(np.unique(mask))
-        if  input_type == 2:
-            labeled_mask_all, _ = create_labels(mask=completed_mask_bin)
-        if input_type > 2:
-            labeled_mask_all = np.copy(mask)
         # Create a new labeled annotation mask to determine number of annotation per object
         masked_image2 = apply_mask(img=labeled_mask_all, mask=pts_mask, mask_color='black')
         keep_pixel_vals, keep_object_count = np.unique(masked_image2, return_counts=True)
-        print(keep_object_count)
         # Initialize object count
         object_id_count = 1
         # pts in class used for recovering and labeling
@@ -323,8 +316,7 @@ class Points:
                                     # If no, Concat with "_" delimiter
                                     concat_lbl = "_".join(list(unique_lbls))
                                     if params.verbose:
-                                        print(f"labels getting concatenated to '{concat_lbl}' at "
-                                              "{first_coord}")
+                                        print(f"labels getting concatenated to '{concat_lbl}' at {first_coord}")
                                     # Adding the object
                                     added_obj_labels.append(mask_pixel_value)
                                     analysis_labels.append(concat_lbl)
@@ -380,15 +372,15 @@ class Points:
         return final_mask, analysis_labels, num
 
 
-def _remove_unannotated_objects(pts_mask, bin_img):
-    """Fitler a binary mask based on annotations.
+def _remove_unannotated_objects(pts_mask, mask):
+    """Fitler a mask based on annotations, handles both binary and labeled masks.
 
     Parameters
     ----------
     pts_mask : numpy.ndarray
         binary image, mask with all annotations plotted as pixels
-    bin_img : numpy.ndarray
-        binary image, mask to get corrected
+    mask : numpy.ndarray
+        input mask image, mask to get corrected
 
     Returns
     ----------
@@ -397,25 +389,27 @@ def _remove_unannotated_objects(pts_mask, bin_img):
     debug_img_removed : numpy.ndarray
         binary mask of objects that were removed
     """
+    from plantcv import plantcv as pcv
     debug_img_removed = cv2.cvtColor(pts_mask.copy(), cv2.COLOR_GRAY2RGB)
-    
+
     # Create a labeled mask from the input mask
-    labeled_mask, total_obj_num = create_labels(mask=bin_img)
-    labeled_mask1 = np.copy(labeled_mask)
+    input_type = len(np.unique(mask))
+    if  input_type == 2:
+        labeled_mask, total_obj_num = create_labels(mask=mask)
+    if input_type > 2:
+        labeled_mask = np.copy(mask)
+        total_obj_num = input_type
     # Objects that overlap with one or more annotations get kept
-    masked_image = apply_mask(img=labeled_mask1, mask=pts_mask, mask_color='black')
+    masked_image = apply_mask(img=labeled_mask, mask=pts_mask, mask_color='black')
     keep_object_ids = np.unique(masked_image)
-    
+
     # Fill in objects that are not overlapping with an annotation
     for i in range(1, total_obj_num + 1):
         if i not in keep_object_ids:
-            labeled_mask1[np.where(labeled_mask == i)] = 0
+            labeled_mask[np.where(labeled_mask == i)] = 0
             debug_img_removed[np.where(labeled_mask == i)] = (50, 50, 50)
-            
-    # Create new binary mask after filtering un-annotated objects
-    completed_mask_bin = np.where(labeled_mask1 > 0, 255, 0)
-            
-    return completed_mask_bin, debug_img_removed
+
+    return labeled_mask, debug_img_removed
 
 
 def _draw_unresolved_object(debug_img, final_mask, obj_number, coord):
