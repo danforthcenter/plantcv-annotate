@@ -50,12 +50,12 @@ roi = pcv.roi.custom(img=img, vertices=marker.coords['default'])
 
 Using [Jupyter Notebooks](https://plantcv.readthedocs.io/en/stable/jupyter/) it is possible to interactively click to collect coordinates from an image, then use these coordinate to remove and recover objects from a binary mask.
 
-**plantcv.annotate.Points.correct_mask**(*bin_img*)
+**plantcv.annotate.Points.correct_mask**(*mask*)
 
 **returns** corrected_mask, lbls, num
 
 - **Parameters:**
-    - bin_img - binary image, filtered mask image with selected objects
+    - mask - binary or labeled mask image, filtered mask image with selected objects, or the output from [`plantcv.watershed`](https://plantcv.readthedocs.io/en/stable/watershed/)
     
 - **Returns:**
     - corrected_mask - A labeled mask with non-annotated objects filtered out, and unresolvable annotations marked with a labeled pixel. 
@@ -95,7 +95,7 @@ marker = pcvan.Points(img=img, figsize=(12,6))
 marker.import_list(coords=centroid_coords, label="stomata")
 
 # Filter the binary mask based on corrected annotations
-corrected_mask, lbls, num = marker.correct_mask(bin_img=bin_mask)
+corrected_mask, lbls, num = marker.correct_mask(mask=bin_mask)
 
 # Analysis steps here
 size_img = pcv.analyze.size(img=img, labeled_mask=corrected_mask, n_labels=num, label=lbls)
