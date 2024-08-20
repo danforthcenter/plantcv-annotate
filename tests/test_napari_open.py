@@ -22,7 +22,7 @@ def test_napari_open_gray(test_data):
     img, _, _ = readimage(test_data.kmeans_seed_gray_img)
     viewer = napari_open(img, show=False)
     coor = [(25, 25), (50, 50)]
-    viewer.add_points(np.array(coor), symbol="o", name="total",
+    viewer.add_points(np.array(coor), symbol="square", name="total",
                       face_color="red", size=1)
 
     assert len(viewer.layers['total'].data) == 2
@@ -36,7 +36,7 @@ def test_napari_open_envi(test_data):
     img = img.array_data
     viewer = napari_open(img, show=False)
     coor = [(25, 25), (50, 50)]
-    viewer.add_points(np.array(coor), symbol="o", name="total",
+    viewer.add_points(np.array(coor), symbol="square", name="total",
                       face_color="red", size=1)
 
     assert len(viewer.layers['total'].data) == 2

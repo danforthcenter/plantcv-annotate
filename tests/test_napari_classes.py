@@ -9,9 +9,9 @@ def test_napari_classes(make_napari_viewer):
     img = np.zeros((100, 100))
     coor = [(25, 25), (50, 50)]
     viewer.add_image(img)
-    viewer.add_points(np.array(coor), symbol="o", name="total",
+    viewer.add_points(np.array(coor), symbol="square", name="total",
                       face_color="red", size=30)
-    viewer.add_points(np.array(coor), symbol="o", name="test",
+    viewer.add_points(np.array(coor), symbol="square", name="test",
                       face_color="red", size=30)
     keys = napari_classes(viewer)
 

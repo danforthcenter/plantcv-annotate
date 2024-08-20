@@ -6,7 +6,7 @@ from plantcv.annotate import napari_open
 from plantcv.annotate import napari_classes
 
 
-def napari_label_classes(img, classes=False, size=10, 
+def napari_label_classes(img, classes=False, size=10,
                          importdata=False, show=True):
     """
     open img in napari and label classes
@@ -92,7 +92,8 @@ def napari_label_classes(img, classes=False, size=10,
                 if key in keys:
                     viewer.layers[key].add(importdata[key])
                 else:
-                    viewer.add_points(importdata[key], name=key, symbol='square',
+                    viewer.add_points(importdata[key], name=key,
+                                      symbol='square',
                                       edge_color=random.choice(color),
                                       face_color=random.choice(color),
                                       size=size)
