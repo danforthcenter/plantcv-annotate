@@ -307,7 +307,7 @@ class Points:
                                         list_lbl.append(lbl.split("_"))
                                     splitup.append(np.concatenate(list_lbl))
                                 # Flatten list of labels
-                                flat = np.concatenate(splitup, dtype='<U25')
+                                flat = np.concatenate(splitup)
                                 # Grab each unique label from the list
                                 unique_lbls, lbl_counts = np.unique(flat, return_counts=True)
                                 # Is there duplication within each class label for the given object?
