@@ -28,7 +28,7 @@ def napari_naive_bayes_colors(img, maskdict, filename):
         nonzero = np.transpose(np.nonzero(mask))
         keydata = []
         for x, y in nonzero:
-            rgbdata = list(img[x][y])
+            rgbdata = list(reversed(img[x][y]))
             rgblist = ", ".join(repr(int(e)) for e in rgbdata)
             keydata.append(rgblist)
         dict1 = {key: keydata}
