@@ -5,6 +5,7 @@ from plantcv.annotate.napari_join_labels import napari_join_labels
 from plantcv.annotate.napari_save_coor import napari_save_coor
 from plantcv.annotate.napari_read_coor import napari_read_coor
 from plantcv.annotate.napari_points_mask import napari_points_mask
+from plantcv.annotate.napari_naive_bayes_data import napari_naive_bayes_colors
 
 
 __all__ = [
@@ -14,5 +15,6 @@ __all__ = [
     "napari_join_labels",
     "napari_save_coor",
     "napari_read_coor",
-    "napari_points_mask"
+    "napari_points_mask",
+    "napari_naive_bayes_colors"
 ]
