@@ -6,13 +6,14 @@ from skimage.color import label2rgb
 import napari
 
 
-def napari_open(img, show=True):
+def napari_open(img, mode='native', show=True):
     """
     open img in napari
 
     Inputs:
     img  = img  (grayimg, rgbimg, or hyperspectral image array data e.g.
     hyperspectraldata.array_data)
+    mode = 'native or 'colorize'
     show = if show is True the viewer is launched. This option is useful for
     running tests without triggering the viewer.
 
@@ -25,9 +26,10 @@ def napari_open(img, show=True):
     """
     shape = np.shape(img)
     if len(shape) == 2:
-        colorful = label2rgb(img)
-        img = (255*colorful).astype(np.uint8)
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        if mode == 'colorize':
+            colorful = label2rgb(img)
+            img = (255*colorful).astype(np.uint8)
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     if len(shape) == 3:
         if shape[2] == 3:
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
