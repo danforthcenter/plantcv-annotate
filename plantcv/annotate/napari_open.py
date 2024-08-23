@@ -25,11 +25,10 @@ def napari_open(img, mode='native', show=True):
 
     """
     shape = np.shape(img)
-    if len(shape) == 2:
-        if mode == 'colorize':
-            colorful = label2rgb(img)
-            img = (255*colorful).astype(np.uint8)
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    if len(shape) == 2 and mode == 'colorize':
+        colorful = label2rgb(img)
+        img = (255*colorful).astype(np.uint8)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     if len(shape) == 3:
         if shape[2] == 3:
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
