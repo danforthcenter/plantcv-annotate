@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented below.
 
-#### annotate.get_centroids**
+#### annotate.get_centroids
 
 * v0.1dev: coords_list = **annotate.get_centroids**(*bin_img*)
 
