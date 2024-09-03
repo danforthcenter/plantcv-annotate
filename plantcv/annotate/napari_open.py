@@ -7,22 +7,22 @@ import napari
 
 
 def napari_open(img, mode='native', show=True):
-    """
-    open img in napari
+    """Open an image with a napari interactive viewer
 
-    Inputs:
-    img  = img  (grayimg, rgbimg, or hyperspectral image array data e.g.
-    hyperspectraldata.array_data)
-    mode = 'native or 'colorize'
-    show = if show is True the viewer is launched. This option is useful for
+    Parameters
+    ----------
+    img : numpy.ndarray
+        Image to be opened, img can be gray, rgb, or multispectral
+    mode: str
+        Viewing mode, either 'native' (default) or 'colorize'
+    show: bool
+        if show is True the viewer is launched. This option is useful for
     running tests without triggering the viewer.
 
-    Returns:
-    viewer  = napari viewer object
-
-    :param img: numpy.ndarray
-    :return viewer: napari viewer object
-
+    Returns
+    -------
+    napari.viewer.Viewer
+        Napari viewer object
     """
     shape = np.shape(img)
     if len(shape) == 2 and mode == 'colorize':

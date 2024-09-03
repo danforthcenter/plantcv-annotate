@@ -1,14 +1,14 @@
 ## Open Image with Napari
 
-Open image data (e.g. RGB, gray, hyperspectral) with an interactive Napari viewer. If a gray image is opened, the image will be pseudocolored for better visualization.
+Open image data (e.g. RGB, gray, hyperspectral) with an interactive Napari viewer. Labeled masks may be colorized for better visualization. 
 
-**plantcv.annotate.napari_open**(*img, mode = 'native', show=True*)
+**plantcv.annotate.napari_open**(*img, mode='native', show=True*)
 
 **returns** napari viewer object
 
 - **Parameters:**
-    - img - image data (compatible with gray, RGB, and hyperspectral data. If data is hyperspecral it should be the array e.g. hyperspectral.array_data)
-    - mode - 'native' or 'colorize'. If 'colorized' is selected grayimages will be colorized.
+    - img - image data (compatible with gray, RGB, and hyperspectral data. If data is hyperspecral it should be the array e.g. `hyperspectral.array_data`)
+    - mode - 'native' or 'colorize'. If 'colorized' is selected gray images will be colorized.
     - show - if show = True, viewer is launched. False setting is useful for test purposes.
 
 - **Context:**
