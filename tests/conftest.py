@@ -22,12 +22,18 @@ class TestData:
         self.pollen_coords = os.path.join(self.datadir, "points_file_import.coords")
         # Kmeans Clustered Gray image
         self.kmeans_seed_gray_img = os.path.join(self.datadir, "silphium_seed_labeled_example.png")
-        # Small Hyperspectral image
-        self.envi_sample_data = os.path.join(self.datadir, "corn-kernel-hyperspectral.raw")
         # Binary mask including all pollen grainss 
         self.pollen_all = os.path.join(self.datadir, "pollen_all_mask.png")
         # Binary mask Eccentricity filtered objects
         self.pollen_discs = os.path.join(self.datadir, "pollen_detectdisc_mask.png")
+        # Small HSI 
+        filename_hyper = "corn-kernel-hyperspectral.raw"
+        self.envi_sample_data = os.path.join(self.datadir, filename_hyper)
+        # Coordinates File
+        filename_coor = "germinated.txt"
+        self.coor_data = os.path.join(self.datadir, filename_coor)
+
+
 
 @pytest.fixture(scope="session")
 def test_data():
