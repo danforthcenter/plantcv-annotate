@@ -22,6 +22,10 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: viewer = **annotate.napari_open**(*img, mode = 'native', show=True*)
 
+#### annotate.napari_save_coor
+
+* v0.1dev: datadict = **annotate.napari_save_coor**(*viewer, filepath*)
+
 #### annotate.Points
 
 * v0.1dev: viewer = **annotate.Points**(*img, figsize=(12,6), label="dafault"*)

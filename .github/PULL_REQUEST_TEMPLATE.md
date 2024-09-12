@@ -23,6 +23,6 @@ See [this page](https://plantcv.readthedocs.io/en/latest/pr_review_process/) for
 - [ ] Test coverage remains 100%
 - [ ] Documentation tested
 - [ ] New documentation pages added to `plantcv/mkdocs.yml`
-- [ ] Changes to function input/output signatures added to `updating.md`
+- [ ] Changes to function input/output signatures added to `changelog.md`
 - [ ] Code reviewed
 - [ ] PR approved
