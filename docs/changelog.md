@@ -16,7 +16,7 @@ All notable changes to this project will be documented below.
 
 #### annotate.napari_label_classes
 
-* v0.1dev: viewer = **annotate.napari_label_classes**(*img, classes, show=True*)
+* v0.1dev: viewer = **annotate.napari_label_classes**(*img, classes, size=10, shape='square', importdata=False, show=True*)
 
 #### annotate.napari_open
 
