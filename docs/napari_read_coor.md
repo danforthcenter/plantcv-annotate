@@ -7,14 +7,14 @@ Save Points Labeled in Napari to a File
 **returns** dictionary of points labeled by class
 
 - **Parameters:**
-    - coor - dictionary object of coordinates or a path to json datafile with dictionary of point coordinates
+    - coor - dictionary object of coordinates, or a path to json datafile with dictionary of point coordinates
     - dataformat - either 'yx' or 'xy', Napari takes data as y,x format. If data is 'xy' data is converted from x,y to y,x
 
 - **Context:**
-    - Import data from a file and convert to Napari format data if necessary
+    - Import previously labeled points, or points from other functions (e.g. [`pcvan.napari_read_coor`](napari_read_coor.md))
 
 - **Example use:**
-    - Import previously labeled points, or points from other functions (e.g. detect_centroid)
+    - Below
 
 
 ```python
