@@ -20,7 +20,7 @@ def napari_join_labels(img, viewer):
         labeled with values (e.g. labeled mask, output of kmeans clustering).
     viewer = Napari Viewer with classes labeled (e.g viewer from
         napari_label_classes)
-    show = if show is True the viewer is launched. This opetion is useful for
+    show = if show is True the viewer is launched. This option is useful for
     running tests without triggering the viewer.
 
     Returns:
@@ -29,7 +29,7 @@ def napari_join_labels(img, viewer):
 
     :param img: numpy.ndarray
     :param viewer: Napari Viewer object
-    :return labeled_imd: numpy.ndarray
+    :return labeled_img: numpy.ndarray
     :return mask_dict: dict of numpy.ndarray
 
     """
