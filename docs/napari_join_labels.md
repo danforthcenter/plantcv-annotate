@@ -31,9 +31,9 @@ img, path, name = pcv.readimage("./grayimg.png")
 
 viewer = pcvan.napari_label_classes(img=img, ['background', 'wing','seed'])
 
-labeledmask, mask_dict = pcvan.napari_join_lables(img=img, viewer)
-
 # Should open interactive napari viewer
+
+labeledmask, mask_dict = pcvan.napari_join_lables(img=img, viewer=viewer)
 
 ```
 

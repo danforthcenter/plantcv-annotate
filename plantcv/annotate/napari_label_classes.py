@@ -19,13 +19,14 @@ def napari_label_classes(img, classes, show=True):
         is run. If all classes have points labeled, any clusters not labeled
         will default to the last class in the list when napari_join_labels is
         run.
-    show = if show is True the viewer is launched. This opetion is useful for
+    show = if show is True the viewer is launched. This option is useful for
     running tests without triggering the viewer.
 
     Returns:
     viewer  = Napari viewer object
 
     :param img: numpy.ndarray
+    :param classes: list
     :return viewer: napari viewer object
 
     """
