@@ -34,7 +34,6 @@ def napari_label_classes(img, classes=False, size=10,
     :param img: numpy.ndarray
     :param classes: list
     :param size: int
-    :param shape: str
     :param importdata: dict
     :param show: str
 
