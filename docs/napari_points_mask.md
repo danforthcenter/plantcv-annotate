@@ -6,7 +6,7 @@ at particular points (e.g. color or intensity information)
 
 **plantcv.annotate.napari_points_mask**(*img, viewer*)
 
-**returns** dictionary of masks, one for each class where the class label is the key to access
+**returns** dictionary of masks (one for each class where the class label is the key to access)
 
 - **Parameters:**
     - img - image data (compatible with gray, RGB, and hyperspectral data. If data is hyperspecral it should be the array e.g. hyperspectral.array_data)
