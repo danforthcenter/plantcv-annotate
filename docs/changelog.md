@@ -18,6 +18,10 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: viewer = **annotate.napari_label_classes**(*img, classes, size=10, importdata=False, show=True*)
 
+#### annotate.napari_naive_bayes_color
+
+* v0.1dev: viewer = **annotate.napari_naive_bayes_color**(*img, maskdict, filename*)
+
 #### annotate.napari_open
 
 * v0.1dev: viewer = **annotate.napari_open**(*img, mode = 'native', show=True*)
