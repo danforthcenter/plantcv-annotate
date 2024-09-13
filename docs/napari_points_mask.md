@@ -28,9 +28,9 @@ import napari
 img, path, name = pcv.readimage("./wheat.png")
 
 # Should open interactive napari viewer
-viewer = pcvan.napari_label_classes(img,['background','healthy', 'rust', 'chlorosis'], size = 4)
+viewer = pcvan.napari_label_classes(img=img, classes=['background','healthy', 'rust', 'chlorosis'], size=4)
 
-maskdict = pcvan.napari_points_mask(img,viewer)
+maskdict = pcvan.napari_points_mask(img, viewer)
 
 pcv.plot_image(maskdict['background'])
 pcv.plot_image(maskdict['healthy'])
