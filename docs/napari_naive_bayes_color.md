@@ -3,13 +3,13 @@
 This function is to extract color information from a dictionary of masks in order
 to get data for naive bayes functions.
 
-**plantcv.annotate.napari_naive_bayes_color*(*img, maskdict, filename)
+**plantcv.annotate.napari_naive_bayes_color**(*img, maskdict, filename*)
 
 **returns** data frame
 
 - **Parameters:**
     - img - RGB image to extract color information from
-    - maskdict - dictionary of masks, output of napari_points_mask for example
+    - maskdict - dictionary of masks, output of [`napari_points_mask`](docs/napari_points_mask.md) for example
     - filename - filename to save data, formatted to work with naive bayes functions
 
 - **Context:**
@@ -28,13 +28,12 @@ import napari
 # Create an instance of the Points class
 img, path, name = pcv.readimage("./wheat.png")
 
-viewer = pcvan.napari_label_classes(img,['background','healthy', 'rust', 'chlorosis'], size = 4)
-
-maskdict = pcvan.napari_points_mask(img,viewer)
-
-nbdata = pcvan.napari_naive_bayes_color(img, maskdict, "./nbdata.txt")
-
 # Should open interactive napari viewer
+viewer = pcvan.napari_label_classes(img=img, classes=['background','healthy', 'rust', 'chlorosis'], size=4)
+
+maskdict = pcvan.napari_points_mask(img, viewer)
+
+nbdata = pcvan.napari_naive_bayes_color(img=img, maskdict=maskdict, filename="./nbdata.txt")
 
 ```
 
