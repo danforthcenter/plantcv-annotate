@@ -22,6 +22,10 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: viewer = **annotate.napari_open**(*img, mode = 'native', show=True*)
 
+#### annotate.napari_points_mask
+
+* v0.1dev: mask_dict = **annotate.napari_points_mask**(*img, viewer*)
+
 #### annotate.napari_read_coor
 
 * v0.1dev: data = **annotate.napari_read_coor**(*coor, dataformat='yx'*)
