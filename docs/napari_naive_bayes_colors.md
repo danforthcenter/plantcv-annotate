@@ -33,7 +33,7 @@ viewer = pcvan.napari_label_classes(img=img, classes=['background','healthy', 'r
 
 maskdict = pcvan.napari_points_mask(img, viewer)
 
-nbdata = pcvan.napari_naive_bayes_color(img=img, maskdict=maskdict, filename="./nbdata.txt")
+nbdata = pcvan.napari_naive_bayes_colors(img=img, maskdict=maskdict, filename="./nbdata.txt")
 
 ```
 
