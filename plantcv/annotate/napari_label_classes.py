@@ -25,6 +25,7 @@ def napari_label_classes(img, classes=False, size=10,
     importdata = dictionary of values in Napari format (y,x).
         Output of napari_read_coor
     show = if show is True the viewer is launched. This opetion is useful for
+
     running tests without triggering the viewer.
 
     Returns:
@@ -33,9 +34,9 @@ def napari_label_classes(img, classes=False, size=10,
     :param img: numpy.ndarray
     :param classes: list
     :param size: int
-    :param shape: str
     :param importdata: dict
     :param show: str
+
     :return viewer: napari viewer object
 
     """

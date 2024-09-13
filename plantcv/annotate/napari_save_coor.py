@@ -36,6 +36,5 @@ def napari_save_coor(viewer, filepath):
         filepath = str(filepath)+"_1.txt"
     with open(filepath, 'w') as fp:
         json.dump(datadict, fp)
-        fp.close()
 
     return datadict

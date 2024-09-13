@@ -16,3 +16,4 @@ def test_napari_points_mask(test_data):
     summask = int((np.sum(maskdict['total']))/255)
 
     assert summask == 2500
+    viewer.close()
