@@ -4,7 +4,7 @@ This function opens an image in Napari and then defines a set of Points layers w
 Image can be annotated as long as viewer is open. 
 
 
-**plantcv.annotate.napari_label_classes*(*img, classes, size=10, importdata=False, show=True*)
+**plantcv.annotate.napari_label_classes**(*img, classes, size=10, importdata=False, show=True*)
 
 **returns** napari viewer object
 
