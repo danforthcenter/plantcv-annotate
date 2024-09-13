@@ -11,7 +11,7 @@ Save Points Labeled in Napari to a File
     - Filepath - File to save data. If the file exits an extension will be added.
 
 - **Context:**
-    - Save points labeled in Napari to a file in case the same points need to be used.
+    - Save points labeled in Napari to a file to checkpoint annotation progress or reuse.
 
 - **Example use:**
     - Save points labeled to a file 
@@ -23,12 +23,10 @@ import plantcv.annotate as pcvan
 
 # Create an instance of the Points class
 img, path, name = pcv.readimage("./grayimg.png")
-
+# Should open interactive napari viewer
 viewer = pcvan.napari_label_classes(img=img, classes=['background', 'wing','seed'])
 
 dictobj = pcvan.napari_save_coor(viewer, 'testdata.txt')
-
-# Should open interactive napari viewer
 
 ```
 
