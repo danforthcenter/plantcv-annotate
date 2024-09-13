@@ -16,11 +16,15 @@ All notable changes to this project will be documented below.
 
 #### annotate.napari_label_classes
 
-* v0.1dev: viewer = **annotate.napari_label_classes**(*img, classes, size=10, shape='square', importdata=False, show=True*)
+* v0.1dev: viewer = **annotate.napari_label_classes**(*img, classes, size=10, importdata=False, show=True*)
 
 #### annotate.napari_open
 
 * v0.1dev: viewer = **annotate.napari_open**(*img, mode = 'native', show=True*)
+
+#### annotate.napari_points_mask
+
+* v0.1dev: mask_dict = **annotate.napari_points_mask**(*img, viewer*)
 
 #### annotate.napari_read_coor
 

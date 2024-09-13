@@ -6,7 +6,7 @@ from plantcv.annotate import napari_open
 from plantcv.annotate import napari_classes
 
 
-def napari_label_classes(img, classes=False, size=10, shape='square',
+def napari_label_classes(img, classes=False, size=10,
                          importdata=False, show=True):
     """
     open img in napari and label classes
@@ -22,7 +22,6 @@ def napari_label_classes(img, classes=False, size=10, shape='square',
         will default to the last class in the list when napari_join_labels is
         run.
     size = size of marker in pixels
-    shape = either 'square' or 'circle'
     importdata = dictionary of values in Napari format (y,x).
         Output of napari_read_coor
     show = if show is True the viewer is launched. This opetion is useful for
@@ -35,7 +34,6 @@ def napari_label_classes(img, classes=False, size=10, shape='square',
     :param img: numpy.ndarray
     :param classes: list
     :param size: int
-    :param shape: str
     :param importdata: dict
     :param show: str
 
@@ -83,7 +81,7 @@ def napari_label_classes(img, classes=False, size=10, shape='square',
     if classes is not False:
         for x in classes:
             if x not in keys:
-                viewer.add_points(np.array([]), name=x, symbol=shape,
+                viewer.add_points(np.array([]), name=x, symbol='square',
                                   edge_color=random.choice(color),
                                   face_color=random.choice(color), size=size)
         keys = napari_classes(viewer)
@@ -95,7 +93,8 @@ def napari_label_classes(img, classes=False, size=10, shape='square',
                 if key in keys:
                     viewer.layers[key].add(importdata[key])
                 else:
-                    viewer.add_points(importdata[key], name=key, symbol=shape,
+                    viewer.add_points(importdata[key], name=key,
+                                      symbol='square',
                                       edge_color=random.choice(color),
                                       face_color=random.choice(color),
                                       size=size)

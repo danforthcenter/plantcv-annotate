@@ -2,8 +2,8 @@
 
 import cv2
 import numpy as np
-from skimage.color import label2rgb
 import napari
+from skimage.color import label2rgb
 
 
 def napari_open(img, mode='native', show=True):
