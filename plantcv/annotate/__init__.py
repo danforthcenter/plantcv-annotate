@@ -8,7 +8,7 @@ from plantcv.annotate.napari_join_labels import napari_join_labels
 from plantcv.annotate.napari_save_coor import napari_save_coor
 from plantcv.annotate.napari_read_coor import napari_read_coor
 from plantcv.annotate.napari_points_mask import napari_points_mask
-from plantcv.annotate.napari_naive_bayes_data import napari_naive_bayes_colors
+from plantcv.annotate.napari_naive_bayes_colors import napari_naive_bayes_colors
 
 # Auto versioning
 __version__ = version("plantcv-annotate")
