@@ -178,11 +178,8 @@ class Points:
         """
         pts_mask = np.zeros(np.shape(mask), np.uint8)
         # Create points mask from all annotations
-        pts = [] 
-        for i in self.coords.values():
-            if i:
-                pts.extend(i)
-        for pt in pts:
+        pts_all = sum((pt for pts in self.coords.values() for pt in self.coords.values()), [])
+        for pt in pts_all:
             (x, y) = pt
             # Draw pt annotations onto a blank mask
             pts_mask = cv2.circle(pts_mask, (int(x), int(y)), radius=0, color=(255), thickness=-1)
