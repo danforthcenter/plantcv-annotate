@@ -314,8 +314,7 @@ class Points:
                                 if np.all(lbl_counts == 1):
                                     # If no, Concat with "_" delimiter
                                     concat_lbl = "_".join(list(unique_lbls))
-                                    if params.verbose:
-                                        print(f"labels getting concatenated to '{concat_lbl}' at {first_coord}")
+                                    warn(f"labels getting concatenated to '{concat_lbl}' at {first_coord}")
                                     # Adding the object
                                     added_obj_labels.append(mask_pixel_value)
                                     analysis_labels.append(concat_lbl)
@@ -327,10 +326,8 @@ class Points:
                                         debug_img, final_mask, labeled_mask_all, mask_pixel_value, object_id_count)
                                 else:
                                     # e.g. "total", "total", "germinated" is too complex to measure
-                                    if params.verbose:
-                                        print(f"The object at {first_coord} was removed for being too complex. "
-                                              "It was associated with the following "
-                                              "labels: {flat1}")
+                                    warn(f"The object at {first_coord} was removed for being too complex. "
+                                        "It was associated with the following labels: {flat1}")
                                     added_obj_labels.append(mask_pixel_value)
                                     # Draw the ghost of objects removed
                                     debug_img_duplicates = np.where(labeled_mask_all == mask_pixel_value,
