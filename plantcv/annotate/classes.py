@@ -326,7 +326,7 @@ class Points:
                                 else:
                                     # e.g. "total", "total", "germinated" is too complex to measure
                                     warn(f"The object at {first_coord} was removed for being too complex. "
-                                        "It was associated with the following labels: {flat1}")
+                                         "It was associated with the following labels: {flat1}")
                                     added_obj_labels.append(mask_pixel_value)
                                     # Draw the ghost of objects removed
                                     debug_img_duplicates = np.where(labeled_mask_all == mask_pixel_value,
