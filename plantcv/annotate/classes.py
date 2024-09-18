@@ -178,7 +178,7 @@ class Points:
         """
         pts_mask = np.zeros(np.shape(mask), np.uint8)
         # Create points mask from all annotations
-        pts_all = sum((pt for pts in self.coords.values() for pt in self.coords.values()), [])
+        pts_all = sum(self.coords.values(), [])
         for pt in pts_all:
             (x, y) = pt
             # Draw pt annotations onto a blank mask
