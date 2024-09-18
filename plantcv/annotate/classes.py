@@ -218,7 +218,7 @@ class Points:
         debug_img = np.zeros(np.shape(mask), np.uint8)
         debug_img_duplicates = debug_img.copy()
         pts_all = sum(self.coords.values(), [])
-        labels_all = [] 
+        labels_all = []
         for pt in pts_all:
             coord_class_label = [k for k, v in self.coords.items() if pt in v]
             labels_all.append(coord_class_label)
@@ -249,9 +249,9 @@ class Points:
                                                             object_id_count, (x, y))
                 # Add the unresolved object to the labeled mask and the debug img
                 debug_img, final_mask, object_id_count = _draw_unresolved_object(debug_img,
-                                                                                    final_mask,
-                                                                                    obj_number=object_id_count,
-                                                                                    coord=(x, y))
+                                                                                 final_mask,
+                                                                                 obj_number=object_id_count,
+                                                                                 coord=(x, y))
             if mask_pixel_value > 0:
                 # An object is resolved but check if there are other annotations associated with an object
                 mask_pixel_index = np.where(keep_pixel_vals == mask_pixel_value)[0]
@@ -261,7 +261,7 @@ class Points:
                     added_obj_labels.append(mask_pixel_value)
                     analysis_labels.append(names)
                     debug_labels, debug_coords = _add_debug_id(debug_labels, debug_coords,
-                                                                object_id_count, (x, y))
+                                                               object_id_count, (x, y))
                     # Draw on labeled mask and debug img
                     debug_img, final_mask, object_id_count = _draw_resolved(debug_img, final_mask, labeled_mask_all,
                                                                             mask_pixel_value, object_id_count)
@@ -294,10 +294,10 @@ class Points:
                                 analysis_labels.append(names)
                                 # Add a thicker pixel where unresolved annotation to the debug img
                                 cv2.circle(debug_img, (dup_coord[1], dup_coord[0]), radius=params.line_thickness,
-                                            color=(object_id_count), thickness=-1)
+                                           color=(object_id_count), thickness=-1)
                                 # Add debug label annotations later
                                 debug_labels, debug_coords = _add_debug_id(debug_labels, debug_coords,
-                                                                            object_id_count, (dup_coord[1], dup_coord[0]))
+                                                                           object_id_count, (dup_coord[1], dup_coord[0]))
                                 # Increment object count up so each pixel drawn in labeled mask is unique
                                 object_id_count += 1
                         if len(re) > 1:
@@ -323,7 +323,7 @@ class Points:
                                 analysis_labels.append(concat_lbl)
                                 # Add debug label annotations later
                                 debug_labels, debug_coords = _add_debug_id(debug_labels, debug_coords,
-                                                                            object_id_count, first_coord)
+                                                                           object_id_count, first_coord)
                                 # Draw on labeled mask and debug img
                                 debug_img, final_mask, object_id_count = _draw_resolved(
                                     debug_img, final_mask, labeled_mask_all, mask_pixel_value, object_id_count)
@@ -342,11 +342,11 @@ class Points:
                                     final_mask[dup_coord] = object_id_count
                                     analysis_labels.append(coord_labels[i])
                                     cv2.circle(debug_img, (dup_coord[1], dup_coord[0]),
-                                                radius=params.line_thickness, color=(object_id_count),
-                                                thickness=-1)
+                                               radius=params.line_thickness, color=(object_id_count),
+                                               thickness=-1)
                                     debug_labels, debug_coords = _add_debug_id(debug_labels, debug_coords,
-                                                                                object_id_count,
-                                                                                (dup_coord[1], dup_coord[0]))
+                                                                               object_id_count,
+                                                                               (dup_coord[1], dup_coord[0]))
                                     object_id_count += 1
         # Combine and colorize components of the debug image
         debug_img_duplicates_rgb = _draw_ghost_of_duplicates_removed(debug_img_duplicates)
