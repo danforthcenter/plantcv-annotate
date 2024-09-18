@@ -234,8 +234,8 @@ class Points:
         object_id_count = 1
         # pts in class used for recovering and labeling
         for p, current_pt in enumerate(pts_all):
-            x = int(current_pt[1])
-            y = int(current_pt[0])
+            x = int(current_pt[0])
+            y = int(current_pt[1])
             names = labels_all[p]
             mask_pixel_value = labeled_mask_all[y, x]
             # Check if current annotation can be resolved to an object in the mask
