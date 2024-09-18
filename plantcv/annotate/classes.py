@@ -8,7 +8,7 @@ import numpy as np
 from math import floor
 import matplotlib.pyplot as plt
 from plantcv.plantcv.annotate.points import _find_closest_pt
-from plantcv.plantcv import warn, params
+from plantcv.plantcv import warn, params, dilate
 from plantcv.plantcv._debug import _debug
 from plantcv.plantcv import create_labels, apply_mask
 
@@ -236,8 +236,7 @@ class Points:
                 mask_pixel_value = labeled_mask_all[y, x]
                 # Check if current annotation can be resolved to an object in the mask
                 if mask_pixel_value == 0:
-                    if params.verbose:
-                        print(f"Object could not be resolved at coordinate: x = {x}, y = {y}")
+                    warn(f"Object could not be resolved at coordinate: x = {x}, y = {y}")
                     unrecovered_ids.append(object_id_count)
                     added_obj_labels.append(object_id_count)
                     analysis_labels.append(names)
@@ -487,8 +486,6 @@ def _draw_ghost_of_duplicates_removed(dupes_mask):
     removed_mask : numpy.ndarray
         combined mask with all removed objects for debug visualization
     """
-    from plantcv.plantcv import dilate
-
     # Dilate duplicate objs and subtract the object itself to leave just a halo around
     debug_img_duplicates = dilate(dupes_mask, ksize=params.line_thickness+2, i=1)
     debug_img_duplicates = debug_img_duplicates - dupes_mask
