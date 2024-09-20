@@ -32,6 +32,11 @@ class TestData:
         # Coordinates File
         filename_coor = "germinated.txt"
         self.coor_data = os.path.join(self.datadir, filename_coor)
+        # Naive Bayes Data
+        filename_nbrgb = "08_02_16-QTHJ-RIL-019_zoomed.png"
+        self.nb_rgb = os.path.join(self.datadir, filename_nbrgb)
+        filename_nbmask = "my_maskdict.npy"
+        self.nb_mask = os.path.join(self.datadir, filename_nbmask)
 
 
 
