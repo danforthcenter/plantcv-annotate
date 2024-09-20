@@ -1,7 +1,7 @@
 ## Extract Color Data from Dictionary of Masks for Naive Bayes
 
 This function is to extract color information from a dictionary of masks in order
-to get data for naive bayes functions.
+to get data for naive bayes functions. Collect pixel training data in Napari, rather than ImageJ for example. 
 
 **plantcv.annotate.napari_naive_bayes_colors**(*img, maskdict, filename*)
 
