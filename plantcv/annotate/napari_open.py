@@ -2,29 +2,30 @@
 
 import cv2
 import numpy as np
-from skimage.color import label2rgb
 import napari
+from skimage.color import label2rgb
 
 
-def napari_open(img, show=True):
-    """
-    open img in napari
+def napari_open(img, mode='native', show=True):
+    """Open an image with a napari interactive viewer
 
-    Inputs:
-    img  = img  (grayimg, rgbimg, or hyperspectral image array data e.g.
-    hyperspectraldata.array_data)
-    show = if show is True the viewer is launched. This option is useful for
+    Parameters
+    ----------
+    img : numpy.ndarray
+        Image to be opened, img can be gray, rgb, or multispectral
+    mode: str
+        Viewing mode, either 'native' (default) or 'colorize'
+    show: bool
+        if show is True the viewer is launched. This option is useful for
     running tests without triggering the viewer.
 
-    Returns:
-    viewer  = napari viewer object
-
-    :param img: numpy.ndarray
-    :return viewer: napari viewer object
-
+    Returns
+    -------
+    napari.viewer.Viewer
+        Napari viewer object
     """
     shape = np.shape(img)
-    if len(shape) == 2:
+    if len(shape) == 2 and mode == 'colorize':
         colorful = label2rgb(img)
         img = (255*colorful).astype(np.uint8)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
