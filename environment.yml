@@ -25,7 +25,7 @@ dependencies:
   - altair
   - vl-convert-python
   - napari
-  - pyside2
+  - pyqt
   - pytest-qt
 
 channels:
