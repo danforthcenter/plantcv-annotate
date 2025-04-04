@@ -10,7 +10,6 @@ name = "plantcv-annotate"
 dynamic = ["version"]
 dependencies = [
     "plantcv",
-    "matplotlib",
     "napari",
     "pyside2"
 ]
