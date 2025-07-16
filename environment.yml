@@ -27,6 +27,7 @@ dependencies:
   - napari
   - pyside2
   - pytest-qt
+  - pyqt
 
 channels:
   - conda-forge
