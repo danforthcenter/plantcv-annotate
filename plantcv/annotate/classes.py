@@ -208,6 +208,7 @@ class Points:
         debug = params.debug
         params.debug = None
         # Initialize lists and arrays
+        all_class_coords = self.coords.items()
         unrecovered_ids = []
         debug_coords = []
         debug_labels = []
@@ -220,7 +221,7 @@ class Points:
         pts_all = sum(self.coords.values(), [])
         labels_all = []
         for pt in pts_all:
-            coord_class_label = [k for k, v in self.coords.items() if pt in v]
+            coord_class_label = [k for k, v in all_class_coords if pt in v]
             labels_all.append(coord_class_label)
 
         bin_mask = np.where(mask > 0, 255, 0).astype(np.uint8)
@@ -274,9 +275,10 @@ class Points:
                         first_coord = (associated_coords[0][1], associated_coords[0][0])
                         coord_labels = []
                         # Find all class labels for each annotation
+                        coord_class_label, coord_labels = _find_all_labels(associated_coords, all_class_coords, coord_labels)
                         for dup_coord in associated_coords:
                             # Flip x & y for numpy, and find the associated class label with each coordinate
-                            coord_class_label = [k for k, v in self.coords.items() if (dup_coord[1], dup_coord[0]) in v]
+                            coord_class_label = [k for k, v in all_class_coords if (dup_coord[1], dup_coord[0]) in v]
                             coord_labels.append(coord_class_label)
                         # Is there more than one class label associated with the given object?
                         re = np.unique(coord_labels)
@@ -353,10 +355,7 @@ class Points:
         debug_img = colorize_label_img(debug_img)
         debug_img = debug_img + debug_img_removed + debug_img_duplicates_rgb
 
-        # Write ID labels
-        for id, id_label in enumerate(debug_labels):
-            cv2.putText(img=debug_img, text=id_label, org=debug_coords[id], fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                        fontScale=params.text_size, color=(150, 150, 150), thickness=params.text_thickness)
+        _write_label_ids(debug_labels, debug_img, debug_coords)
         params.debug = debug
         _debug(visual=final_mask,
                filename=os.path.join(params.debug_outdir,
@@ -368,6 +367,54 @@ class Points:
         num = len(np.unique(final_mask)) - 1
 
         return final_mask, analysis_labels, num
+
+
+def _write_label_ids(debug_labels, debug_img, debug_coords):
+    """Write ID labels on debug image.
+
+    Parameters
+    ----------
+    debug_labels : list
+        binary image, mask with all annotations plotted as pixels
+    debug_img : numpy.ndarray
+        debug image
+    debug_coords : list
+        list of coordinates of annotations
+
+    Returns
+    ----------
+    """
+    # Write ID labels
+    for id, id_label in enumerate(debug_labels):
+        cv2.putText(img=debug_img, text=id_label, org=debug_coords[id], fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                    fontScale=params.text_size, color=(150, 150, 150), thickness=params.text_thickness)
+
+
+def _find_all_labels(associated_coords, all_class_coords, coord_labels):
+    """Find all class labels for each annotation
+
+    Parameters
+    ----------
+    associated_coords : list
+        list of coordinates associated with a given object
+    all_class_coords : list
+        all coordinates stored in the annotation object class
+    coord_labels : list
+        list of object labels
+
+    Returns
+    ----------
+    coord_class_label : list
+        coordinate class labels
+    coord_labels : list
+        coordinate labels
+    """
+    # 
+    for dup_coord in associated_coords:
+        # Flip x & y for numpy, and find the associated class label with each coordinate
+        coord_class_label = [k for k, v in all_class_coords if (dup_coord[1], dup_coord[0]) in v]
+        coord_labels.append(coord_class_label)
+    return coord_class_label, coord_labels
 
 
 def _remove_unannotated_objects(pts_mask, mask):
