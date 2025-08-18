@@ -82,7 +82,7 @@ def napari_label_classes(img, classes=False, size=10,
         for x in classes:
             if x not in keys:
                 viewer.add_points(np.array([]), name=x, symbol='square',
-                                  edge_color=random.choice(color),
+                                  border_color=random.choice(color),
                                   face_color=random.choice(color), size=size)
         keys = napari_classes(viewer)
 
@@ -95,7 +95,7 @@ def napari_label_classes(img, classes=False, size=10,
                 else:
                     viewer.add_points(importdata[key], name=key,
                                       symbol='square',
-                                      edge_color=random.choice(color),
+                                      border_color=random.choice(color),
                                       face_color=random.choice(color),
                                       size=size)
 
