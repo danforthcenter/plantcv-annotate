@@ -160,21 +160,20 @@ def test_points_view_warn(test_data):
 
 
 def test_plantcv_annotate_points_correct_mask(test_data):
-    """Test for PlantCV."""
-    # Create a test tmp directory
-    # generate fake testing image
+    """Test for PlantCV-Annotate"""
     allmask = cv2.imread(test_data.pollen_all, -1)
     discs = cv2.imread(test_data.pollen_discs, -1)
-    totalpoints1 =totalpoints1 = [(157, 529),
-                                  (235, 438),
-                                  (268, 394),
-                                  (295, 451),
-                                  (511, 349),
-                                  (525, 277),
-                                  (290, 97),
-                                  (3,3)]
+    totalpoints1 = [(157, 529),
+                    (235, 438),
+                    (268, 394),
+                    (295, 451),
+                    (511, 349),
+                    (525, 277),
+                    (290, 97),
+                    (281, 100),
+                    (3,3)]
     dupe_pts = [(281, 100), (525, 274)]
-    counter = Points(np.copy(allmask), figsize=(8, 6))
+    counter = Points(allmask, figsize=(8, 6))
     counter.import_list(totalpoints1, label="total")
     counter.import_list(dupe_pts, label="dupe")
 
@@ -183,10 +182,10 @@ def test_plantcv_annotate_points_correct_mask(test_data):
     assert np.count_nonzero(corrected_mask) < np.count_nonzero(allmask)
     
 def test_plantcv_annotate_points_correct_mask_labeled(test_data):
-    """Test for PlantCV."""
+    """Test for PlantCV-Annotate"""
     lbl_mask = cv2.imread(test_data.kmeans_seed_gray_img, -1)
     dupe_pts = [(281, 100), (525, 274)]
-    counter = Points(np.copy(lbl_mask), figsize=(8, 6))
+    counter = Points(lbl_mask, figsize=(8, 6))
     counter.import_list(dupe_pts, label="total")
     corrected_mask, _, _ = counter.correct_mask(mask=lbl_mask)
     assert np.count_nonzero(corrected_mask) < np.count_nonzero(lbl_mask)
