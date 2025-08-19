@@ -332,7 +332,7 @@ class Points:
                             else:
                                 # e.g. "total", "total", "germinated" is too complex to measure
                                 warn(f"The object at {first_coord} was removed for being too complex. "
-                                        "It was associated with the following labels: {flat1}")
+                                     "It was associated with the following labels: {flat1}")
                                 added_obj_labels.append(mask_pixel_value)
                                 # Draw the ghost of objects removed
                                 debug_img_duplicates = np.where(labeled_mask_all == mask_pixel_value,
@@ -409,7 +409,6 @@ def _find_all_labels(associated_coords, all_class_coords, coord_labels):
     coord_labels : list
         coordinate labels
     """
-    # 
     for dup_coord in associated_coords:
         # Flip x & y for numpy, and find the associated class label with each coordinate
         coord_class_label = [k for k, v in all_class_coords if (dup_coord[1], dup_coord[0]) in v]
