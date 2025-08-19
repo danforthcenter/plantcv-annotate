@@ -281,7 +281,8 @@ class Points:
                             coord_class_label = [k for k, v in all_class_coords if (dup_coord[1], dup_coord[0]) in v]
                             coord_labels.append(coord_class_label)
                         # Is there more than one class label associated with the given object?
-                        re = np.unique(sum(coord_labels, []))
+                        flat_coord_labels = np.concatenate(coord_labels)
+                        re = np.unique(flat_coord_labels)
                         if len(re) == 1:
                             # Labels are duplicated e.g. "total", "total"
                             # Draw the ghost of objects removed
@@ -306,13 +307,10 @@ class Points:
                             # More than one class label associated with a given object
                             splitup = []
                             # Split on "_" in case something has already been combined
-                            for lbls in coord_labels:
-                                list_lbl = []
-                                for lbl in lbls:
-                                    list_lbl.append(lbl.split("_"))
-                                splitup.append(np.concatenate(list_lbl))
+                            for lbls in flat_coord_labels:
+                                splitup.append(lbls.split("_"))
                             # Flatten list of labels
-                            flat = np.concatenate(splitup)
+                            flat = sum(splitup, [])
                             # Grab each unique label from the list
                             unique_lbls, lbl_counts = np.unique(flat, return_counts=True)
                             # Is there duplication within each class label for the given object?
