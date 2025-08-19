@@ -314,7 +314,8 @@ class Points:
                             # Grab each unique label from the list
                             unique_lbls, lbl_counts = np.unique(flat, return_counts=True)
                             # Is there duplication within each class label for the given object?
-                            if np.all(lbl_counts == 1):
+                            labels_are_unique = all(x == 1 for x in lbl_counts)
+                            if labels_are_unique:
                                 # If no duplication, Concat with "_" delimiter
                                 concat_lbl = "_".join(list(unique_lbls))
                                 warn(f"labels getting concatenated to '{concat_lbl}' at {first_coord}")
