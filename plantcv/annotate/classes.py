@@ -204,7 +204,6 @@ class Points:
         num : int
             number of objects represented within the labeled mask
         """
-
         debug = params.debug
         params.debug = None
         # Initialize lists and arrays
@@ -247,7 +246,7 @@ class Points:
                 analysis_labels.append(names)
                 # Add ID to debug img
                 debug_labels, debug_coords = _add_debug_id(debug_labels, debug_coords,
-                                                            object_id_count, (x, y))
+                                                           object_id_count, (x, y))
                 # Add the unresolved object to labeled mask and debug img
                 debug_img, final_mask, object_id_count = _draw_unresolved_object(debug_img,
                                                                                  final_mask,
