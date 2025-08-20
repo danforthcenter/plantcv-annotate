@@ -170,7 +170,6 @@ def test_plantcv_annotate_points_correct_mask(test_data):
                     (511, 349),
                     (525, 277),
                     (290, 97),
-                    (281, 100),
                     (3,3)]
     dupe_pts = [(281, 100), (525, 274)]
     counter = Points(allmask, figsize=(8, 6))
