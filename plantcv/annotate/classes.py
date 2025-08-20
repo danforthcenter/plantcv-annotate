@@ -275,13 +275,9 @@ class Points:
                         coord_labels = []
                         # Find all class labels for each annotation
                         coord_class_label, coord_labels = _find_all_labels(associated_coords, all_class_coords, coord_labels)
-                        for dup_coord in associated_coords:
-                            # Flip x & y for numpy, and find the associated class label with each coordinate
-                            coord_class_label = [k for k, v in all_class_coords if (dup_coord[1], dup_coord[0]) in v]
-                            coord_labels.append(coord_class_label)
                         # Is there more than one class label associated with the given object?
                         flat_coord_labels = np.concatenate(coord_labels)
-                        re = np.unique(flat_coord_labels)
+                        re, lbl_counts = np.unique(flat_coord_labels, return_counts=True)
                         if len(re) == 1:
                             # Labels are duplicated e.g. "total", "total"
                             # Draw the ghost of objects removed
@@ -303,20 +299,11 @@ class Points:
                                 # Increment object count up so each pixel drawn in labeled mask is unique
                                 object_id_count += 1
                         if len(re) > 1:
-                            # More than one class label associated with a given object
-                            splitup = []
-                            # Split on "_" in case something has already been combined
-                            for lbls in flat_coord_labels:
-                                splitup.append(lbls.split("_"))
-                            # Flatten list of labels
-                            flat = sum(splitup, [])
-                            # Grab each unique label from the list
-                            unique_lbls, lbl_counts = np.unique(flat, return_counts=True)
                             # Is there duplication within each class label for the given object?
                             labels_are_unique = all(x == 1 for x in lbl_counts)
                             if labels_are_unique:
                                 # If no duplication, Concat with "_" delimiter
-                                concat_lbl = "_".join(list(unique_lbls))
+                                concat_lbl = "_".join(list(re))
                                 warn(f"labels getting concatenated to '{concat_lbl}' at {first_coord}")
                                 # Adding the object
                                 added_obj_labels.append(mask_pixel_value)
@@ -328,7 +315,7 @@ class Points:
                             else:
                                 # e.g. "total", "total", "germinated" is too complex to measure
                                 warn(f"The object at {first_coord} was removed for being too complex. "
-                                     "It was associated with the following labels: {flat1}")
+                                     "It was associated with the following labels: {flat_coord_labels}")
                                 added_obj_labels.append(mask_pixel_value)
                                 # Draw the ghost of objects removed
                                 debug_img_duplicates = np.where(labeled_mask_all == mask_pixel_value,
