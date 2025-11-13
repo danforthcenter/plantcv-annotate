@@ -93,6 +93,7 @@ class Points:
             self.coords[label] = []
             for (y, x) in coords:
                 self.coords[label].append((x, y))
+                self.sample_labels.append(label)
             self.count[label] = len(self.coords[label])
             self.view(label=label, color=self.color, view_all=False)
         else:
