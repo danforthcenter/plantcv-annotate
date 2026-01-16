@@ -6,6 +6,10 @@ All notable changes to this project will be documented below.
 
 * v0.1dev: coords_list = **annotate.get_centroids**(*bin_img*)
 
+#### annotate.napari_bbox
+
+* v0.1dev: boxes = **annotate.napari_bbox**(*viewer, layername*)
+
 #### annotate.napari_classes
 
 * v0.1dev: class_list = **annotate.napari_classes**(*viewer*)
