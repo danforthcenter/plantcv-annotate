@@ -24,4 +24,6 @@ def napari_bbox(viewer, layername):
             xs.append(int(j[1]))
             ys.append(int(j[0]))
         boxes.append([min(xs), min(ys), max(ys) - min(ys), max(xs) - min(xs)])
+    if len(boxes) == 1:
+        return boxes[0]
     return boxes
