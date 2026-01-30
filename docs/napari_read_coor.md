@@ -8,7 +8,8 @@ Save Points Labeled in Napari to a File
 
 - **Parameters:**
     - coor - dictionary object of coordinates, or a path to json datafile with dictionary of point coordinates
-    - dataformat - either 'yx' or 'xy', Napari takes data as y,x format. If data is 'xy' data is converted from x,y to y,x
+    - dataformat - either 'yx', 'xy', or 'sam', Napari takes data as y,x format. If data is 'xy' data is converted from x,y to y,x.
+    If data is 'sam' point data is formatted for input into ultralytics sam3 functions.
 
 - **Context:**
     - Import previously labeled points, or points from other functions (e.g. [`pcvan.napari_read_coor`](napari_read_coor.md))
