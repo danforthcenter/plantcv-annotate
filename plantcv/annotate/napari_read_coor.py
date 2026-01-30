@@ -53,5 +53,5 @@ def napari_read_coor(coor, dataformat='yx'):
         data1['points'] = pointslist
         data1['labels'] = pointslabel
         data = data1
-    
+
     return data
