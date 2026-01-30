@@ -34,4 +34,24 @@ def napari_read_coor(coor, dataformat='yx'):
             data1.update({key: data2})
         data = data1
 
+    if dataformat == 'sam':
+        pointslist = []
+        pointslabel = []
+
+        for i in range(len(data['pos'])):
+            x, y = data['pos'][i]
+            pointslist.append([x, y])
+            pointslabel.append(1)
+
+        for i in range(len(data['neg'])):
+            x, y = data['neg'][i]
+            pointslist.append([x, y])
+            pointslabel.append(0)
+
+        pointslist = [pointslist]
+        pointslabel = [pointslabel]
+        data1['points'] = pointslist
+        data1['labels'] = pointslabel
+        data = data1
+    
     return data
