@@ -38,13 +38,13 @@ def napari_read_coor(coor, dataformat='yx'):
         pointslist = []
         pointslabel = []
 
-        for i in range(len(data['pos'])):
-            x, y = data['pos'][i]
+        for i in enumerate(data['pos']):
+            x, y = i[1]
             pointslist.append([x, y])
             pointslabel.append(1)
 
-        for i in range(len(data['neg'])):
-            x, y = data['neg'][i]
+        for i in enumerate(data['neg']):
+            x, y = i[1]
             pointslist.append([x, y])
             pointslabel.append(0)
 
