@@ -2,19 +2,20 @@
 
 
 def napari_bbox(viewer, layername):
-    """
-    Converts napari rectangles into bounding boxes for ROIs and SAM models
+    """Convert napari rectangles into bounding boxes for ROIs and SAM models.
 
-    Inputs:
-    viewer  = napari viewer object
-    layername = the name of the shapes layer
+    Parameters
+    ----------
+    viewer : napari.viewer.Viewer
+        Napari viewer object.
+    layername : str
+        Name of the shapes layer.
 
-    Returns:
-    boxes = list of the bounding box parameters
-
-    :param viewer: napari.viewer.Viewer
-    :param layername: str
-    :return boxes: list
+    Returns
+    -------
+    list
+        Bounding box parameters as [x_min, y_min, height, width], or a list
+        of such lists if multiple shapes are present.
     """
     boxes = []
     for i in viewer.layers[layername].data:
