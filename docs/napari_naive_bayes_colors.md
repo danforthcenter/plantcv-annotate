@@ -9,7 +9,7 @@ to get data for naive bayes functions. Collect pixel training data in Napari, ra
 
 - **Parameters:**
     - img - RGB image to extract color information from
-    - maskdict - dictionary of masks, output of [`napari_points_mask`](docs/napari_points_mask.md) for example
+    - maskdict - dictionary of masks, output of [`napari_points_mask`](napari_points_mask.md) for example
     - filename - filename to save data, formatted to work with [Naive Bayes segmentation](https://plantcv.readthedocs.io/en/latest/tutorials/machine_learning_tutorial/)
 
 - **Context:**

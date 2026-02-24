@@ -4,7 +4,7 @@ from plantcv.annotate import napari_read_coor
 def test_napari_read_coor_napari(test_data):
     """Test for PlantCV.Annotate"""
     # Read in test data
-    data = napari_read_coor(test_data.coor_data, 'yx')
+    data = napari_read_coor(test_data.coor_data, dataformat='yx')
 
     assert isinstance(data, dict)
 
@@ -12,7 +12,7 @@ def test_napari_read_coor_napari(test_data):
 def test_napari_read_coor_other(test_data):
     """Test for PlantCV.Annotate"""
     # Read in test data
-    data = napari_read_coor(test_data.coor_data, 'xy')
+    data = napari_read_coor(test_data.coor_data, dataformat='xy')
 
     assert data['germinated'][0] == (10, 25)
 
@@ -21,6 +21,15 @@ def test_napari_read_coor_flip():
     """Test for PlantCV.Annotate"""
     # Read in test data
     coor = {"germinated": [[25, 10]]}
-    data = napari_read_coor(coor, 'xy')
+    data = napari_read_coor(coor, dataformat='xy')
 
     assert data['germinated'][0] == (10, 25)
+
+
+def test_napari_read_coor_sam(test_data):
+    """Test for PlantCV.Annotate"""
+    # Read in test data
+    coor = {'pos': [(284, 451)], 'neg': [(206, 160)]}
+    data = napari_read_coor(coor, dataformat='sam')
+
+    assert data['points'][0][0][0] == 451
