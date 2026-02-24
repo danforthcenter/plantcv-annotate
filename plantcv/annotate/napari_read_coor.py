@@ -48,10 +48,8 @@ def napari_read_coor(coor, dataformat='yx'):
             pointslist.append([x, y])
             pointslabel.append(0)
 
-        pointslist = [pointslist]
-        pointslabel = [pointslabel]
-        data1['points'] = pointslist
-        data1['labels'] = pointslabel
+        data1['points'] = [pointslist]
+        data1['labels'] = [pointslabel]
         data = data1
 
     return data
