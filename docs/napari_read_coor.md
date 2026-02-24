@@ -23,7 +23,7 @@ import plantcv.annotate as pcvan
 
 # read in data
 
-data = pcvan.napari_read_points(coor ='coor.json', dataformat = 'xy')
+data = pcvan.napari_read_coor(coor ='coor.json', dataformat = 'xy')
 
 ```
 
