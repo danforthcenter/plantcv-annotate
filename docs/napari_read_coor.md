@@ -28,4 +28,18 @@ data = pcvan.napari_read_coor(coor ='coor.json', dataformat = 'xy')
 
 ```
 
+- **Example use for training Segment Anything Model:**
+    - Below
+
+```python
+from ultralytics import SAM
+
+model = SAM("sam3.pt")
+results = model.predict(source="./Example_image.jpg", 
+                        points=data["points"], 
+                        labels=data["labels"])
+results[0].show()
+
+```
+
 **Source Code:** [Here](https://github.com/danforthcenter/plantcv-annotate/blob/main/plantcv/annotate/napari_read_coor.py)
