@@ -9,6 +9,7 @@ from plantcv.annotate.napari_save_coor import napari_save_coor
 from plantcv.annotate.napari_read_coor import napari_read_coor
 from plantcv.annotate.napari_points_mask import napari_points_mask
 from plantcv.annotate.napari_naive_bayes_colors import napari_naive_bayes_colors
+from plantcv.annotate.napari_bbox import napari_bbox
 
 # Auto versioning
 __version__ = version("plantcv-annotate")
@@ -23,5 +24,6 @@ __all__ = [
     "napari_save_coor",
     "napari_read_coor",
     "napari_points_mask",
-    "napari_naive_bayes_colors"
+    "napari_naive_bayes_colors",
+    "napari_bbox"
 ]
