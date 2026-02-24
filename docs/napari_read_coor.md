@@ -1,6 +1,6 @@
 ## Read point data into Napari Format
 
-Save Points Labeled in Napari to a File
+Read points from a file or dictionary into Napari format 
 
 **plantcv.napari_read_coor**(*coor, dataformat = 'yx'*)
 
@@ -12,7 +12,7 @@ Save Points Labeled in Napari to a File
     If data is 'sam' point data is formatted for input into ultralytics sam3 functions. If 'sam' format is selected the function does expect a dictionary with 'pos' and 'neg' points as labelled classes.
 
 - **Context:**
-    - Import previously labeled points, or points from other functions (e.g. [`pcvan.napari_read_coor`](napari_read_coor.md))
+    - Import previously labeled points, or points from other functions (e.g. [`pcvan.napari_save_coor`](napari_save_coor.md))
 
 - **Example use:**
     - Below
