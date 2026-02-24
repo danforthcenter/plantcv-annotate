@@ -11,9 +11,9 @@ def napari_read_coor(coor, dataformat='yx'):
     coor : dict or str
         Either a dictionary or path to json file of points and label classes.
     dataformat : str
-        Use 'xy' for points function outputs, 'yx' for Napari outputs, and 'sam' for 
+        Use 'xy' for points function outputs, 'yx' for Napari outputs, and 'sam' for
         Segment Anything Model, which includes "pos" and "neg" labeled classes;
-        defaults to 'yx'.  
+        defaults to 'yx'.
 
     Returns
     ----------
