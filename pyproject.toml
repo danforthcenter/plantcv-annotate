@@ -10,9 +10,10 @@ name = "plantcv-annotate"
 dynamic = ["version"]
 dependencies = [
     "plantcv",
-    "matplotlib",
     "napari",
-    "PyQt5"
+    "PyQt5",
+    "PySide6"
+
 ]
 requires-python = ">=3.11"
 authors = [
