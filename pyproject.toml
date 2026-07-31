@@ -11,8 +11,7 @@ dynamic = ["version"]
 dependencies = [
     "plantcv",
     "matplotlib",
-    "napari",
-    "PySide6"
+    "napari"
 ]
 requires-python = ">=3.11"
 authors = [
@@ -32,7 +31,8 @@ classifiers = [
 test = [
     "pytest",
     "pytest-cov",
-    "pytest-qt"
+    "pytest-qt",
+    "PySide6"
 ]
 
 [project.urls]
