@@ -11,7 +11,8 @@ dynamic = ["version"]
 dependencies = [
     "plantcv",
     "matplotlib",
-    "napari"
+    "napari",
+    "PySide6"
 ]
 requires-python = ">=3.11"
 authors = [
