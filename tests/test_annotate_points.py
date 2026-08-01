@@ -3,6 +3,7 @@ import os
 import cv2
 import matplotlib
 from plantcv.annotate.classes import Points
+from plantcv.plantcv import outputs
 
 
 def test_points(test_data):
@@ -157,3 +158,22 @@ def test_points_view_warn(test_data):
     drawer_rgb.view(label="new", color='r')
 
     assert str(drawer_rgb.fig) == "Figure(500x500)"
+
+def test_points_save_coords(test_data):
+    img = cv2.imread(test_data.small_rgb_img)
+    drawer = Points(img=img)
+    # Populate attribute with coords
+    totalpoints1 = [(158, 531), (361, 112), (500, 418)]
+    drawer.coords = {'default': totalpoints1}
+    drawer.save_coords()
+    
+    assert outputs.observations["default"]["coordinates"]["value"] == [(158, 531), (361, 112), (500, 418)]
+
+def test_points_save_counts(test_data):
+    img = cv2.imread(test_data.small_rgb_img)
+    drawer = Points(img=img)
+    # Populate attribute with coords
+    drawer.count = {'default': 1}
+    drawer.save_counts()
+    
+    assert outputs.observations["default"]["object_count"]["value"] == 1

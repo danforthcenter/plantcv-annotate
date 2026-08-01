@@ -5,8 +5,8 @@ import cv2
 import json
 from math import floor
 import matplotlib.pyplot as plt
+from plantcv.plantcv import warn, outputs
 from plantcv.plantcv.annotate.points import _find_closest_pt
-from plantcv.plantcv import warn
 
 
 class Points:
@@ -78,6 +78,24 @@ class Points:
         with open(filename, "w") as fp:
             # Save the data in JSON format with indentation
             json.dump(obj=self.coords, fp=fp, indent=4)
+
+    def save_counts(self):
+        """Save collected coordinates to Outputs.observations"""
+        for key in self.count:
+            value = self.count[key]
+            outputs.add_observation(sample=key, variable="object_count",
+                                    trait='count of category',
+                                    method='count', scale='count', datatype=int,
+                                    value=value, label='none')
+
+    def save_coords(self):
+        """Save collected coordinates to Outputs.observations"""
+        for key in self.count:
+            value = self.coords[key]
+            outputs.add_observation(sample=key, variable="coordinates",
+                                    trait='collected coordinates',
+                                    method='annotation', scale='none', datatype=list,
+                                    value=value, label='none')
 
     def import_list(self, coords, label="default"):
         """Import coordinates.
